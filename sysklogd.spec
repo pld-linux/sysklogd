@@ -6,7 +6,7 @@ Summary(pl):	Programy loguj±ce zdarzenia w systemie i j±drze Linuxa
 Summary(tr):	Linux sistem ve çekirdek kayýt süreci
 Name:		sysklogd
 Version:	1.3.31
-Release:	22
+Release:	23
 License:	GPL
 Group:		Daemons
 Group(pl):	Serwery
@@ -80,6 +80,7 @@ Requires:	SysVinit >= 2.76-12
 Requires:	rc-scripts >= 0.2.0
 Requires:	klogd
 Obsoletes:	sysklogd
+Obsoletes:	syslog-ng
 
 %description -n syslog
 This is the Linux system logging program. It is run as a daemon (background
