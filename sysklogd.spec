@@ -35,6 +35,7 @@ Patch9:		%{name}-nullterm.patch
 Patch10:	%{name}-fmt-string.patch
 Patch11:	%{name}-2.4headers.patch
 URL:		http://www.infodrom.org/projects/sysklogd/
+BuildRequires:	fork-on-start-is-broken
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_exec_prefix	/
