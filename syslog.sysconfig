@@ -11,9 +11,9 @@ HOSTLIST=""
 # (``:'') separator. Remember that the first match is used, not the best.
 DOMAINLIST=""
 
-# If not empty syslogd marks timestamp to syslog. Specify interval between two 
+# If non-zero, syslogd marks timestamp to syslog. Specify interval between two 
 # "-- MARK --"
-MARK_TIMESTAMP=
+MARK_TIMESTAMP=0
 
 # klog console loggin level
 CONSOLELOG_LEVEL=4
