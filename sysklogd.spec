@@ -9,6 +9,7 @@ Version:	1.3.31
 Release:	26
 License:	GPL
 Group:		Daemons
+Group(de):	Server
 Group(pl):	Serwery
 Source0:	ftp://ftp.infodrom.nort.de/pub/pub/people/joey/%{name}-%{source}.tar.gz
 Source1:	syslog.conf
@@ -18,20 +19,20 @@ Source4:	syslog.sysconfig
 Source5:	klogd.init
 Source6:	klogd.sysconfig
 Source7:	syslogd-listfiles.sh
-Patch0:		sysklogd-alpha.patch
-Patch1:		sysklogd-alphafoo.patch
-Patch2:		sysklogd-opt.patch
-Patch3:		sysklogd-daemon.patch
-Patch4:		sysklogd-glibc.patch
-Patch5:		sysklogd-sparc.patch
-Patch6:		sysklogd-install.patch
-Patch7:		sysklogd-utmp-process.patch
-Patch8:		sysklogd-fixDoS.patch
-Patch9:		sysklogd-dgram.patch
-Patch10:	sysklogd-ksyms.patch
-Patch11:	sysklogd-nullterm.patch
-Patch12:	ftp://ftp.ocs.com.au:21/pub/ksymoops/v2.3/patch-sysklogd-1-3-31-ksymoops-1.gz
-Patch13:	sysklogd-formatbug.patch
+Patch0:		%{name}-alpha.patch
+Patch1:		%{name}-alphafoo.patch
+Patch2:		%{name}-opt.patch
+Patch3:		%{name}-daemon.patch
+Patch4:		%{name}-glibc.patch
+Patch5:		%{name}-sparc.patch
+Patch6:		%{name}-install.patch
+Patch7:		%{name}-utmp-process.patch
+Patch8:		%{name}-fixDoS.patch
+Patch9:		%{name}-dgram.patch
+Patch10:	%{name}-ksyms.patch
+Patch11:	%{name}-nullterm.patch
+Patch12:	ftp://ftp.ocs.com.au:21/pub/ksymoops/v2.3/patch-%{name}-1-3-31-ksymoops-1.gz
+Patch13:	%{name}-formatbug.patch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_exec_prefix	/
@@ -39,41 +40,43 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_sysconfdir	/etc
 
 %description
-This is the Linux system and kernel logging program. It is run as a daemon
-(background process) to log messages to different places. These are usually
-things like sendmail logs, security logs, and errors from other daemons.
+This is the Linux system and kernel logging program. It is run as a
+daemon (background process) to log messages to different places. These
+are usually things like sendmail logs, security logs, and errors from
+other daemons.
 
 %description -l de
-Dies ist das Linux-System- und Kernel-Protokollierprogramm. Es wird als
-Dämon (Hintergrundprozeß) ausgeführt und protokolliert verschiedene
-Meldungen. Es protokolliert z.B. sendmail- und Sicherheits-Protokolle und
-Fehler von anderen Dämonen.
+Dies ist das Linux-System- und Kernel-Protokollierprogramm. Es wird
+als Dämon (Hintergrundprozeß) ausgeführt und protokolliert
+verschiedene Meldungen. Es protokolliert z.B. sendmail- und
+Sicherheits-Protokolle und Fehler von anderen Dämonen.
 
 %description -l fr
 Programme de trace du sytème Linux et du noyau. Il est lancé en démon
 (processus en arrière plan) pour stocker les messages à différents
-endroits. Ce sont généralement des choses comme les traces de sendmail, de
-sécurité et d'erreurs d'autres démons. I
+endroits. Ce sont généralement des choses comme les traces de
+sendmail, de sécurité et d'erreurs d'autres démons. I
 
 %description -l pl
-Pakiet ten zawiera programy które s± uruchamiane jako demony i s³u¿± do
-logowania zadrzeñ w systemie i w kernelu Linuxa. Same logi mog± byæ
-sk³adowane w ró¿nych miejscach (zdalnie i lokalnie). Przewa¿nie do logów
-trawiaj± informacje o odbieranej i wysy³anej poczcie np. z sendmaila,
-zdarzenia dotycz±ce bezpieczeñstwa systemu, a tak¿e informacje o b³êdach z
-innchy demonów.
+Pakiet ten zawiera programy które s± uruchamiane jako demony i s³u¿±
+do logowania zadrzeñ w systemie i w kernelu Linuxa. Same logi mog± byæ
+sk³adowane w ró¿nych miejscach (zdalnie i lokalnie). Przewa¿nie do
+logów trawiaj± informacje o odbieranej i wysy³anej poczcie np. z
+sendmaila, zdarzenia dotycz±ce bezpieczeñstwa systemu, a tak¿e
+informacje o b³êdach z innchy demonów.
 
 %description -l tr
 Bu paket, Linux sistemi ve çekirdeði için kayýt tutan programý içerir.
-Deðiþik yerlerde mesajlarýn kayýtlarýný tutmak içýn arkaplanda koþturulur.
-Bu mesajlar, sendmail, güvenlik ve diðer sunucu süreçlerinin hatalarýyla
-ilgili mesajlardýr.
+Deðiþik yerlerde mesajlarýn kayýtlarýný tutmak içýn arkaplanda
+koþturulur. Bu mesajlar, sendmail, güvenlik ve diðer sunucu
+süreçlerinin hatalarýyla ilgili mesajlardýr.
 
 %package -n syslog
 Summary:	Linux system logger
 Summary(de):	Linux-System-Logger 
 Summary(pl):	Programy loguj±ce zdarzenia w systemie Linuxa
 Group:		Daemons
+Group(de):	Server
 Group(pl):	Serwery
 Prereq:		fileutils
 Prereq:		/sbin/chkconfig
@@ -86,35 +89,37 @@ Obsoletes:	sysklogd
 Obsoletes:	syslog-ng
 
 %description -n syslog
-This is the Linux system logging program. It is run as a daemon (background
-process) to log messages to different places. These are usually things like
-sendmail logs, security logs, and errors from other daemons.
+This is the Linux system logging program. It is run as a daemon
+(background process) to log messages to different places. These are
+usually things like sendmail logs, security logs, and errors from
+other daemons.
 
 %description -n syslog -l pl
-Pakiet ten zawiera program które jest uruchamiany jako demon i s³u¿± do
-logowania zadrzeñ w systemie Linuxa. Same logi mog± byæ sk³adowane w
-ró¿nych miejscach (zdalnie i lokalnie). Przewa¿nie do logów trawiaj±
+Pakiet ten zawiera program które jest uruchamiany jako demon i s³u¿±
+do logowania zadrzeñ w systemie Linuxa. Same logi mog± byæ sk³adowane
+w ró¿nych miejscach (zdalnie i lokalnie). Przewa¿nie do logów trawiaj±
 informacje o odbieranej i wysy³anej poczcie np. z sendmaila, zdarzenia
-dotycz±ce bezpieczeñstwa systemu, a tak¿e informacje o b³êdach z innchy
-demonów.
+dotycz±ce bezpieczeñstwa systemu, a tak¿e informacje o b³êdach z
+innchy demonów.
 
 %package -n klogd
 Summary:	Linux kernel logger
 Summary(de):	Linux-Kerner-Logger 
 Summary(pl):	Programy loguj±ce zdarzenia w j±drze Linuxa
 Group:		Daemons
+Group(de):	Server
 Group(pl):	Serwery
 Prereq:		/sbin/chkconfig
 Requires:	rc-scripts >= 0.2.0
 Obsoletes:	sysklogd
 
 %description -n klogd
-This is the Linux kernel logging program. It is run as a daemon (background
-process) to log messages from kernel.
+This is the Linux kernel logging program. It is run as a daemon
+(background process) to log messages from kernel.
 
 %description -n klogd -l pl
-Pakiet ten zawiera program które jest uruchamiany jako demon i s³u¿± do
-logowania komunikatów j±drza Linuxa.
+Pakiet ten zawiera program które jest uruchamiany jako demon i s³u¿±
+do logowania komunikatów j±drza Linuxa.
 
 %prep
 %setup -q -n %{name}-%{source}
