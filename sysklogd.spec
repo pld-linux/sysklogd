@@ -17,6 +17,7 @@ Source3:     	syslog.logrotate
 Source4:     	syslog.sysconfig
 Source5:     	klogd.init
 Source6:     	klogd.sysconfig
+Source7:	syslogd-listfiles.sh
 Patch0:      	sysklogd-alpha.patch
 Patch1:      	sysklogd-alphafoo.patch
 Patch2:      	sysklogd-opt.patch
@@ -147,7 +148,7 @@ install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/syslog
 install %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/klogd
 install %{SOURCE6} $RPM_BUILD_ROOT/etc/sysconfig/klogd
 
-install debian/syslogd-listfiles $RPM_BUILD_ROOT%{_bindir}
+install %{SOURCE7} $RPM_BUILD_ROOT%{_bindir}/syslogd-listfiles
 install debian/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
 
 for n in messages secure maillog spooler kernel; do
