@@ -29,7 +29,7 @@ Patch8:		sysklogd-fixDoS.patch
 Patch9:		sysklogd-dgram.patch
 Patch10:	sysklogd-ksyms.patch
 Patch11:	sysklogd-nullterm.patch
-BuildRoot:	/tmp/%{name}-%{version}-root
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_exec_prefix	/
 %define		_bindir		/usr/bin
@@ -217,7 +217,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/*
 %{_mandir}/man5/*
 %{_mandir}/man8/sys*
-
 
 %files -n klogd
 %defattr(644,root,root,755)
