@@ -3,17 +3,19 @@
 # syslog        Starts syslogd/klogd.
 #
 #
-# chkconfig: 2345 30 70
-# description: Syslog is the facility by which many daemons use to log \
-# messages to various system log files.  It is a good idea to always \
-# run syslog.
+# chkconfig:	2345 30 70
+# description:	Syslog is the facility by which many daemons use to log \
+#		messages to various system log files. It is a good idea to \
+#		always run syslog.
 
-# Source function library.
+
+# Source function library
 . /etc/rc.d/init.d/functions
 
-[ -f /usr/sbin/syslogd ] || exit 0
-[ -f /usr/sbin/klogd ] || exit 0
+# Get network config
+. /etc/sysconfig/network
 
+# Get service config
 if [ -f /etc/sysconfig/syslog ] ; then
         . /etc/sysconfig/syslog
 else
@@ -39,13 +41,20 @@ if [ -n "$DOMAINLIST" ]; then
 	OPTINONS="$OPTIONS -s $DOMAINLIST"
 fi
 
+
 # See how we were called.
 case "$1" in
   start)
-	show Starting system loggers
-        daemon syslogd $OPTIONS 
-	show Starting kernel loggers
-	daemon klogd
+	# Check if the service is already running?
+	if [ ! -f /var/lock/subsys/syslog ]; then
+		show Starting system loggers
+		daemon syslogd $OPTIONS
+
+		show Starting kernel loggers
+		daemon klogd
+	else
+		echo "system loggers already are running"
+	fi
 	touch /var/lock/subsys/syslog
 	;;
     stop)	
@@ -59,12 +68,12 @@ case "$1" in
 	status syslogd
 	status klogd
 	;;
-  restart)
+  restart|reload)
 	$0 stop
 	$0 start
 	;;
   *)
-	echo "Usage: $0 {start|stop|status|restart}"
+	echo "Usage: $0 {start|stop|status|restart|reload}"
 	exit 1
 esac
 
