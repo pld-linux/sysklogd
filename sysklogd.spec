@@ -1,32 +1,33 @@
-Summary:     Linux system and kernel logger
-Summary(de): Linux-System- und Kerner-Logger 
-Summary(fr): Le système Linux et le logger du noyau
-Summary(pl): Programy loguj±ce zdarzenia w systemie i kernelu Linuxa
-Summary(tr): Linux sistem ve çekirdek kayýt süreci
-Name:        sysklogd
-Version:     1.3
-Release:     27
-Copyright:   GPL
-Group:       Daemons
-Source0:     ftp://sunsite.unc.edu/pub/Linux/system/daemons/%{name}-%{version}.tar.gz
-Source1:     syslog.conf
-Source2:     syslog.init
-Source3:     syslog.logrotate
-Source4:     sysklogd.sysconfig
-Patch0:      sysklogd-pl1.patch
-Patch1:      sysklogd-pl2.patch
-Patch2:      sysklogd-pl3.patch
-Patch3:      sysklogd-make.patch
-Patch4:      sysklogd-glibc.patch
-Patch5:      sysklogd-getutent.patch
-Patch6:      sysklogd-kernel21.patch
-Patch7:      sysklogd-exit.patch
-Patch8:      sysklogd-rh.patch
-Patch9:      sysklogd-line1024.patch
-Patch10:     sysklogd-makefile-install.patch
-Prereq:      fileutils, /sbin/chkconfig
-Requires:    logrotate
-BuildRoot:   /tmp/%{name}-%{version}-root
+%define mjrver	1.3
+%define minver	31
+
+Summary:     	Linux system and kernel logger
+Summary(de): 	Linux-System- und Kerner-Logger 
+Summary(fr): 	Le système Linux et le logger du noyau
+Summary(pl): 	Programy loguj±ce zdarzenia w systemie i kernelu Linuxa
+Summary(tr): 	Linux sistem ve çekirdek kayýt süreci
+Name:        	sysklogd
+Version:     	%{mjrver}.%{minver}
+Release:    	7
+Copyright:   	GPL
+Group:       	Daemons
+Group(pl):	Serwery
+Source0:     	ftp://sunsite.unc.edu/pub/Linux/system/daemons/%{name}-%{mjrver}-%{minver}.tar.gz
+Source1:     	syslog.conf
+Source2:     	syslog.init
+Source3:     	syslog.logrotate
+Source4:     	sysklogd.sysconfig
+Patch0:      	sysklogd-alpha.patch
+Patch1:      	sysklogd-alphafoo.patch
+Patch2:      	sysklogd-opt.patch
+Patch3:      	sysklogd-daemon.patch
+Patch4:      	sysklogd-glibc.patch
+Patch5:      	sysklogd-sparc.patch
+Patch6:      	sysklogd-install.patch
+Prereq:      	fileutils
+Prereq:		/sbin/chkconfig
+Requires:     	logrotate
+BuildRoot:   	/tmp/%{name}-%{version}-root
 
 %description
 This is the Linux system and kernel logging program. It is run as a daemon
@@ -60,41 +61,37 @@ Bu mesajlar, sendmail, güvenlik ve diðer sunucu süreçlerinin hatalarýyla
 ilgili mesajlardýr.
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{mjrver}-%{minver}
 %patch0 -p1
 %patch1 -p1
-%patch2 -p2
+%patch2 -p1
 %patch3 -p1
-%patch5 -p1 -b .getutent
-%patch4 -p1 -b .noglibc
-
-%ifarch sparc
-%patch6 -p1 -b .broken
-%endif 
-
-%patch7 -p1 -b .exit
-%patch8 -p1 -b .rh
-%patch9 -p1
-%patch10 -p0
+%patch4 -p1 
+%patch5 -p1 
+%patch6 -p1
 
 %build
-make
+make OPTIMIZE="$RPM_OPT_FLAGS"
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{sysconfig,rc.d/init.d,logrotate.d} \
-	$RPM_BUILD_ROOT/usr/{bin,man/man{5,8},sbin}
+	$RPM_BUILD_ROOT/usr/{bin,man/man{5,8},sbin} \
+	$RPM_BUILD_ROOT/dev
 
-make install TOPDIR=$RPM_BUILD_ROOT
+make install DESTDIR=$RPM_BUILD_ROOT
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/syslog.conf
 
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/syslog
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/syslog
 install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/sysklogd
 
+mkfifo $RPM_BUILD_ROOT/dev/log
+
 strip $RPM_BUILD_ROOT/usr/sbin/*
 
-gzip -9nf $RPM_BUILD_ROOT/usr/man/man[58]/*
+gzip -9nf $RPM_BUILD_ROOT/usr/man/man[58]/* \
+	 ANNOUNCE NEWS Sysklogd-*.lsm
 
 %post
 for n in /var/log/{messages,secure,maillog,spooler}
@@ -119,16 +116,23 @@ fi
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(644, root, root, 755)
-%doc ANNOUNCE NEWS Sysklogd-1.3.lsm
+%defattr(644,root,root,755)
+%doc {ANNOUNCE,NEWS,Sysklogd-*.lsm}.gz
 %config %verify(not mtime md5 size) /etc/syslog.conf
 %config %verify(not mtime md5 size) /etc/sysconfig/sysklogd
-%attr(600, root, root) /etc/logrotate.d/syslog
-%attr(744, root, root) /etc/rc.d/init.d/syslog
-%attr(755, root, root) /usr/sbin/*
-%attr(644, root, root) /usr/man/man[58]/*
+%attr(600,root,root) /etc/logrotate.d/syslog
+%attr(744,root,root) /etc/rc.d/init.d/syslog
+%attr(755,root,root) /usr/sbin/*
+%attr(644,root,root) /usr/man/man[58]/*
+%attr(666,root,root) %ghost /dev/log
 
 %changelog
+* Thu Apr 29 1999 Artur Frysiak <wiget@pld.org.pl>
+  [1.3.31-7]
+- upgraded to 1.3-31
+- gzipping docs
+- added /dev/log as %ghost
+
 * Sat Nov 28 1998 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
   [1.3-27]
 - added -q %setup parametr,
