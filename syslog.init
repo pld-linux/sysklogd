@@ -56,7 +56,7 @@ case "$1" in
 	touch /var/lock/subsys/syslog
 	;;
     stop)	
-	show Stoping system loggers
+	show Stopping system loggers
 	killproc syslogd
 	rm -f /var/lock/subsys/syslog
 	;;

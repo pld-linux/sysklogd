@@ -40,7 +40,7 @@ case "$1" in
 	touch /var/lock/subsys/klogd
 	;;
     stop)	
-	show Stoping kernel loggers
+	show Stopping kernel loggers
 	killproc klogd
 	rm -f /var/lock/subsys/klogd
 	;;
