@@ -1,5 +1,4 @@
-%define mjrver	1.3
-%define minver	31
+%define		source	1.3-31
 
 Summary:     	Linux system and kernel logger
 Summary(de): 	Linux-System- und Kerner-Logger 
@@ -7,12 +6,12 @@ Summary(fr): 	Le système Linux et le logger du noyau
 Summary(pl): 	Programy loguj±ce zdarzenia w systemie i kernelu Linuxa
 Summary(tr): 	Linux sistem ve çekirdek kayýt süreci
 Name:        	sysklogd
-Version:     	%{mjrver}.%{minver}
-Release:    	7
+Version:     	1.3.31
+Release:    	8
 Copyright:   	GPL
 Group:       	Daemons
 Group(pl):	Serwery
-Source0:     	ftp://sunsite.unc.edu/pub/Linux/system/daemons/%{name}-%{mjrver}-%{minver}.tar.gz
+Source0:     	ftp://ftp.infodrom.nort.de/pub/pub/people/joey/%{name}-%{source}.tar.gz
 Source1:     	syslog.conf
 Source2:     	syslog.init
 Source3:     	syslog.logrotate
@@ -27,6 +26,7 @@ Patch6:      	sysklogd-install.patch
 Prereq:      	fileutils
 Prereq:		/sbin/chkconfig
 Requires:     	logrotate
+Requires:	logrotate >= 3.2-3
 BuildRoot:   	/tmp/%{name}-%{version}-root
 
 %description
@@ -61,7 +61,7 @@ Bu mesajlar, sendmail, güvenlik ve diðer sunucu süreçlerinin hatalarýyla
 ilgili mesajlardýr.
 
 %prep
-%setup -q -n %{name}-%{mjrver}-%{minver}
+%setup -q -n %{name}-%{source}
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -71,22 +71,33 @@ ilgili mesajlardýr.
 %patch6 -p1
 
 %build
-make OPTIMIZE="$RPM_OPT_FLAGS"
+make  OPTIMIZE="$RPM_OPT_FLAGS"
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{sysconfig,rc.d/init.d,logrotate.d} \
-	$RPM_BUILD_ROOT/usr/{bin,man/man{5,8},sbin} \
-	$RPM_BUILD_ROOT/dev
+	$RPM_BUILD_ROOT/usr/{bin,share/man/man{5,8},sbin} \
+	$RPM_BUILD_ROOT/{dev,var/log}
 
-make install DESTDIR=$RPM_BUILD_ROOT
+make \
+    INSTALL="/bin/install" \
+    DESTDIR=$RPM_BUILD_ROOT \
+    MANDIR=$RPM_BUILD_ROOT%{_mandir} \
+    install
+
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/syslog.conf
 
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/syslog
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/syslog
 install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/sysklogd
 
-mkfifo $RPM_BUILD_ROOT/dev/log
+install debian/syslogd-listfiles $RPM_BUILD_ROOT%{_bindir}
+install debian/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
+
+for n in messages secure maillog spooler kernel wtmp; do
+touch $RPM_BUILD_ROOT/var/log/$n ; done
+
+echo .so sysklogd.8 > $RPM_BUILD_ROOT%{_mandir}/man8/syslogd.8
 
 strip $RPM_BUILD_ROOT%{_sbindir}/*
 
@@ -94,16 +105,16 @@ gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man[58]/* \
 	 ANNOUNCE NEWS Sysklogd-*.lsm
 
 %post
-for n in /var/log/{messages,secure,maillog,spooler}
+for n in /var/log/{messages,secure,maillog,spooler,kernel,wtmp}
 do
 	[ -f $n ] && continue
 	touch $n
-	chmod 600 $n
+	chmod 640 $n
 done
 
 /sbin/chkconfig --add syslog
 if test -r /var/run/syslog.pid; then
-	then /etc/rc.d/init.d/syslog restart >&2
+	 /etc/rc.d/init.d/syslog restart >&2
 else
 	echo "Run \"/etc/rc.d/init.d/syslog start\" to start syslog daemon."
 fi
@@ -120,20 +131,37 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc {ANNOUNCE,NEWS,Sysklogd-*.lsm}.gz
-%config %verify(not mtime md5 size) /etc/syslog.conf
-%config %verify(not mtime md5 size) /etc/sysconfig/sysklogd
-%attr(600,root,root) /etc/logrotate.d/syslog
-%attr(744,root,root) /etc/rc.d/init.d/syslog
+
+%attr(640,root,root) %config %verify(not mtime md5 size) /etc/*.conf
+%attr(640,root,root) %config %verify(not mtime md5 size) /etc/sysconfig/*
+%attr(640,root,root) /etc/logrotate.d/syslog
+%attr(755,root,root) /etc/rc.d/init.d/syslog
+%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /var/log/*
+
 %attr(755,root,root) %{_sbindir}/*
+%attr(755,root,root) %{_bindir}/*
 %{_mandir}/man[58]/*
-%attr(666,root,root) %ghost /dev/log
 
 %changelog
+* Thu May 20 1999 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
+  [1.3.31-8]
+- some fixes for correct build,
+- added forgotten /var/log/ files,
+- removed /dev/log -- now again in dev package
+- fixed %post script
+- changed URL.
+
 * Thu Apr 29 1999 Artur Frysiak <wiget@pld.org.pl>
   [1.3.31-7]
 - upgraded to 1.3-31
 - gzipping docs
 - added /dev/log as %ghost
+
+* Thu Dec 31 1998 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
+  [1.3.30-3d]
+- added sys(k)logd patch prepared by Florian La Rosch <florian@suse.de>,
+- fixed syslod.conf,
+- added missing debian script.
 
 * Sat Nov 28 1998 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
   [1.3-27]
@@ -157,35 +185,17 @@ rm -rf $RPM_BUILD_ROOT
 - removed making /etc/rc.d/rc?.d/* symlinks because
   /etc/rc.d/init.d/syslog support chkconfig.
 
-* Thu Nov 12 1998 Jeff Johnson <jbj@redhat.com>
-- plug potential buffer overflow.
+* Mon Sep 21 1998 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
+  [1.3.30-1d]
+- translation modified for pl,
+- fixed files permissions,
+- added /var/log/* files,
+- build from non root's account,
+  by Maciej W. Ró¿ycki <macro@ds2.pg.gda.pl>
+- added small glibc patch.
 
-* Tue Aug 11 1998 Jeff Johnson <jbj@redhat.com>
-- add %clean
-
-* Tue Aug  4 1998 Chris Adams <cadams@ro.com>
-- only log to entries that are USER_PROCESS (fix #822)
-
-* Mon Jul 27 1998 Jeff Johnson <jbj@redhat.com>
-- remove RPM_BUILD_ROOT from %post
-
-* Wed Apr 29 1998 Cristian Gafton <gafton@redhat.com>
-- patch to support Buildroot
-- package is now buildrooted
-
-* Wed Apr 29 1998 Michael K. Johnson <johnsonm@redhat.com>
-- Added exit patch so that a normal daemon exit is not flagged as an error.
-
-* Mon Apr 27 1998 Prospector System <bugs@redhat.com>
-- translations modified for de, fr, tr
-
-* Wed Oct 29 1997 Donnie Barnes <djb@redhat.com>
-- added (missingok) to init symlinks
-
-* Thu Oct 23 1997 Donnie Barnes <djb@redhat.com>
-- added status|restart support to syslog.init
-- added chkconfig support
-- various spec file cleanups
-
-* Tue Jun 17 1997 Erik Troan <ewt@redhat.com>
-- built against glibc
+* Thu Jun 19 1998 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
+  [1.3.25-3d]
+- build against glibc-2.1,
+- minor patch and spec's corrections.
+- start at RH spec file.
