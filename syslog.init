@@ -72,10 +72,7 @@ case "$1" in
   reload)
 	if [ -f /var/lock/subsys/syslog ]; then
 		msg_reloading "system logger"
-		busy
 		killproc syslogd -HUP
-		deltext
-		ok		
 	else
 		msg_Not_Running "system logger"
 		exit 1
