@@ -9,7 +9,7 @@ Summary(pt_BR):	Registrador de log do sistema linux
 Summary(tr):	Linux sistem ve çekirdek kayýt süreci
 Name:		sysklogd
 Version:	1.4.1
-Release:	12
+Release:	12.1
 License:	GPL
 Group:		Daemons
 Source0:	http://www.ibiblio.org/pub/Linux/system/daemons/%{name}-%{version}.tar.gz
@@ -34,6 +34,7 @@ Patch8:		%{name}-ksyms.patch
 Patch9:		%{name}-nullterm.patch
 Patch10:	%{name}-fmt-string.patch
 Patch11:	%{name}-2.4headers.patch
+Patch12:	%{name}-SO_BSDCOMPAT.patch
 URL:		http://www.infodrom.org/projects/sysklogd/
 BuildRequires:	fork-on-start-is-broken
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -147,6 +148,7 @@ do logowania komunikatów j±dra Linuksa.
 %patch9 -p1
 %patch10 -p1
 %patch11 -p1
+%patch12 -p1
 
 %build
 %{__make} \
@@ -221,6 +223,16 @@ if [ "$1" = "0" ]; then
 		/etc/rc.d/init.d/klogd stop 1>&2
 	fi
 	/sbin/chkconfig --del klogd
+fi
+
+%triggerpostun -- inetutils-syslogd
+/sbin/chkconfig --del syslog
+/sbin/chkconfig --add syslog
+if [ -f /etc/syslog.conf.rpmsave ]; then
+	mv -f /etc/syslog.conf /etc/syslog.conf.rpmnew
+	mv -f /etc/syslog.conf.rpmsave /etc/syslog.conf
+	echo "Moved /etc/syslog.conf.rpmsave as /etc/syslog.conf"
+	echo "Original file from package is avaible as /etc/syslog.conf.rpmnew"
 fi
 
 %clean
