@@ -5,7 +5,7 @@ Summary(pl):	Programy loguj±ce zdarzenia w systemie i j±drze Linuxa
 Summary(tr):	Linux sistem ve çekirdek kayýt süreci
 Name:		sysklogd
 Version:	1.4
-Release:	2
+Release:	3
 License:	GPL
 Group:		Daemons
 Group(de):	Server
@@ -30,6 +30,7 @@ Patch7:		%{name}-fixDoS.patch
 Patch8:		%{name}-openlog.patch
 Patch9:		%{name}-ksyms.patch
 Patch10:	%{name}-nullterm.patch
+URL:		http://www.infodrom.ffis.de/sysklogd/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_exec_prefix	/
