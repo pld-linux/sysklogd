@@ -58,7 +58,6 @@ case "$1" in
 	if [ -f /var/lock/subsys/syslog ]; then
 		msg_stopping "System logger"
 		killproc syslogd
-		RETVAL=$?
 		rm -f /var/lock/subsys/syslog >/dev/null 2>&1
 	else
 		msg_not_running "System logger"
