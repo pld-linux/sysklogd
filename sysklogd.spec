@@ -79,6 +79,7 @@ Requires:	logrotate >= 3.2-3
 Requires:	SysVinit >= 2.76-12
 Requires:	rc-scripts >= 0.2.0
 Requires:	klogd
+Provides:	syslogdaemon
 Obsoletes:	sysklogd
 Obsoletes:	syslog-ng
 
