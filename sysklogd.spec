@@ -75,13 +75,13 @@ Summary(pl):	Program loguj±cy zdarzenia w systemie Linux
 Group:		Daemons
 Group(de):	Server
 Group(pl):	Serwery
-Prereq:		/sbin/chkconfig
-Prereq:		fileutils
-Prereq:		rc-scripts >= 0.2.0
+PreReq:		/sbin/chkconfig
+PreReq:		rc-scripts >= 0.2.0
 Requires:	SysVinit >= 2.76-12
 Requires:	klogd
 Requires:	logrotate >= 3.2-3
 Requires:	psmisc >= 20.1
+Requires(post):	fileutils
 Provides:	syslogdaemon
 Obsoletes:	sysklogd
 Obsoletes:	syslog-ng
@@ -107,8 +107,8 @@ Summary(pl):	Program loguj±cy zdarzenia w j±drze Linuksa
 Group:		Daemons
 Group(de):	Server
 Group(pl):	Serwery
-Prereq:		/sbin/chkconfig
-Prereq:		rc-scripts >= 0.2.0
+PreReq:		/sbin/chkconfig
+PreReq:		rc-scripts >= 0.2.0
 Obsoletes:	sysklogd
 
 %description -n klogd
