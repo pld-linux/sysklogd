@@ -7,7 +7,7 @@ Summary(pt_BR):	Registrador de log do sistema linux
 Summary(tr):	Linux sistem ve çekirdek kayýt süreci
 Name:		sysklogd
 Version:	1.4.1
-Release:	7
+Release:	8
 License:	GPL
 Group:		Daemons
 Source0:	http://www.ibiblio.org/pub/Linux/system/daemons/%{name}-%{version}.tar.gz
@@ -208,7 +208,7 @@ fi
 if [ -f /var/lock/subsys/klogd ]; then
 	/etc/rc.d/init.d/klogd restart 1>&2
 else
-	echo "Run \"/etc/rc.d/init.d/klogd start\" to start kernel daemon." 1>&2
+	echo "Run \"/etc/rc.d/init.d/klogd start\" to start kernel logger daemon." 1>&2
 fi
 
 %preun -n klogd
