@@ -96,6 +96,7 @@ Requires(post):	fileutils
 Provides:	syslogdaemon
 Obsoletes:	sysklogd
 Obsoletes:	syslog-ng
+Obsoletes:	msyslog
 
 %description -n syslog
 This is the Linux system logging program. It is run as a daemon
