@@ -29,22 +29,22 @@ case "$1" in
   start)
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/klogd ]; then
-		msg_starting "kernel logger"
+		msg_starting "Kernel logger"
 		daemon klogd $OPTIONS
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/klogd
 	else
-		msg_Already_Running "kernel logger"
+		msg_Already_Running "Kernel logger"
 		exit 1
 	fi
 	;;
     stop)	
 	if [ -f /var/lock/subsys/klogd ]; then
-		msg_stopping "kernel logger"
+		msg_stopping "Kernel logger"
 		killproc klogd
 		rm -f /var/lock/subsys/klogd >/dev/null 2>&1
 	else
-		msg_Not_Running "kernel logger"
+		msg_Not_Running "Kernel logger"
 		exit 1
 	fi	
 	;;
