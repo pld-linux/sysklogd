@@ -22,9 +22,7 @@ DOMAINLIST=""
 MARK_TIMESTAMP=""
 
 # Get service config
-if [ -f /etc/sysconfig/syslog ] ; then
-        . /etc/sysconfig/syslog
-fi
+[ -f /etc/sysconfig/syslog ] && . /etc/sysconfig/syslog
 
 if [ "$ENABLE_RECEIVE_FROM_NET" = yes ]; then
 	OPTIONS="-r"
@@ -50,22 +48,39 @@ case "$1" in
 	if [ ! -f /var/lock/subsys/syslog ]; then
 		msg_starting "system logger"
 		daemon syslogd $OPTIONS
+		RETVAL=$?
+		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/syslog
 	else
 		msg_Already_Running "system logger"
 		exit 1
 	fi
-	touch /var/lock/subsys/syslog
 	;;
     stop)	
-	msg_stopping "system logger"
-	killproc syslogd
-	rm -f /var/lock/subsys/syslog
+	if [ -f /var/lock/subsys/syslogd ]; then
+		msg_stopping "system logger"
+		killproc syslogd
+		rm -f /var/lock/subsys/syslogd >/dev/null 2>&1
+	else
+		msg_Not_Running "system logger"
+		exit 1
+	fi	
 	;;
   status)
 	status syslogd
+	exit $?
 	;;
   reload)
-	killproc syslogd -HUP
+	if [ -f /var/lock/subsys/syslogd ]; then
+		msg_show "system logger"
+		msg_reload
+		busy
+		killproc syslogd -HUP
+		deltext
+		ok		
+	else
+		msg_Not_Running "system logger"
+		exit 1
+	fi
 	;;
   restart)
 	$0 stop
@@ -76,4 +91,4 @@ case "$1" in
 	exit 1
 esac
 
-exit 0
+exit $RETVAL

@@ -2,9 +2,8 @@
 #
 # klogd         Starts klogd.
 #
-#
 # chkconfig:    2345 31 69
-# description:	Klogd catch kernel messages and send it to syslog daemon.\
+# description:	Klogd catch kernel messages and send it to syslog daemon. \
 #		It is a good idea to always run klogd.
 
 
@@ -18,9 +17,7 @@
 CONSOLELOG_LEVEL=4
 
 # Get service config
-if [ -f /etc/sysconfig/klogd ] ; then
-        . /etc/sysconfig/klogd
-fi
+[ -f /etc/sysconfig/klogd ] && . /etc/sysconfig/klogd
 
 if [ -n "$CONSOLELOG_LEVEL" ]; then
 	OPTIONS="$OPTIONS -c $CONSOLELOG_LEVEL"
@@ -34,19 +31,26 @@ case "$1" in
 	if [ ! -f /var/lock/subsys/klogd ]; then
 		msg_starting "kernel logger"
 		daemon klogd $OPTIONS
+		RETVAL=$?
+		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/klogd
 	else
 		msg_Already_Running "kernel logger"
 		exit 1
 	fi
-	touch /var/lock/subsys/klogd
 	;;
     stop)	
-	msg_stopping "kernel logger"
-	killproc klogd
-	rm -f /var/lock/subsys/klogd
+	if [ -f /var/lock/subsys/klogd ]; then
+		msg_stopping "kernel logger"
+		killproc klogd
+		rm -f /var/lock/subsys/klogd >/dev/null 2>&1
+	else
+		msg_Not_Running "kernel logger"
+		exit 1
+	fi	
 	;;
   status)
 	status klogd
+	exit $?
 	;;
   restart|reload)
 	$0 stop
@@ -57,4 +61,4 @@ case "$1" in
 	exit 1
 esac
 
-exit 0
+exit $RETVAL
