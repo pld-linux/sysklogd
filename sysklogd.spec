@@ -28,6 +28,7 @@ Prereq:      	fileutils
 Prereq:		/sbin/chkconfig
 Requires:	logrotate >= 3.2-3
 Requires:	SysVinit >= 2.76-12
+Requires:	rc-scripts
 BuildRoot:	/tmp/%{name}-%{version}-root
 
 %description
