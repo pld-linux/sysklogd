@@ -1,0 +1,94 @@
+#!/bin/sh
+#
+# syslog	Starts syslogd.
+#
+#
+# chkconfig:	2345 30 70
+# description:	Syslog is the facility by which many daemons use to log \
+#		messages to various system log files. It is a good idea to \
+#		always run syslog.
+
+
+# Source function library
+. /etc/rc.d/init.d/functions
+
+# Get network config
+. /etc/sysconfig/network
+
+# Set defaults
+ENABLE_RECEIVE_FROM_NET=no
+HOSTLIST=""
+DOMAINLIST=""
+MARK_TIMESTAMP=""
+ADDITIONAL_SOCK=""
+
+# Get service config
+[ -f /etc/sysconfig/syslog ] && . /etc/sysconfig/syslog
+
+if [ "$ENABLE_RECEIVE_FROM_NET" = yes ]; then
+	OPTIONS="-r"
+else
+	OPTIONS=""
+fi
+
+if [ -n "$MARK_TIMESTAMP" ]; then
+	OPTIONS="$OPTIONS -m $MARK_TIMESTAMP"
+fi
+if [ -n "$HOSTLIST" ]; then
+	OPTIONS="$OPTIONS -l $HOSTLIST"
+fi
+if [ -n "$DOMAINLIST" ]; then
+	OPTIONS="$OPTIONS -s $DOMAINLIST"
+fi
+if [ -n "$ADDITIONAL_SOCK" ]; then
+	OPTIONS="$OPTIONS -a $ADDITIONAL_SOCK"
+fi	
+
+RETVAL=0
+# See how we were called.
+case "$1" in
+  start)
+	# Check if the service is already running?
+	if [ ! -f /var/lock/subsys/syslog ]; then
+		msg_starting "System logger"
+		daemon syslogd $OPTIONS
+		RETVAL=$?
+		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/syslog
+	else
+		msg_already_running "System logger"
+	fi
+	;;
+  stop)
+	if [ -f /var/lock/subsys/syslog ]; then
+		msg_stopping "System logger"
+		killproc syslogd
+		rm -f /var/lock/subsys/syslog >/dev/null 2>&1
+	else
+		msg_not_running "System logger"
+	fi
+	;;
+  status)
+	status syslogd
+	exit $?
+	;;
+  reload|force-reload)
+	if [ -f /var/lock/subsys/syslog ]; then
+		msg_reloading "System logger"
+		killproc syslogd -HUP
+		RETVAL=$?
+	else
+		msg_not_running "System logger" >&2
+		exit 7
+	fi
+	;;
+  restart)
+	$0 stop
+	$0 start
+	exit $?
+	;;
+  *)
+	msg_usage "$0 {start|stop|restart|reload|force-reload|status}"
+	exit 3
+esac
+
+exit $RETVAL

@@ -1,0 +1,19 @@
+# This  option  will  enable  the facility to receive message
+# from the network using an internet domain socket with the syslog service
+ENABLE_RECEIVE_FROM_NET=no
+
+# Specify a hostname that should be logged only with its simple hostname and
+# not the fqdn. Multiple hosts may be specified using the colon (``:'')
+HOSTLIST=""
+
+# Specify a domainname that should be stripped off before logging. Multiple
+# domains may logging. Multiple domains may be specified using the colon
+# (``:'') separator. Remember that the first match is used, not the best.
+DOMAINLIST=""
+
+# If non-zero, syslogd marks timestamp to syslog. Specify interval between two 
+# "-- MARK --"
+MARK_TIMESTAMP=0
+
+# Use additional sockets, i. e. socket from chrooted bind
+ADDITIONAL_SOCK=""
