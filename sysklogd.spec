@@ -32,7 +32,7 @@ Patch8:		%{name}-ksyms.patch
 Patch9:		%{name}-nullterm.patch
 Patch10:	%{name}-fmt-string.patch
 Patch11:	%{name}-2.4headers.patch
-URL:		http://www.infodrom.ffis.de/sysklogd/
+URL:		http://www.infodrom.org/projects/sysklogd/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_exec_prefix	/
