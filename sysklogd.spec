@@ -87,13 +87,13 @@ Summary:	Linux system logger
 Summary(de):	Linux-System-Logger
 Summary(pl):	Program loguj±cy zdarzenia w systemie Linux
 Group:		Daemons
-PreReq:		/sbin/chkconfig
 PreReq:		rc-scripts >= 0.2.0
+Requires(post,preun):	/sbin/chkconfig
+Requires(post):	fileutils
 Requires:	SysVinit >= 2.76-12
 Requires:	klogd
 Requires:	logrotate >= 3.2-3
 Requires:	psmisc >= 20.1
-Requires(post):	fileutils
 Provides:	syslogdaemon
 Obsoletes:	sysklogd
 Obsoletes:	syslog-ng
@@ -118,8 +118,8 @@ Summary:	Linux kernel logger
 Summary(de):	Linux-Kerner-Logger
 Summary(pl):	Program loguj±cy zdarzenia w j±drze Linuksa
 Group:		Daemons
-PreReq:		/sbin/chkconfig
 PreReq:		rc-scripts >= 0.2.0
+Requires(post,preun):	/sbin/chkconfig
 Obsoletes:	sysklogd
 
 %description -n klogd
