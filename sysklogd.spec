@@ -55,7 +55,7 @@ endroits. Ce sont généralement des choses comme les traces de
 sendmail, de sécurité et d'erreurs d'autres démons. I
 
 %description -l pl
-Pakiet ten zawiera programy które s± uruchamiane jako demony i s³u¿±
+Pakiet ten zawiera programy, które s± uruchamiane jako demony i s³u¿±
 do logowania zdarzeñ w systemie i w kernelu Linuksa. Same logi mog±
 byæ sk³adowane w ró¿nych miejscach (zdalnie i lokalnie). Przewa¿nie do
 logów trafiaj± informacje o odbieranej i wysy³anej poczcie np. z
@@ -75,12 +75,12 @@ Summary(pl):	Program loguj±cy zdarzenia w systemie Linux
 Group:		Daemons
 Group(de):	Server
 Group(pl):	Serwery
-Prereq:		fileutils
 Prereq:		/sbin/chkconfig
+Prereq:		fileutils
 Prereq:		rc-scripts >= 0.2.0
-Requires:	logrotate >= 3.2-3
 Requires:	SysVinit >= 2.76-12
 Requires:	klogd
+Requires:	logrotate >= 3.2-3
 Requires:	psmisc >= 20.1
 Provides:	syslogdaemon
 Obsoletes:	sysklogd
@@ -93,7 +93,7 @@ usually things like sendmail logs, security logs, and errors from
 other daemons.
 
 %description -n syslog -l pl
-Pakiet ten zawiera program który jest uruchamiany jako demon i s³u¿y
+Pakiet ten zawiera program, który jest uruchamiany jako demon i s³u¿y
 do logowania zdarzeñ w systemie Linux. Same logi mog± byæ sk³adowane
 w ró¿nych miejscach (zdalnie i lokalnie). Przewa¿nie do logów trafiaj±
 informacje o odbieranej i wysy³anej poczcie np. z sendmaila, zdarzenia
@@ -116,7 +116,7 @@ This is the Linux kernel logging program. It is run as a daemon
 (background process) to log messages from kernel.
 
 %description -n klogd -l pl
-Pakiet ten zawiera program który jest uruchamiany jako demon i s³u¿y
+Pakiet ten zawiera program, który jest uruchamiany jako demon i s³u¿y
 do logowania komunikatów j±dra Linuksa.
 
 %prep
