@@ -173,39 +173,19 @@ do
 	chmod 640 $n
 done
 
-/sbin/chkconfig --add syslog
-if [ -f /var/lock/subsys/syslog ]; then
-    /etc/rc.d/init.d/syslog restart 1>&2
-else
-	echo "Run \"/etc/rc.d/init.d/syslog start\" to start syslog daemon." 1>&2
-fi
+NAME=syslog; DESC="syslog daemon"; %chkconfig_add
 if [ -f /var/lock/subsys/klogd ]; then
 	/etc/rc.d/init.d/klogd restart 1>&2
 fi
 
 %preun -n syslog
-if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/syslog ]; then
-		/etc/rc.d/init.d/syslog stop 1>&2
-	fi
-	/sbin/chkconfig --del syslog
-fi
+NAME=syslog; %chkconfig_del
 
 %post -n klogd
-/sbin/chkconfig --add klogd
-if [ -f /var/lock/subsys/klogd ]; then
-	/etc/rc.d/init.d/klogd restart 1>&2
-else
-	echo "Run \"/etc/rc.d/init.d/klogd start\" to start kernel daemon." 1>&2
-fi
+NAME=klogd; DESC="kernel daemon"; %chkconfig_add
 
 %preun -n klogd
-if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/klogd ]; then
-		/etc/rc.d/init.d/klogd stop 1>&2
-	fi
-	/sbin/chkconfig --del klogd
-fi
+NAME=klogd; %chkconfig_del
 
 %clean
 rm -rf $RPM_BUILD_ROOT
