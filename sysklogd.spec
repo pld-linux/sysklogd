@@ -143,9 +143,3 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_sbindir}/*
 %attr(755,root,root) %{_bindir}/*
 %{_mandir}/man[58]/*
-
-%changelog
-* Fri May 28 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
-  [1.3.31-11]
-- based on RH spec,
-- spec rewrited by PLD team.
