@@ -128,7 +128,7 @@ logowania komunikatów j±drza Linuxa.
 %patch11 -p1
 
 %build
-make  OPTIMIZE="$RPM_OPT_FLAGS"
+%{__make}  OPTIMIZE="$RPM_OPT_FLAGS"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -136,7 +136,7 @@ install -d $RPM_BUILD_ROOT/etc/{sysconfig,rc.d/init.d,logrotate.d} \
 	$RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man{5,8},%{_bindir}} \
 	$RPM_BUILD_ROOT/{dev,var/log}
 
-make install \
+%{__make} install \
 	BINDIR=$RPM_BUILD_ROOT%{_sbindir} \
 	MANDIR=$RPM_BUILD_ROOT%{_mandir}
 
