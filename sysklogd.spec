@@ -102,12 +102,14 @@ do
 done
 
 /sbin/chkconfig --add syslog
-if test -r /var/run/syslogd.pid
+if test -r /var/run/syslog.pid; then
 	then /etc/rc.d/init.d/syslog restart >&2
+else
+	echo "Run \"/etc/rc.d/init.d/syslog start\" to start syslog daemon."
 fi
 
 %preun
-if [ $1 = 0 ]; then
+if [ "$1" = "0" ]; then
 	/etc/rc.d/init.d/syslog stop >&2
 	/sbin/chkconfig --del syslog
 fi
@@ -123,7 +125,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(600,root,root) /etc/logrotate.d/syslog
 %attr(744,root,root) /etc/rc.d/init.d/syslog
 %attr(755,root,root) /usr/sbin/*
-%attr(644,root,root) /usr/man/man[58]/*
+/usr/man/man[58]/*
 %attr(666,root,root) %ghost /dev/log
 
 %changelog
