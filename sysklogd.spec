@@ -7,11 +7,12 @@ Summary(pl): 	Programy loguj±ce zdarzenia w systemie i kernelu Linuxa
 Summary(tr): 	Linux sistem ve çekirdek kayýt süreci
 Name:        	sysklogd
 Version:     	1.3.31
-Release:    	9
+Release:    	11
 Copyright:   	GPL
 Group:       	Daemons
 Group(pl):	Serwery
-Source0:     	ftp://ftp.infodrom.nort.de/pub/pub/people/joey/%{name}-%{source}.tar.gz
+URL:     	ftp://ftp.infodrom.nort.de/pub/pub/people/joey/
+Source0:	%{name}-%{source}.tar.gz
 Source1:     	syslog.conf
 Source2:     	syslog.init
 Source3:     	syslog.logrotate
@@ -25,8 +26,8 @@ Patch5:      	sysklogd-sparc.patch
 Patch6:      	sysklogd-install.patch
 Prereq:      	fileutils
 Prereq:		/sbin/chkconfig
-Requires:     	logrotate
 Requires:	logrotate >= 3.2-3
+Requires:	SysVinit >= 2.76-12
 BuildRoot:   	/tmp/%{name}-%{version}-root
 
 %description
@@ -89,12 +90,12 @@ install %{SOURCE1} $RPM_BUILD_ROOT/etc/syslog.conf
 
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/syslog
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/syslog
-install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/syslog
+install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/sysklogd
 
 install debian/syslogd-listfiles $RPM_BUILD_ROOT%{_bindir}
 install debian/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
 
-for n in messages secure maillog spooler kernel wtmpx; do
+for n in messages secure maillog spooler kernel; do
 touch $RPM_BUILD_ROOT/var/log/$n ; done
 
 echo .so sysklogd.8 > $RPM_BUILD_ROOT%{_mandir}/man8/syslogd.8
@@ -105,7 +106,7 @@ gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man[58]/* \
 	 ANNOUNCE NEWS Sysklogd-*.lsm
 
 %post
-for n in /var/log/{messages,secure,maillog,spooler,kernel,wtmpx}
+for n in /var/log/{messages,secure,maillog,spooler,kernel}
 do
 	[ -f $n ] && continue
 	touch $n
@@ -113,8 +114,8 @@ do
 done
 
 /sbin/chkconfig --add syslog
-if test -r /var/run/syslog.pid; then
-	 /etc/rc.d/init.d/syslog restart >&2
+if [ -f /var/lock/subsys/syslog ]; then
+    /etc/rc.d/init.d/syslog restart &>/dev/null
 else
 	echo "Run \"/etc/rc.d/init.d/syslog start\" to start syslog daemon."
 fi
@@ -149,7 +150,6 @@ rm -rf $RPM_BUILD_ROOT
 - some fixes for correct build,
 - added forgotten /var/log/ files,
 - removed /dev/log -- now again in dev package
-- added /var/log/wtmpx -- Unix98 compliant,
 - fixed %post script
 - changed URL.
 
