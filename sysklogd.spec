@@ -186,6 +186,9 @@ if [ -f /var/lock/subsys/syslog ]; then
 else
 	echo "Run \"/etc/rc.d/init.d/syslog start\" to start syslog daemon." 1>&2
 fi
+if [ -f /var/lock/subsys/klogd ]; then
+	/etc/rc.d/init.d/klogd restart 1>&2
+fi
 
 %preun -n syslog
 if [ "$1" = "0" ]; then
