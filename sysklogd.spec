@@ -133,7 +133,9 @@ do logowania komunikatów j±drza Linuxa.
 %patch10 -p1
 
 %build
-%{__make}  OPTIMIZE="$RPM_OPT_FLAGS"
+%{__make} \
+	OPTIMIZE="%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}" \
+	LDFLAGS=%{!?debug:-s}
 
 %install
 rm -rf $RPM_BUILD_ROOT
