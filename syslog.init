@@ -34,7 +34,7 @@ if [ -n "$MARK_TIMESTAMP" ]; then
 	OPTIONS="$OPTIONS -m $MARK_TIMESTAMP"
 fi
 if [ -n "$HOSTLIST" ]; then
-	OPTIONS="$OPTIONS -s $HOSTLIST"
+	OPTIONS="$OPTIONS -l $HOSTLIST"
 fi
 if [ -n "$DOMAINLIST" ]; then
 	OPTIONS="$OPTIONS -s $DOMAINLIST"
