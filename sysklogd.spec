@@ -17,6 +17,7 @@ Source3:	syslog.logrotate
 Source4:	syslog.sysconfig
 Source5:	klogd.init
 Source6:	klogd.sysconfig
+Source7:	syslogd-listfiles.sh
 Patch0:		sysklogd-alpha.patch
 Patch1:		sysklogd-alphafoo.patch
 Patch2:		sysklogd-opt.patch
