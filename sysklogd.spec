@@ -89,7 +89,7 @@ install %{SOURCE1} $RPM_BUILD_ROOT/etc/syslog.conf
 
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/syslog
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/syslog
-install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/sysklogd
+install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/syslog
 
 install debian/syslogd-listfiles $RPM_BUILD_ROOT%{_bindir}
 install debian/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
