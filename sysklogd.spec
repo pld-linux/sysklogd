@@ -126,7 +126,7 @@ done
 
 /sbin/chkconfig --add syslog
 if [ -f /var/lock/subsys/syslog ]; then
-    /etc/rc.d/init.d/syslog restart &>/dev/null
+    /etc/rc.d/init.d/syslog restart >&2
 else
 	echo "Run \"/etc/rc.d/init.d/syslog start\" to start syslog daemon."
 fi
