@@ -5,7 +5,7 @@ Summary(pl):	Programy loguj±ce zdarzenia w systemie i j±drze Linuxa
 Summary(tr):	Linux sistem ve çekirdek kayýt süreci
 Name:		sysklogd
 Version:	1.4.1
-Release:	5
+Release:	6
 License:	GPL
 Group:		Daemons
 Group(de):	Server
