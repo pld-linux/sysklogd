@@ -6,7 +6,7 @@ Summary(pl): 	Programy loguj±ce zdarzenia w systemie i kernelu Linuxa
 Summary(tr): 	Linux sistem ve çekirdek kayýt süreci
 Name:        	sysklogd
 Version:     	1.3.31
-Release:    	16
+Release:    	17
 Copyright:   	GPL
 Group:       	Daemons
 Group(pl):	Serwery
@@ -126,15 +126,15 @@ done
 
 /sbin/chkconfig --add syslog
 if [ -f /var/lock/subsys/syslog ]; then
-    /etc/rc.d/init.d/syslog restart >&2
+    /etc/rc.d/init.d/syslog restart 1>&2
 else
-	echo "Run \"/etc/rc.d/init.d/syslog start\" to start syslog daemon."
+	echo "Run \"/etc/rc.d/init.d/syslog start\" to start syslog daemon." 1>&2
 fi
 
 %preun
 if [ "$1" = "0" ]; then
 	if [ -f /var/lock/subsys/syslog ]; then
-		/etc/rc.d/init.d/syslog stop >&2
+		/etc/rc.d/init.d/syslog stop 1>&2
 	fi
 	/sbin/chkconfig --del syslog
 fi
