@@ -11,8 +11,7 @@ Release:    	11
 Copyright:   	GPL
 Group:       	Daemons
 Group(pl):	Serwery
-URL:     	ftp://ftp.infodrom.nort.de/pub/pub/people/joey/
-Source0:	%{name}-%{source}.tar.gz
+Source0:	ftp://ftp.infodrom.nort.de/pub/pub/people/joey/%{name}-%{source}.tar.gz
 Source1:     	syslog.conf
 Source2:     	syslog.init
 Source3:     	syslog.logrotate
@@ -24,6 +23,7 @@ Patch3:      	sysklogd-daemon.patch
 Patch4:      	sysklogd-glibc.patch
 Patch5:      	sysklogd-sparc.patch
 Patch6:      	sysklogd-install.patch
+Patch7:		sysklogd-utmp-process.patch
 Prereq:      	fileutils
 Prereq:		/sbin/chkconfig
 Requires:	logrotate >= 3.2-3
@@ -70,6 +70,7 @@ ilgili mesajlardýr.
 %patch4 -p1 
 %patch5 -p1 
 %patch6 -p1
+%patch7 -p1
 
 %build
 make  OPTIMIZE="$RPM_OPT_FLAGS"
@@ -77,14 +78,13 @@ make  OPTIMIZE="$RPM_OPT_FLAGS"
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{sysconfig,rc.d/init.d,logrotate.d} \
-	$RPM_BUILD_ROOT/usr/{bin,share/man/man{5,8},sbin} \
+	$RPM_BUILD_ROOT{%{_bindir},%{_mandir}/man{5,8},%{_sbindir}} \
 	$RPM_BUILD_ROOT/{dev,var/log}
 
-make \
-    INSTALL="/bin/install" \
+make install \
+    INSTALL="/usr/bin/install" \
     DESTDIR=$RPM_BUILD_ROOT \
-    MANDIR=$RPM_BUILD_ROOT%{_mandir} \
-    install
+    MANDIR=$RPM_BUILD_ROOT%{_mandir}
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/syslog.conf
 
@@ -145,59 +145,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man[58]/*
 
 %changelog
-* Thu May 20 1999 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
-  [1.3.31-8]
-- some fixes for correct build,
-- added forgotten /var/log/ files,
-- removed /dev/log -- now again in dev package
-- fixed %post script
-- changed URL.
-
-* Thu Apr 29 1999 Artur Frysiak <wiget@pld.org.pl>
-  [1.3.31-7]
-- upgraded to 1.3-31
-- gzipping docs
-- added /dev/log as %ghost
-
-* Thu Dec 31 1998 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
-  [1.3.30-3d]
-- added sys(k)logd patch prepared by Florian La Rosch <florian@suse.de>,
-- fixed syslod.conf,
-- added missing debian script.
-
-* Sat Nov 28 1998 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
-  [1.3-27]
-- added -q %setup parametr,
-- added using %{SOURCE#} macros in %install,
-- enhanced /etc/rc.d/init.d/syslog script:
-  -- added reload feacture,
-  -- added config fields,
-  -- added using /etc/sysconfig/sysklogd file with handling variables:
-  --- ENABLE_RECEIVE_FROM_NET,
-  --- HOSTLIST,
-  --- DOMAINLIST,
-  --- MARK_TIMESTAMP,
-- enhanced %post, %preun sections functionality (automatic restart
-  syslog on upgrade),
-- added pl translation,
-- removed INSTALL, README* from %doc,
-- removed %{_mandir}/man[58] directories from packge,
-- added %verify rule for /etc/syslog.conf %config file,
-- added gzipping man pages,
-- removed making /etc/rc.d/rc?.d/* symlinks because
-  /etc/rc.d/init.d/syslog support chkconfig.
-
-* Mon Sep 21 1998 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
-  [1.3.30-1d]
-- translation modified for pl,
-- fixed files permissions,
-- added /var/log/* files,
-- build from non root's account,
-  by Maciej W. Ró¿ycki <macro@ds2.pg.gda.pl>
-- added small glibc patch.
-
-* Thu Jun 19 1998 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
-  [1.3.25-3d]
-- build against glibc-2.1,
-- minor patch and spec's corrections.
-- start at RH spec file.
+* Fri May 28 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
+  [1.3.31-11]
+- based on RH spec,
+- spec rewrited by PLD team.
