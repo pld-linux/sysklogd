@@ -1,0 +1,42 @@
+diff -urN sysklogd-1.3-31/klogd.c sysklogd-1.3-31.new/klogd.c
+--- sysklogd-1.3-31/klogd.c	Tue Nov 30 10:55:55 1999
++++ sysklogd-1.3-31.new/klogd.c	Tue Nov 30 10:44:21 1999
+@@ -810,8 +810,7 @@
+                value  = strtoul(sym_start+1, (char **) 0, 16);
+                *(line-1) = '>';  /* put back delim */
+ 
+-               symbol = LookupSymbol(value, &sym);
+-               if ( !symbol_lookup || symbol == (char *) 0 )
++               if ( !symbol_lookup || (symbol = LookupSymbol(value, &sym)) == (char *)0 )
+                {
+                   parse_state = PARSING_TEXT;
+                   break;
+@@ -1062,8 +1061,11 @@
+ 	if ( one_shot )
+ 	{
+ 		if (symbol_lookup) {
+-			InitKsyms(symfile);
+-			InitMsyms();
++			symbol_lookup  = (InitKsyms(symfile) == 1);
++			symbol_lookup |= InitMsyms();
++			if (symbol_lookup == 0) {
++				Syslog(LOG_WARNING, "cannot find any symbols, turning off symbol lookups\n");
++			}
+ 		}
+ 		if ( (logsrc = GetKernelLogSrc()) == kernel )
+ 			LogKernelLine();
+@@ -1078,8 +1080,11 @@
+ #endif
+ 	logsrc = GetKernelLogSrc();
+ 	if (symbol_lookup) {
+-		InitKsyms(symfile);
+-		InitMsyms();
++		symbol_lookup  = (InitKsyms(symfile) == 1);
++		symbol_lookup |= InitMsyms();
++		if (symbol_lookup == 0) {
++			Syslog(LOG_WARNING, "cannot find any symbols, turning off symbol lookups\n");
++		}
+ 	}
+ 
+         /* The main loop. */
+
