@@ -3,7 +3,7 @@
 # klogd         Starts klogd.
 #
 # chkconfig:    2345 31 69
-# description:	Klogd catch kernel messages and send it to syslog daemon. \
+# description:	Klogd catches kernel messages and sends it to syslog daemon. \
 #		It is a good idea to always run klogd.
 
 
