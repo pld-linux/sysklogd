@@ -176,8 +176,6 @@ done
 
 echo .so sysklogd.8 > $RPM_BUILD_ROOT%{_mandir}/man8/syslogd.8
 
-gzip -9nf ANNOUNCE NEWS README* CHANGES
-
 %post -n syslog
 for n in /var/log/{messages,secure,maillog,spooler,kernel}
 do
@@ -225,15 +223,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n syslog
 %defattr(644,root,root,755)
-%doc {ANNOUNCE,NEWS,CHANGES,README*}.gz
-
+%doc ANNOUNCE NEWS README* CHANGES
 %attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/*.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/syslog
 %attr(640,root,root) /etc/logrotate.d/syslog
 %attr(754,root,root) /etc/rc.d/init.d/syslog
-
 %attr(640,root,root) %ghost /var/log/*
-
 %attr(755,root,root) %{_sbindir}/syslogd
 %attr(755,root,root) %{_bindir}/*
 %{_mandir}/man5/*
