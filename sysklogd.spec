@@ -158,8 +158,10 @@ install %{SOURCE6} $RPM_BUILD_ROOT/etc/sysconfig/klogd
 install %{SOURCE7} $RPM_BUILD_ROOT%{_bindir}/syslogd-listfiles
 install %{SOURCE8} $RPM_BUILD_ROOT%{_mandir}/man8
 
-for n in messages secure maillog spooler kernel; do
-touch $RPM_BUILD_ROOT/var/log/$n ; done
+for n in messages secure maillog spooler kernel
+do
+	> $RPM_BUILD_ROOT/var/log/$n
+done
 
 echo .so sysklogd.8 > $RPM_BUILD_ROOT%{_mandir}/man8/syslogd.8
 
@@ -169,7 +171,7 @@ gzip -9nf ANNOUNCE NEWS README* CHANGES
 for n in /var/log/{messages,secure,maillog,spooler,kernel}
 do
 	[ -f $n ] && continue
-	touch $n
+	> $n
 	chmod 640 $n
 done
 
