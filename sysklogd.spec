@@ -7,7 +7,7 @@ Summary(pt_BR):	Registrador de log do sistema linux
 Summary(tr):	Linux sistem ve çekirdek kayýt süreci
 Name:		sysklogd
 Version:	1.4.1
-Release:	10
+Release:	11
 License:	GPL
 Group:		Daemons
 Source0:	http://www.ibiblio.org/pub/Linux/system/daemons/%{name}-%{version}.tar.gz
@@ -64,7 +64,7 @@ sendmail, de sécurité et d'erreurs d'autres démons. I
 
 %description -l pl
 Pakiet ten zawiera programy, które s± uruchamiane jako demony i s³u¿±
-do logowania zdarzeñ w systemie i w kernelu Linuksa. Same logi mog±
+do logowania zdarzeñ w systemie i w j±drze Linuksa. Same logi mog±
 byæ sk³adowane w ró¿nych miejscach (zdalnie i lokalnie). Przewa¿nie do
 logów trafiaj± informacje o odbieranej i wysy³anej poczcie np. z
 sendmaila, zdarzenia dotycz±ce bezpieczeñstwa systemu, a tak¿e
