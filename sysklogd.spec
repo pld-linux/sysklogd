@@ -147,7 +147,7 @@ rm -rf $RPM_BUILD_ROOT
 - removed INSTALL, README* from %doc,
 - removed /usr/man/man[58] directories from packge,
 - added %verify rule for /etc/syslog.conf %config file,
-- added gziping man pages,
+- added gzipping man pages,
 - removed making /etc/rc.d/rc?.d/* symlinks because
   /etc/rc.d/init.d/syslog support chkconfig.
 
