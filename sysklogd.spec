@@ -135,7 +135,7 @@ do logowania komunikatów j±drza Linuxa.
 
 %build
 %{__make} \
-	OPTIMIZE="%{?debug:-O -g}%{!?debug:$RPM_OPT_FLAGS}" \
+	OPTIMIZE="%{?debug:-O0 -g}%{!?debug:$RPM_OPT_FLAGS}" \
 	LDFLAGS=%{!?debug:-s}
 
 %install
