@@ -52,10 +52,19 @@ case "$1" in
 	status klogd
 	exit $?
 	;;
-  restart|reload)
+  restart)
 	$0 stop
 	$0 start
 	;;
+  reload)
+  	if [ -f /var/lock/subsys/klogd ]; then
+		msg_reloading "System logger"
+		killproc klogd -HUP
+	else
+		msg_not_running "System logger"
+		exit 1
+	fi
+        ;;
   *)
 	msg_usage "$0 {start|stop|status|restart|reload}"
 	exit 1
