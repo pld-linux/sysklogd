@@ -90,7 +90,7 @@ mkfifo $RPM_BUILD_ROOT/dev/log
 
 strip $RPM_BUILD_ROOT/usr/sbin/*
 
-gzip -9nf $RPM_BUILD_ROOT/usr/man/man[58]/* \
+gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man[58]/* \
 	 ANNOUNCE NEWS Sysklogd-*.lsm
 
 %post
@@ -125,7 +125,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(600,root,root) /etc/logrotate.d/syslog
 %attr(744,root,root) /etc/rc.d/init.d/syslog
 %attr(755,root,root) /usr/sbin/*
-/usr/man/man[58]/*
+%{_mandir}/man[58]/*
 %attr(666,root,root) %ghost /dev/log
 
 %changelog
@@ -151,7 +151,7 @@ rm -rf $RPM_BUILD_ROOT
   syslog on upgrade),
 - added pl translation,
 - removed INSTALL, README* from %doc,
-- removed /usr/man/man[58] directories from packge,
+- removed %{_mandir}/man[58] directories from packge,
 - added %verify rule for /etc/syslog.conf %config file,
 - added gzipping man pages,
 - removed making /etc/rc.d/rc?.d/* symlinks because
