@@ -243,7 +243,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc ANNOUNCE NEWS README* CHANGES
 %attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/*.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/syslog
-%attr(640,root,root) /etc/logrotate.d/syslog
+%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/logrotate.d/syslog
 %attr(754,root,root) /etc/rc.d/init.d/syslog
 %attr(640,root,root) %ghost /var/log/*
 %attr(755,root,root) %{_sbindir}/syslogd
