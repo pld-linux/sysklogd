@@ -1,17 +1,16 @@
-%define		source	1.3-31
 Summary:	Linux system and kernel logger
 Summary(de):	Linux-System- und Kerner-Logger 
 Summary(fr):	Le système Linux et le logger du noyau
 Summary(pl):	Programy loguj±ce zdarzenia w systemie i j±drze Linuxa
 Summary(tr):	Linux sistem ve çekirdek kayýt süreci
 Name:		sysklogd
-Version:	1.3.31
-Release:	27
+Version:	1.4
+Release:	1
 License:	GPL
 Group:		Daemons
 Group(de):	Server
 Group(pl):	Serwery
-Source0:	ftp://ftp.infodrom.nort.de/pub/pub/people/joey/%{name}-%{source}.tar.gz
+Source0:	ftp://ftp.infodrom.nort.de/pub/pub/people/joey/%{name}-%{version}.tar.gz
 Source1:	syslog.conf
 Source2:	syslog.init
 Source3:	syslog.logrotate
@@ -19,21 +18,18 @@ Source4:	syslog.sysconfig
 Source5:	klogd.init
 Source6:	klogd.sysconfig
 Source7:	syslogd-listfiles.sh
+Source8:	syslogd-listfiles.8
 Patch0:		%{name}-alpha.patch
 Patch1:		%{name}-alphafoo.patch
 Patch2:		%{name}-opt.patch
-Patch3:		%{name}-daemon.patch
-Patch4:		%{name}-glibc.patch
-Patch5:		%{name}-sparc.patch
-Patch6:		%{name}-install.patch
-Patch7:		%{name}-utmp-process.patch
-Patch8:		%{name}-fixDoS.patch
-Patch9:		%{name}-openlog.patch
-Patch10:	%{name}-ksyms.patch
-Patch11:	%{name}-nullterm.patch
-Patch12:	ftp://ftp.ocs.com.au:21/pub/ksymoops/v2.3/patch-%{name}-1-3-31-ksymoops-1.gz
-Patch13:	%{name}-formatbug.patch
-Patch14:	%{name}-priority.patch
+Patch3:		%{name}-glibc.patch
+Patch4:		%{name}-sparc.patch
+Patch5:		%{name}-install.patch
+Patch6:		%{name}-utmp-process.patch
+Patch7:		%{name}-fixDoS.patch
+Patch8:		%{name}-openlog.patch
+Patch9:		%{name}-ksyms.patch
+Patch10:	%{name}-nullterm.patch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_exec_prefix	/
@@ -123,7 +119,7 @@ Pakiet ten zawiera program które jest uruchamiany jako demon i s³u¿±
 do logowania komunikatów j±drza Linuxa.
 
 %prep
-%setup -q -n %{name}-%{source}
+%setup -q
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -135,10 +131,6 @@ do logowania komunikatów j±drza Linuxa.
 %patch8 -p1
 %patch9 -p1
 %patch10 -p1
-%patch11 -p1
-%patch12 -p1
-%patch13 -p0
-%patch14 -p1
 
 %build
 %{__make}  OPTIMIZE="$RPM_OPT_FLAGS"
@@ -162,7 +154,7 @@ install %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/klogd
 install %{SOURCE6} $RPM_BUILD_ROOT/etc/sysconfig/klogd
 
 install %{SOURCE7} $RPM_BUILD_ROOT%{_bindir}/syslogd-listfiles
-install debian/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
+install %{SOURCE8} $RPM_BUILD_ROOT%{_mandir}/man8
 
 for n in messages secure maillog spooler kernel; do
 touch $RPM_BUILD_ROOT/var/log/$n ; done
@@ -172,7 +164,7 @@ echo .so sysklogd.8 > $RPM_BUILD_ROOT%{_mandir}/man8/syslogd.8
 strip $RPM_BUILD_ROOT%{_sbindir}/*
 
 gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man[58]/* \
-	 ANNOUNCE NEWS Sysklogd-*.lsm
+	 ANNOUNCE NEWS README* CHANGES
 
 %post -n syslog
 for n in /var/log/{messages,secure,maillog,spooler,kernel}
@@ -221,7 +213,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n syslog
 %defattr(644,root,root,755)
-%doc {ANNOUNCE,NEWS,Sysklogd-*.lsm}.gz
+%doc {ANNOUNCE,NEWS,CHANGES,README*}.gz
 
 %attr(640,root,root) %config(noreplace) %verify(not mtime md5 size) %{_sysconfdir}/*.conf
 %attr(640,root,root) %config(noreplace) %verify(not mtime md5 size) /etc/sysconfig/syslog
