@@ -24,7 +24,7 @@ Patch4:      	sysklogd-glibc.patch
 Patch5:      	sysklogd-sparc.patch
 Patch6:      	sysklogd-install.patch
 Patch7:      	sysklogd-utmp-process.patch
-Patch8:			sysklogd-fixDOS.patch
+Patch8:			sysklogd-fixDoS.patch
 Prereq:      	fileutils
 Prereq:		/sbin/chkconfig
 Requires:	logrotate >= 3.2-3
