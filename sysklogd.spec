@@ -7,7 +7,7 @@ Summary(pl): 	Programy loguj±ce zdarzenia w systemie i kernelu Linuxa
 Summary(tr): 	Linux sistem ve çekirdek kayýt süreci
 Name:        	sysklogd
 Version:     	1.3.31
-Release:    	8
+Release:    	9
 Copyright:   	GPL
 Group:       	Daemons
 Group(pl):	Serwery
@@ -94,7 +94,7 @@ install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/sysklogd
 install debian/syslogd-listfiles $RPM_BUILD_ROOT%{_bindir}
 install debian/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
 
-for n in messages secure maillog spooler kernel wtmp; do
+for n in messages secure maillog spooler kernel wtmpx; do
 touch $RPM_BUILD_ROOT/var/log/$n ; done
 
 echo .so sysklogd.8 > $RPM_BUILD_ROOT%{_mandir}/man8/syslogd.8
@@ -105,7 +105,7 @@ gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man[58]/* \
 	 ANNOUNCE NEWS Sysklogd-*.lsm
 
 %post
-for n in /var/log/{messages,secure,maillog,spooler,kernel,wtmp}
+for n in /var/log/{messages,secure,maillog,spooler,kernel,wtmpx}
 do
 	[ -f $n ] && continue
 	touch $n
@@ -136,6 +136,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(640,root,root) %config %verify(not mtime md5 size) /etc/sysconfig/*
 %attr(640,root,root) /etc/logrotate.d/syslog
 %attr(755,root,root) /etc/rc.d/init.d/syslog
+
 %attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /var/log/*
 
 %attr(755,root,root) %{_sbindir}/*
@@ -148,6 +149,7 @@ rm -rf $RPM_BUILD_ROOT
 - some fixes for correct build,
 - added forgotten /var/log/ files,
 - removed /dev/log -- now again in dev package
+- added /var/log/wtmpx -- Unix98 compliant,
 - fixed %post script
 - changed URL.
 
