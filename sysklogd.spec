@@ -6,7 +6,7 @@ Summary(pl): 	Programy loguj±ce zdarzenia w systemie i kernelu Linuxa
 Summary(tr): 	Linux sistem ve çekirdek kayýt süreci
 Name:        	sysklogd
 Version:     	1.3.31
-Release:    	12
+Release:    	13
 Copyright:   	GPL
 Group:       	Daemons
 Group(pl):	Serwery
@@ -24,6 +24,7 @@ Patch4:      	sysklogd-glibc.patch
 Patch5:      	sysklogd-sparc.patch
 Patch6:      	sysklogd-install.patch
 Patch7:      	sysklogd-utmp-process.patch
+Patch8:			sysklogd-fixDOS.patch
 Prereq:      	fileutils
 Prereq:		/sbin/chkconfig
 Requires:	logrotate >= 3.2-3
@@ -72,6 +73,7 @@ ilgili mesajlardýr.
 %patch5 -p1 
 %patch6 -p1
 %patch7 -p1
+%patch8 -p1
 
 %build
 make  OPTIMIZE="$RPM_OPT_FLAGS"
