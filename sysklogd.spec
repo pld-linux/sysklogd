@@ -5,7 +5,7 @@ Summary(pl):	Programy loguj±ce zdarzenia w systemie i j±drze Linuxa
 Summary(tr):	Linux sistem ve çekirdek kayýt süreci
 Name:		sysklogd
 Version:	1.4
-Release:	1
+Release:	2
 License:	GPL
 Group:		Daemons
 Group(de):	Server
@@ -163,10 +163,7 @@ touch $RPM_BUILD_ROOT/var/log/$n ; done
 
 echo .so sysklogd.8 > $RPM_BUILD_ROOT%{_mandir}/man8/syslogd.8
 
-strip $RPM_BUILD_ROOT%{_sbindir}/*
-
-gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man[58]/* \
-	 ANNOUNCE NEWS README* CHANGES
+gzip -9nf ANNOUNCE NEWS README* CHANGES
 
 %post -n syslog
 for n in /var/log/{messages,secure,maillog,spooler,kernel}
