@@ -14,3 +14,6 @@ DOMAINLIST=""
 # If non-zero, syslogd marks timestamp to syslog. Specify interval between two 
 # "-- MARK --"
 MARK_TIMESTAMP=0
+
+# Use additional sockets, i. e. socket from chrooted bind
+ADDITIONAL_SOCK=""

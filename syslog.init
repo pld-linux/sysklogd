@@ -20,6 +20,7 @@ ENABLE_RECEIVE_FROM_NET=no
 HOSTLIST=""
 DOMAINLIST=""
 MARK_TIMESTAMP=""
+ADDITIONAL_SOCK=""
 
 # Get service config
 [ -f /etc/sysconfig/syslog ] && . /etc/sysconfig/syslog
@@ -39,6 +40,9 @@ fi
 if [ -n "$DOMAINLIST" ]; then
 	OPTIONS="$OPTIONS -s $DOMAINLIST"
 fi
+if [ -n "$ADDITIONAL_SOCK" ]; then
+	OPTIONS="$OPTIONS -a $ADDITIONAL_SOCK"
+fi	
 
 RETVAL=0
 # See how we were called.
