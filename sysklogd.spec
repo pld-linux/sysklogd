@@ -28,7 +28,7 @@ Prereq:      	fileutils
 Prereq:		/sbin/chkconfig
 Requires:	logrotate >= 3.2-3
 Requires:	SysVinit >= 2.76-12
-BuildRoot:   	/tmp/%{name}-%{version}-root
+BuildRoot:	/tmp/%{name}-%{version}-root
 
 %description
 This is the Linux system and kernel logging program. It is run as a daemon
