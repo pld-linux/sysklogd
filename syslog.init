@@ -51,7 +51,7 @@ case "$1" in
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/syslog
 	else
-		msg_Already_Running "System logger"
+		msg_already_running "System logger"
 		exit 1
 	fi
 	;;
@@ -61,7 +61,7 @@ case "$1" in
 		killproc syslogd
 		rm -f /var/lock/subsys/syslog >/dev/null 2>&1
 	else
-		msg_Not_Running "System logger"
+		msg_not_running "System logger"
 		exit 1
 	fi	
 	;;
@@ -74,7 +74,7 @@ case "$1" in
 		msg_reloading "System logger"
 		killproc syslogd -HUP
 	else
-		msg_Not_Running "System logger"
+		msg_not_running "System logger"
 		exit 1
 	fi
 	;;
@@ -83,7 +83,7 @@ case "$1" in
 	$0 start
 	;;
   *)
-	msg_Usage "$0 {start|stop|status|restart|reload}"
+	msg_usage "$0 {start|stop|status|restart|reload}"
 	exit 1
 esac
 
