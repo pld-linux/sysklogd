@@ -4,13 +4,13 @@ Summary(fr):	Le système Linux et le logger du noyau
 Summary(pl):	Programy loguj±ce zdarzenia w systemie i j±drze Linuxa
 Summary(tr):	Linux sistem ve çekirdek kayýt süreci
 Name:		sysklogd
-Version:	1.4
-Release:	3
+Version:	1.4.1
+Release:	1 
 License:	GPL
 Group:		Daemons
 Group(de):	Server
 Group(pl):	Serwery
-Source0:	http://www.infodrom.ffis.de/sysklogd/%{name}-%{version}.tar.gz
+Source0:	http://www.ibiblio.org/pub/Linux/system/daemons/sysklogd-1.4.1.tar.gz	
 Source1:	syslog.conf
 Source2:	syslog.init
 Source3:	syslog.logrotate
@@ -128,8 +128,8 @@ do logowania komunikatów j±drza Linuxa.
 %patch4 -p1 
 %patch5 -p1 
 %patch6 -p1
-%patch7 -p1
-%patch8 -p1
+#%patch7 -p1
+#%patch8 -p1
 %patch9 -p1
 %patch10 -p1
 
