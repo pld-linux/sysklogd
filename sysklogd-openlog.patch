@@ -1,6 +1,7 @@
---- sysklogd-1.3-31/syslog.c~	Mon Sep 25 16:20:57 2000
-+++ sysklogd-1.3-31/syslog.c	Mon Sep 25 16:26:09 2000
-@@ -69,6 +69,7 @@
+diff -Nur sysklogd-1.4.1.orig/syslog.c sysklogd-1.4.1/syslog.c
+--- sysklogd-1.4.1.orig/syslog.c	Sun Mar 11 20:35:51 2001
++++ sysklogd-1.4.1/syslog.c	Wed Mar 21 04:49:48 2001
+@@ -72,6 +72,7 @@
  
  #define	_PATH_LOGNAME	"/dev/log"
  
@@ -8,7 +9,7 @@
  static int	LogFile = -1;		/* fd for log */
  static int	connected;		/* have done connect */
  static int	LogStat = 0;		/* status bits, set by openlog() */
-@@ -203,22 +204,37 @@
+@@ -206,22 +207,33 @@
  		LogFacility = logfac;
  
  #ifndef TESTING
@@ -17,7 +18,7 @@
 -		strncpy(SyslogAddr.sa_data, _PATH_LOGNAME,
 -		    sizeof(SyslogAddr.sa_data));
 -		if (LogStat & LOG_NDELAY) {
--			LogFile = socket(AF_UNIX, SOCK_STREAM, 0);
+-			LogFile = socket(AF_UNIX, SOCK_DGRAM, 0);
 -/*			fcntl(LogFile, F_SETFD, 1); */
 +	while (1) {
 +		if (LogFile == -1) {
@@ -29,16 +30,12 @@
 +/*				fcntl(LogFile, F_SETFD, 1); */
 +			}
 +		}
-+		if (LogFile != -1 && !connected)
-+		{
++		if (LogFile != -1 && !connected) {
 +			if (connect(LogFile, &SyslogAddr, sizeof(SyslogAddr.sa_family)+
-+				strlen(SyslogAddr.sa_data)) == -1)
-+			{
++			    strlen(SyslogAddr.sa_data)) == -1) {
 +				close(LogFile);
 +				LogFile = -1;
-+				if (LogType == SOCK_DGRAM
-+					&& errno == EPROTOTYPE)
-+				{
++				if (LogType == SOCK_DGRAM && errno == EPROTOTYPE) {
 +					LogType = SOCK_STREAM;
 +					continue;
 +				}
@@ -51,8 +48,7 @@
 -	    connect(LogFile, &SyslogAddr, sizeof(SyslogAddr.sa_family)+
 -			strlen(SyslogAddr.sa_data)) != -1)
  #else
--	  LogFile = fileno(stdout);
-+	LogFile = fileno(stdout);
+ 	  LogFile = fileno(stdout);
  #endif
 -		connected = 1;
  }

@@ -26,10 +26,9 @@ Patch3:		%{name}-glibc.patch
 Patch4:		%{name}-sparc.patch
 Patch5:		%{name}-install.patch
 Patch6:		%{name}-utmp-process.patch
-Patch7:		%{name}-fixDoS.patch
-Patch8:		%{name}-openlog.patch
-Patch9:		%{name}-ksyms.patch
-Patch10:	%{name}-nullterm.patch
+Patch7:		%{name}-openlog.patch
+Patch8:		%{name}-ksyms.patch
+Patch9:		%{name}-nullterm.patch
 URL:		http://www.infodrom.ffis.de/sysklogd/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -57,11 +56,11 @@ sendmail, de sécurité et d'erreurs d'autres démons. I
 
 %description -l pl
 Pakiet ten zawiera programy które s± uruchamiane jako demony i s³u¿±
-do logowania zadrzeñ w systemie i w kernelu Linuxa. Same logi mog± byæ
+do logowania zdarzeñ w systemie i w kernelu Linuxa. Same logi mog± byæ
 sk³adowane w ró¿nych miejscach (zdalnie i lokalnie). Przewa¿nie do
-logów trawiaj± informacje o odbieranej i wysy³anej poczcie np. z
+logów trafiaj± informacje o odbieranej i wysy³anej poczcie np. z
 sendmaila, zdarzenia dotycz±ce bezpieczeñstwa systemu, a tak¿e
-informacje o b³êdach z innchy demonów.
+informacje o b³êdach z innych demonów.
 
 %description -l tr
 Bu paket, Linux sistemi ve çekirdeði için kayýt tutan programý içerir.
@@ -72,7 +71,7 @@ süreçlerinin hatalarýyla ilgili mesajlardýr.
 %package -n syslog
 Summary:	Linux system logger
 Summary(de):	Linux-System-Logger 
-Summary(pl):	Programy loguj±ce zdarzenia w systemie Linuxa
+Summary(pl):	Program loguj±cy zdarzenia w systemie Linuxa
 Group:		Daemons
 Group(de):	Server
 Group(pl):	Serwery
@@ -80,7 +79,7 @@ Prereq:		fileutils
 Prereq:		/sbin/chkconfig
 Requires:	logrotate >= 3.2-3
 Requires:	SysVinit >= 2.76-12
-Prereq:			rc-scripts >= 0.2.0
+Prereq:		rc-scripts >= 0.2.0
 Requires:	klogd
 Provides:	syslogdaemon
 Obsoletes:	sysklogd
@@ -93,22 +92,22 @@ usually things like sendmail logs, security logs, and errors from
 other daemons.
 
 %description -n syslog -l pl
-Pakiet ten zawiera program które jest uruchamiany jako demon i s³u¿±
-do logowania zadrzeñ w systemie Linuxa. Same logi mog± byæ sk³adowane
-w ró¿nych miejscach (zdalnie i lokalnie). Przewa¿nie do logów trawiaj±
+Pakiet ten zawiera program który jest uruchamiany jako demon i s³u¿y
+do logowania zdarzeñ w systemie Linuxa. Same logi mog± byæ sk³adowane
+w ró¿nych miejscach (zdalnie i lokalnie). Przewa¿nie do logów trafiaj±
 informacje o odbieranej i wysy³anej poczcie np. z sendmaila, zdarzenia
 dotycz±ce bezpieczeñstwa systemu, a tak¿e informacje o b³êdach z
-innchy demonów.
+innych demonów.
 
 %package -n klogd
 Summary:	Linux kernel logger
 Summary(de):	Linux-Kerner-Logger 
-Summary(pl):	Programy loguj±ce zdarzenia w j±drze Linuxa
+Summary(pl):	Program loguj±cy zdarzenia w j±drze Linuxa
 Group:		Daemons
 Group(de):	Server
 Group(pl):	Serwery
 Prereq:		/sbin/chkconfig
-Requires:	rc-scripts >= 0.2.0
+Prereq:		rc-scripts >= 0.2.0
 Obsoletes:	sysklogd
 
 %description -n klogd
@@ -116,8 +115,8 @@ This is the Linux kernel logging program. It is run as a daemon
 (background process) to log messages from kernel.
 
 %description -n klogd -l pl
-Pakiet ten zawiera program które jest uruchamiany jako demon i s³u¿±
-do logowania komunikatów j±drza Linuxa.
+Pakiet ten zawiera program który jest uruchamiany jako demon i s³u¿y
+do logowania komunikatów j±dra Linuxa.
 
 %prep
 %setup -q
@@ -128,10 +127,9 @@ do logowania komunikatów j±drza Linuxa.
 %patch4 -p1 
 %patch5 -p1 
 %patch6 -p1
-#%patch7 -p1
-#%patch8 -p1
+%patch7 -p1
+%patch8 -p1
 %patch9 -p1
-%patch10 -p1
 
 %build
 %{__make} \
