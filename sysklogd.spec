@@ -1,5 +1,4 @@
 %define		source	1.3-31
-
 Summary:     	Linux system and kernel logger
 Summary(de): 	Linux-System- und Kerner-Logger 
 Summary(fr): 	Le système Linux et le logger du noyau
@@ -7,11 +6,12 @@ Summary(pl): 	Programy loguj±ce zdarzenia w systemie i kernelu Linuxa
 Summary(tr): 	Linux sistem ve çekirdek kayýt süreci
 Name:        	sysklogd
 Version:     	1.3.31
-Release:    	11
+Release:    	12
 Copyright:   	GPL
 Group:       	Daemons
 Group(pl):	Serwery
-Source0:	ftp://ftp.infodrom.nort.de/pub/pub/people/joey/%{name}-%{source}.tar.gz
+URL:     	ftp://ftp.infodrom.nort.de/pub/pub/people/joey/
+Source0:	%{name}-%{source}.tar.gz
 Source1:     	syslog.conf
 Source2:     	syslog.init
 Source3:     	syslog.logrotate
@@ -23,7 +23,7 @@ Patch3:      	sysklogd-daemon.patch
 Patch4:      	sysklogd-glibc.patch
 Patch5:      	sysklogd-sparc.patch
 Patch6:      	sysklogd-install.patch
-Patch7:		sysklogd-utmp-process.patch
+Patch7:      	sysklogd-utmp-process.patch
 Prereq:      	fileutils
 Prereq:		/sbin/chkconfig
 Requires:	logrotate >= 3.2-3
@@ -78,13 +78,14 @@ make  OPTIMIZE="$RPM_OPT_FLAGS"
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{sysconfig,rc.d/init.d,logrotate.d} \
-	$RPM_BUILD_ROOT{%{_bindir},%{_mandir}/man{5,8},%{_sbindir}} \
+	$RPM_BUILD_ROOT/usr/{bin,share/man/man{5,8},sbin} \
 	$RPM_BUILD_ROOT/{dev,var/log}
 
-make install \
-    INSTALL="/usr/bin/install" \
+make \
+    INSTALL=`whereis install | awk '{ print $2} '` \
     DESTDIR=$RPM_BUILD_ROOT \
-    MANDIR=$RPM_BUILD_ROOT%{_mandir}
+    MANDIR=$RPM_BUILD_ROOT%{_mandir} \
+    install
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/syslog.conf
 
