@@ -82,7 +82,6 @@ install -d $RPM_BUILD_ROOT/etc/{sysconfig,rc.d/init.d,logrotate.d} \
 	$RPM_BUILD_ROOT/{dev,var/log}
 
 make \
-    INSTALL=`whereis install | awk '{ print $2} '` \
     DESTDIR=$RPM_BUILD_ROOT \
     MANDIR=$RPM_BUILD_ROOT%{_mandir} \
     install
