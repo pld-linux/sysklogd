@@ -6,7 +6,7 @@ Summary(pl):	Programy loguj±ce zdarzenia w systemie i j±drze Linuxa
 Summary(tr):	Linux sistem ve çekirdek kayýt süreci
 Name:		sysklogd
 Version:	1.3.31
-Release:	26
+Release:	27
 License:	GPL
 Group:		Daemons
 Group(de):	Server
@@ -28,11 +28,12 @@ Patch5:		%{name}-sparc.patch
 Patch6:		%{name}-install.patch
 Patch7:		%{name}-utmp-process.patch
 Patch8:		%{name}-fixDoS.patch
-Patch9:		%{name}-dgram.patch
+Patch9:		%{name}-openlog.patch
 Patch10:	%{name}-ksyms.patch
 Patch11:	%{name}-nullterm.patch
 Patch12:	ftp://ftp.ocs.com.au:21/pub/ksymoops/v2.3/patch-%{name}-1-3-31-ksymoops-1.gz
 Patch13:	%{name}-formatbug.patch
+Patch14:	%{name}-priority.patch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_exec_prefix	/
@@ -137,6 +138,7 @@ do logowania komunikatów j±drza Linuxa.
 %patch11 -p1
 %patch12 -p1
 %patch13 -p0
+%patch14 -p1
 
 %build
 %{__make}  OPTIMIZE="$RPM_OPT_FLAGS"
