@@ -88,7 +88,7 @@ install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/sysklogd
 
 mkfifo $RPM_BUILD_ROOT/dev/log
 
-strip $RPM_BUILD_ROOT/usr/sbin/*
+strip $RPM_BUILD_ROOT%{_sbindir}/*
 
 gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man[58]/* \
 	 ANNOUNCE NEWS Sysklogd-*.lsm
@@ -124,7 +124,7 @@ rm -rf $RPM_BUILD_ROOT
 %config %verify(not mtime md5 size) /etc/sysconfig/sysklogd
 %attr(600,root,root) /etc/logrotate.d/syslog
 %attr(744,root,root) /etc/rc.d/init.d/syslog
-%attr(755,root,root) /usr/sbin/*
+%attr(755,root,root) %{_sbindir}/*
 %{_mandir}/man[58]/*
 %attr(666,root,root) %ghost /dev/log
 
