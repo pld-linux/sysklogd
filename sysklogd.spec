@@ -1,3 +1,5 @@
+# TODO:
+# - trigger for upgrade from inetutils-syslogd
 Summary:	Linux system and kernel logger
 Summary(de):	Linux-System- und Kerner-Logger
 Summary(es):	Registrador de log del sistema linux
