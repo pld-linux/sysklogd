@@ -171,7 +171,7 @@ install %{SOURCE6} $RPM_BUILD_ROOT/etc/sysconfig/klogd
 install %{SOURCE7} $RPM_BUILD_ROOT%{_bindir}/syslogd-listfiles
 install %{SOURCE8} $RPM_BUILD_ROOT%{_mandir}/man8
 
-for n in messages secure maillog spooler kernel
+for n in alert debug kernel mail messages news secure syslog
 do
 	> $RPM_BUILD_ROOT/var/log/$n
 done
@@ -179,7 +179,7 @@ done
 echo .so sysklogd.8 > $RPM_BUILD_ROOT%{_mandir}/man8/syslogd.8
 
 %post -n syslog
-for n in /var/log/{messages,secure,maillog,spooler,kernel}
+for n in /var/log/{alert,debug,kernel,mail,messages,news,secure,syslog}
 do
 	[ -f $n ] && continue
 	> $n
