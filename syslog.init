@@ -1,0 +1,71 @@
+#!/bin/bash
+#
+# syslog        Starts syslogd/klogd.
+#
+#
+# chkconfig: 2345 30 70
+# description: Syslog is the facility by which many daemons use to log \
+# messages to various system log files.  It is a good idea to always \
+# run syslog.
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+[ -f /usr/sbin/syslogd ] || exit 0
+[ -f /usr/sbin/klogd ] || exit 0
+
+if [ -f /etc/sysconfig/syslog ] ; then
+        . /etc/sysconfig/syslog
+else
+        ENABLE_RECEIVE_FROM_NET=no
+        HOSTLIST=""
+        DOMAINLIST=""
+        MARK_TIMESTAMP=""
+fi
+
+if [ "$ENABLE_RECEIVE_FROM_NET" = yes ]; then
+	OPTIONS="-r"
+else
+	OPTIONS=""
+fi
+
+if [ -n "$MARK_TIMESTAMP" ]; then
+	OPTINONS="$OPTIONS -m $MARK_TIMESTAMP"
+fi
+if [ -n "$HOSTLIST" ]; then
+	OPTINONS="$OPTIONS -s $HOSTLIST"
+fi
+if [ -n "$DOMAINLIST" ]; then
+	OPTINONS="$OPTIONS -s $DOMAINLIST"
+fi
+
+# See how we were called.
+case "$1" in
+  start)
+	show Starting system loggers
+        daemon syslogd $OPTIONS 
+	show Starting kernel loggers
+	daemon klogd
+	touch /var/lock/subsys/syslog
+	;;
+    stop)	
+	show Stoping kernel loggers
+	killproc klogd
+	show Stoping system loggers
+	killproc syslogd
+	rm -f /var/lock/subsys/syslog
+	;;
+  status)
+	status syslogd
+	status klogd
+	;;
+  restart)
+	$0 stop
+	$0 start
+	;;
+  *)
+	echo "Usage: $0 {start|stop|status|restart}"
+	exit 1
+esac
+
+exit 0
