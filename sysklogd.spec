@@ -40,7 +40,6 @@ BuildRequires:	fork-on-start-is-broken
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_exec_prefix	/
-%define		_bindir		/usr/bin
 
 %description
 This is the Linux system and kernel logging program. It is run as a
