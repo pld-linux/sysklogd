@@ -1,16 +1,18 @@
 Summary:	Linux system and kernel logger
 Summary(de):	Linux-System- und Kerner-Logger
+Summary(es):	Registrador de log del sistema linux
 Summary(fr):	Le système Linux et le logger du noyau
 Summary(pl):	Programy loguj±ce zdarzenia w systemie i j±drze Linuksa
+Summary(pt_BR):	Registrador de log do sistema linux
 Summary(tr):	Linux sistem ve çekirdek kayýt süreci
 Name:		sysklogd
 Version:	1.4.1
-Release:	6
+Release:	7
 License:	GPL
 Group:		Daemons
 Group(de):	Server
 Group(pl):	Serwery
-Source0:	http://www.ibiblio.org/pub/Linux/system/daemons/sysklogd-1.4.1.tar.gz
+Source0:	http://www.ibiblio.org/pub/Linux/system/daemons/%{name}-%{version}.tar.gz
 Source1:	syslog.conf
 Source2:	syslog.init
 Source3:	syslog.logrotate
@@ -29,6 +31,7 @@ Patch6:		%{name}-utmp-process.patch
 Patch7:		%{name}-openlog.patch
 Patch8:		%{name}-ksyms.patch
 Patch9:		%{name}-nullterm.patch
+Patch10:	%{name}-fmt-string.patch
 URL:		http://www.infodrom.ffis.de/sysklogd/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -48,6 +51,12 @@ als Dämon (Hintergrundprozeß) ausgeführt und protokolliert
 verschiedene Meldungen. Es protokolliert z.B. sendmail- und
 Sicherheits-Protokolle und Fehler von anderen Dämonen.
 
+%description -l es
+Este es el programa de log para el kernel y el sistema Linux. Se
+ejecuta como un daemon (proceso en background) para registrar mensajes
+en diferentes lugares. Estos son generalmente registros del sendmail,
+seguridad, y mensajes de otros daemons.
+
 %description -l fr
 Programme de trace du sytème Linux et du noyau. Il est lancé en démon
 (processus en arrière plan) pour stocker les messages à différents
@@ -61,6 +70,12 @@ byæ sk³adowane w ró¿nych miejscach (zdalnie i lokalnie). Przewa¿nie do
 logów trafiaj± informacje o odbieranej i wysy³anej poczcie np. z
 sendmaila, zdarzenia dotycz±ce bezpieczeñstwa systemu, a tak¿e
 informacje o b³êdach z innych demonów.
+
+%description -l pt_BR
+Este é o programa de log para o kernel e o sistema Linux. Ele roda
+como um daemon (processo em background) para registrar mensagens em
+diferentes lugares. Estes são geralmente registros do sendmail,
+segurança, e mensagens de outros daemons.
 
 %description -l tr
 Bu paket, Linux sistemi ve çekirdeði için kayýt tutan programý içerir.
@@ -94,8 +109,8 @@ other daemons.
 
 %description -n syslog -l pl
 Pakiet ten zawiera program, który jest uruchamiany jako demon i s³u¿y
-do logowania zdarzeñ w systemie Linux. Same logi mog± byæ sk³adowane
-w ró¿nych miejscach (zdalnie i lokalnie). Przewa¿nie do logów trafiaj±
+do logowania zdarzeñ w systemie Linux. Same logi mog± byæ sk³adowane w
+ró¿nych miejscach (zdalnie i lokalnie). Przewa¿nie do logów trafiaj±
 informacje o odbieranej i wysy³anej poczcie np. z sendmaila, zdarzenia
 dotycz±ce bezpieczeñstwa systemu, a tak¿e informacje o b³êdach z
 innych demonów.
@@ -131,11 +146,12 @@ do logowania komunikatów j±dra Linuksa.
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
+%patch10 -p1
 
 %build
 %{__make} \
 	OPTIMIZE="%{rpmcflags}" \
-	LDFLAGS=%{rpmldflags}
+	LDFLAGS="%{rpmldflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
