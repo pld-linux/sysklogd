@@ -1,7 +1,7 @@
 Summary:	Linux system and kernel logger
-Summary(de):	Linux-System- und Kerner-Logger 
+Summary(de):	Linux-System- und Kerner-Logger
 Summary(fr):	Le système Linux et le logger du noyau
-Summary(pl):	Programy loguj±ce zdarzenia w systemie i j±drze Linuxa
+Summary(pl):	Programy loguj±ce zdarzenia w systemie i j±drze Linuksa
 Summary(tr):	Linux sistem ve çekirdek kayýt süreci
 Name:		sysklogd
 Version:	1.4.1
@@ -10,7 +10,7 @@ License:	GPL
 Group:		Daemons
 Group(de):	Server
 Group(pl):	Serwery
-Source0:	http://www.ibiblio.org/pub/Linux/system/daemons/sysklogd-1.4.1.tar.gz	
+Source0:	http://www.ibiblio.org/pub/Linux/system/daemons/sysklogd-1.4.1.tar.gz
 Source1:	syslog.conf
 Source2:	syslog.init
 Source3:	syslog.logrotate
@@ -56,8 +56,8 @@ sendmail, de sécurité et d'erreurs d'autres démons. I
 
 %description -l pl
 Pakiet ten zawiera programy które s± uruchamiane jako demony i s³u¿±
-do logowania zdarzeñ w systemie i w kernelu Linuxa. Same logi mog± byæ
-sk³adowane w ró¿nych miejscach (zdalnie i lokalnie). Przewa¿nie do
+do logowania zdarzeñ w systemie i w kernelu Linuksa. Same logi mog±
+byæ sk³adowane w ró¿nych miejscach (zdalnie i lokalnie). Przewa¿nie do
 logów trafiaj± informacje o odbieranej i wysy³anej poczcie np. z
 sendmaila, zdarzenia dotycz±ce bezpieczeñstwa systemu, a tak¿e
 informacje o b³êdach z innych demonów.
@@ -70,8 +70,8 @@ süreçlerinin hatalarýyla ilgili mesajlardýr.
 
 %package -n syslog
 Summary:	Linux system logger
-Summary(de):	Linux-System-Logger 
-Summary(pl):	Program loguj±cy zdarzenia w systemie Linuxa
+Summary(de):	Linux-System-Logger
+Summary(pl):	Program loguj±cy zdarzenia w systemie Linux
 Group:		Daemons
 Group(de):	Server
 Group(pl):	Serwery
@@ -94,7 +94,7 @@ other daemons.
 
 %description -n syslog -l pl
 Pakiet ten zawiera program który jest uruchamiany jako demon i s³u¿y
-do logowania zdarzeñ w systemie Linuxa. Same logi mog± byæ sk³adowane
+do logowania zdarzeñ w systemie Linux. Same logi mog± byæ sk³adowane
 w ró¿nych miejscach (zdalnie i lokalnie). Przewa¿nie do logów trafiaj±
 informacje o odbieranej i wysy³anej poczcie np. z sendmaila, zdarzenia
 dotycz±ce bezpieczeñstwa systemu, a tak¿e informacje o b³êdach z
@@ -102,8 +102,8 @@ innych demonów.
 
 %package -n klogd
 Summary:	Linux kernel logger
-Summary(de):	Linux-Kerner-Logger 
-Summary(pl):	Program loguj±cy zdarzenia w j±drze Linuxa
+Summary(de):	Linux-Kerner-Logger
+Summary(pl):	Program loguj±cy zdarzenia w j±drze Linuksa
 Group:		Daemons
 Group(de):	Server
 Group(pl):	Serwery
@@ -117,7 +117,7 @@ This is the Linux kernel logging program. It is run as a daemon
 
 %description -n klogd -l pl
 Pakiet ten zawiera program który jest uruchamiany jako demon i s³u¿y
-do logowania komunikatów j±dra Linuxa.
+do logowania komunikatów j±dra Linuksa.
 
 %prep
 %setup -q
@@ -125,8 +125,8 @@ do logowania komunikatów j±dra Linuxa.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1 
-%patch5 -p1 
+%patch4 -p1
+%patch5 -p1
 %patch6 -p1
 %patch7 -p1
 %patch8 -p1
@@ -175,7 +175,7 @@ done
 
 /sbin/chkconfig --add syslog
 if [ -f /var/lock/subsys/syslog ]; then
-    /etc/rc.d/init.d/syslog restart 1>&2
+	/etc/rc.d/init.d/syslog restart 1>&2
 else
 	echo "Run \"/etc/rc.d/init.d/syslog start\" to start syslog daemon." 1>&2
 fi
@@ -214,8 +214,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc {ANNOUNCE,NEWS,CHANGES,README*}.gz
 
-%attr(640,root,root) %config(noreplace) %verify(not mtime md5 size) %{_sysconfdir}/*.conf
-%attr(640,root,root) %config(noreplace) %verify(not mtime md5 size) /etc/sysconfig/syslog
+%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/*.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/syslog
 %attr(640,root,root) /etc/logrotate.d/syslog
 %attr(754,root,root) /etc/rc.d/init.d/syslog
 
@@ -229,7 +229,7 @@ rm -rf $RPM_BUILD_ROOT
 %files -n klogd
 %defattr(644,root,root,755)
 %attr(754,root,root) /etc/rc.d/init.d/klogd
-%attr(640,root,root) %config(noreplace) %verify(not mtime md5 size) /etc/sysconfig/klogd
+%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/klogd
 
 %attr(755,root,root) %{_sbindir}/klogd
 
