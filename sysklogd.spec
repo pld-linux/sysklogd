@@ -206,8 +206,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc {ANNOUNCE,NEWS,Sysklogd-*.lsm}.gz
 
-%attr(640,root,root) %config %verify(not mtime md5 size) /etc/*.conf
-%attr(640,root,root) %config %verify(not mtime md5 size) /etc/sysconfig/syslog
+%attr(640,root,root) %config(noreplace) %verify(not mtime md5 size) /etc/*.conf
+%attr(640,root,root) %config(noreplace) %verify(not mtime md5 size) /etc/sysconfig/syslog
 %attr(640,root,root) /etc/logrotate.d/syslog
 %attr(754,root,root) /etc/rc.d/init.d/syslog
 
@@ -222,7 +222,7 @@ rm -rf $RPM_BUILD_ROOT
 %files -n klogd
 %defattr(644,root,root,755)
 %attr(754,root,root) /etc/rc.d/init.d/klogd
-%attr(640,root,root) %config %verify(not mtime md5 size) /etc/sysconfig/klogd
+%attr(640,root,root) %config(noreplace) %verify(not mtime md5 size) /etc/sysconfig/klogd
 
 %attr(755,root,root) %{_sbindir}/klogd
 
