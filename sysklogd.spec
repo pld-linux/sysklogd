@@ -10,8 +10,6 @@ Version:	1.4.1
 Release:	7
 License:	GPL
 Group:		Daemons
-Group(de):	Server
-Group(pl):	Serwery
 Source0:	http://www.ibiblio.org/pub/Linux/system/daemons/%{name}-%{version}.tar.gz
 Source1:	syslog.conf
 Source2:	syslog.init
@@ -88,8 +86,6 @@ Summary:	Linux system logger
 Summary(de):	Linux-System-Logger
 Summary(pl):	Program loguj±cy zdarzenia w systemie Linux
 Group:		Daemons
-Group(de):	Server
-Group(pl):	Serwery
 PreReq:		/sbin/chkconfig
 PreReq:		rc-scripts >= 0.2.0
 Requires:	SysVinit >= 2.76-12
@@ -120,8 +116,6 @@ Summary:	Linux kernel logger
 Summary(de):	Linux-Kerner-Logger
 Summary(pl):	Program loguj±cy zdarzenia w j±drze Linuksa
 Group:		Daemons
-Group(de):	Server
-Group(pl):	Serwery
 PreReq:		/sbin/chkconfig
 PreReq:		rc-scripts >= 0.2.0
 Obsoletes:	sysklogd
