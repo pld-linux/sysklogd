@@ -24,13 +24,16 @@ Patch4:      	sysklogd-glibc.patch
 Patch5:      	sysklogd-sparc.patch
 Patch6:      	sysklogd-install.patch
 Patch7:      	sysklogd-utmp-process.patch
-Patch8:			sysklogd-fixDoS.patch
+Patch8:		sysklogd-fixDoS.patch
 Prereq:      	fileutils
 Prereq:		/sbin/chkconfig
 Requires:	logrotate >= 3.2-3
 Requires:	SysVinit >= 2.76-12
 Requires:	rc-scripts
 BuildRoot:	/tmp/%{name}-%{version}-root
+
+%define		_exec_prefix	/
+%define		_bindir		/usr/bin
 
 %description
 This is the Linux system and kernel logging program. It is run as a daemon
@@ -81,11 +84,11 @@ make  OPTIMIZE="$RPM_OPT_FLAGS"
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{sysconfig,rc.d/init.d,logrotate.d} \
-	$RPM_BUILD_ROOT/usr/{bin,share/man/man{5,8},sbin} \
+	$RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man{5,8},%{_bindir}} \
 	$RPM_BUILD_ROOT/{dev,var/log}
 
 make \
-    DESTDIR=$RPM_BUILD_ROOT \
+    BINDIR=$RPM_BUILD_ROOT%{_sbindir} \
     MANDIR=$RPM_BUILD_ROOT%{_mandir} \
     install
 
@@ -141,7 +144,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(640,root,root) /etc/logrotate.d/syslog
 %attr(754,root,root) /etc/rc.d/init.d/syslog
 
-%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /var/log/*
+%attr(640,root,root) %ghost /var/log/*
 
 %attr(755,root,root) %{_sbindir}/*
 %attr(755,root,root) %{_bindir}/*
