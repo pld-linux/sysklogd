@@ -6,12 +6,11 @@ Summary(pl): 	Programy loguj±ce zdarzenia w systemie i kernelu Linuxa
 Summary(tr): 	Linux sistem ve çekirdek kayýt süreci
 Name:        	sysklogd
 Version:     	1.3.31
-Release:    	13
+Release:    	16
 Copyright:   	GPL
 Group:       	Daemons
 Group(pl):	Serwery
-URL:     	ftp://ftp.infodrom.nort.de/pub/pub/people/joey/
-Source0:	%{name}-%{source}.tar.gz
+Source0:	ftp://ftp.infodrom.nort.de/pub/pub/people/joey/%{name}-%{source}.tar.gz
 Source1:     	syslog.conf
 Source2:     	syslog.init
 Source3:     	syslog.logrotate
@@ -25,6 +24,9 @@ Patch5:      	sysklogd-sparc.patch
 Patch6:      	sysklogd-install.patch
 Patch7:      	sysklogd-utmp-process.patch
 Patch8:		sysklogd-fixDoS.patch
+Patch9:		sysklogd-dgram.patch
+Patch10:	sysklogd-ksyms.patch
+Patch11:	sysklogd-nullterm.patch
 Prereq:      	fileutils
 Prereq:		/sbin/chkconfig
 Requires:	logrotate >= 3.2-3
@@ -77,6 +79,9 @@ ilgili mesajlardýr.
 %patch6 -p1
 %patch7 -p1
 %patch8 -p1
+%patch9 -p1
+%patch10 -p1
+%patch11 -p1
 
 %build
 make  OPTIMIZE="$RPM_OPT_FLAGS"
@@ -128,7 +133,9 @@ fi
 
 %preun
 if [ "$1" = "0" ]; then
-	/etc/rc.d/init.d/syslog stop >&2
+	if [ -f /var/lock/subsys/syslog ]; then
+		/etc/rc.d/init.d/syslog stop >&2
+	fi
 	/sbin/chkconfig --del syslog
 fi
 
