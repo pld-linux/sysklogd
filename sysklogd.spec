@@ -5,7 +5,7 @@ Summary(pl):	Programy loguj±ce zdarzenia w systemie i j±drze Linuxa
 Summary(tr):	Linux sistem ve çekirdek kayýt süreci
 Name:		sysklogd
 Version:	1.4.1
-Release:	2
+Release:	3
 License:	GPL
 Group:		Daemons
 Group(de):	Server
@@ -77,10 +77,11 @@ Group(de):	Server
 Group(pl):	Serwery
 Prereq:		fileutils
 Prereq:		/sbin/chkconfig
+Prereq:		rc-scripts >= 0.2.0
 Requires:	logrotate >= 3.2-3
 Requires:	SysVinit >= 2.76-12
-Prereq:		rc-scripts >= 0.2.0
 Requires:	klogd
+Requires:	psmisc >= 20.1
 Provides:	syslogdaemon
 Obsoletes:	sysklogd
 Obsoletes:	syslog-ng
@@ -133,8 +134,8 @@ do logowania komunikatów j±dra Linuxa.
 
 %build
 %{__make} \
-	OPTIMIZE="%{?debug:-O0 -g}%{!?debug:$RPM_OPT_FLAGS}" \
-	LDFLAGS=%{!?debug:-s}
+	OPTIMIZE="%{rpmcflags}" \
+	LDFLAGS=%{rpmldflags}
 
 %install
 rm -rf $RPM_BUILD_ROOT
