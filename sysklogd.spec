@@ -10,7 +10,7 @@ License:	GPL
 Group:		Daemons
 Group(de):	Server
 Group(pl):	Serwery
-Source0:	ftp://ftp.infodrom.nort.de/pub/pub/people/joey/%{name}-%{version}.tar.gz
+Source0:	http://www.infodrom.ffis.de/sysklogd/%{name}-%{version}.tar.gz
 Source1:	syslog.conf
 Source2:	syslog.init
 Source3:	syslog.logrotate
