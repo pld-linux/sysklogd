@@ -1,0 +1,59 @@
+#!/bin/sh
+#
+# klogd         Starts klogd.
+#
+#
+# chkconfig:	2345 31 69 
+# description:	Klogd catch kernel messages and send it to syslog daemon.\
+#		It is a good idea to always run klogd.
+
+
+# Source function library
+. /etc/rc.d/init.d/functions
+
+# Get network config
+. /etc/sysconfig/network
+
+# Set defaults        
+CONSOLELOG_LEVEL=4
+
+# Get service config
+if [ -f /etc/sysconfig/klogd ] ; then
+        . /etc/sysconfig/klogd
+fi
+
+if [ -n "$CONSOLELOG_LEVEL" ]; then
+	OPTIONS="$OPTIONS -c $CONSOLELOG_LEVEL"
+fi
+
+
+# See how we were called.
+case "$1" in
+  start)
+	# Check if the service is already running?
+	if [ ! -f /var/lock/subsys/klogd ]; then
+		show Starting kernel loggers
+		daemon klogd $OPTIONS
+	else
+		echo "kernel loggers already are running"
+	fi
+	touch /var/lock/subsys/klogd
+	;;
+    stop)	
+	show Stoping kernel loggers
+	killproc klogd
+	rm -f /var/lock/subsys/klogd
+	;;
+  status)
+	status klogd
+	;;
+  restart|reload)
+	$0 stop
+	$0 start
+	;;
+  *)
+	echo "Usage: $0 {start|stop|status|restart|reload}"
+	exit 1
+esac
+
+exit 0

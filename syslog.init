@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# syslog        Starts syslogd/klogd.
+# syslog        Starts syslogd.
 #
 #
 # chkconfig:	2345 30 70
@@ -15,14 +15,15 @@
 # Get network config
 . /etc/sysconfig/network
 
+# Set defaults        
+ENABLE_RECEIVE_FROM_NET=no
+HOSTLIST=""
+DOMAINLIST=""
+MARK_TIMESTAMP=""
+
 # Get service config
 if [ -f /etc/sysconfig/syslog ] ; then
         . /etc/sysconfig/syslog
-else
-        ENABLE_RECEIVE_FROM_NET=no
-        HOSTLIST=""
-        DOMAINLIST=""
-        MARK_TIMESTAMP=""
 fi
 
 if [ "$ENABLE_RECEIVE_FROM_NET" = yes ]; then
@@ -49,26 +50,23 @@ case "$1" in
 	if [ ! -f /var/lock/subsys/syslog ]; then
 		show Starting system loggers
 		daemon syslogd $OPTIONS
-
-		show Starting kernel loggers
-		daemon klogd
 	else
 		echo "system loggers already are running"
 	fi
 	touch /var/lock/subsys/syslog
 	;;
     stop)	
-	show Stoping kernel loggers
-	killproc klogd
 	show Stoping system loggers
 	killproc syslogd
 	rm -f /var/lock/subsys/syslog
 	;;
   status)
 	status syslogd
-	status klogd
 	;;
-  restart|reload)
+  reload)
+	killproc syslogd -HUP
+	;;
+  restart)
 	$0 stop
 	$0 start
 	;;
