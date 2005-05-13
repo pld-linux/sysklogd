@@ -9,7 +9,7 @@ Summary(pt_BR):	Registrador de log do sistema linux
 Summary(tr):	Linux sistem ve çekirdek kayýt süreci
 Name:		sysklogd
 Version:	1.4.1
-Release:	12.1
+Release:	13
 License:	GPL
 Group:		Daemons
 Source0:	http://www.ibiblio.org/pub/Linux/system/daemons/%{name}-%{version}.tar.gz
@@ -94,7 +94,6 @@ Group:		Daemons
 PreReq:		rc-scripts >= 0.2.0
 Requires(post,preun):	/sbin/chkconfig
 Requires(post):	fileutils
-Requires:	SysVinit >= 2.76-12
 Requires:	klogd
 Requires:	logrotate >= 3.2-3
 Requires:	psmisc >= 20.1
