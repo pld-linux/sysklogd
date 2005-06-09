@@ -1,0 +1,2 @@
+- release 13
+- removed req: SysVinit (it was not needed, leftover from the past ;)
