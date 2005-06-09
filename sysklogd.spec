@@ -228,10 +228,10 @@ fi
 /sbin/chkconfig --del syslog
 /sbin/chkconfig --add syslog
 if [ -f /etc/syslog.conf.rpmsave ]; then
-	mv -f /etc/syslog.conf /etc/syslog.conf.rpmnew
-	mv -f /etc/syslog.conf.rpmsave /etc/syslog.conf
-	echo "Moved /etc/syslog.conf.rpmsave as /etc/syslog.conf"
-	echo "Original file from package is avaible as /etc/syslog.conf.rpmnew"
+	mv -f /etc/syslog.conf{,.rpmnew}
+	mv -f /etc/syslog.conf{.rpmsave,}
+	echo "Moved /etc/syslog.conf.rpmsave to /etc/syslog.conf"
+	echo "Original file from package is available as /etc/syslog.conf.rpmnew"
 fi
 
 %clean
