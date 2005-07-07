@@ -1,5 +1,6 @@
 # TODO:
 # - trigger for upgrade from inetutils-syslogd
+# - can't handle files larger than 2GB
 Summary:	Linux system and kernel logger
 Summary(de):	Linux-System- und Kerner-Logger
 Summary(es):	Registrador de log del sistema linux
