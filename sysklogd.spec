@@ -1,6 +1,5 @@
 # TODO:
 # - trigger for upgrade from inetutils-syslogd
-# - can't handle files larger than 2GB
 Summary:	Linux system and kernel logger
 Summary(de):	Linux-System- und Kerner-Logger
 Summary(es):	Registrador de log del sistema linux
@@ -10,7 +9,7 @@ Summary(pt_BR):	Registrador de log do sistema linux
 Summary(tr):	Linux sistem ve çekirdek kayýt süreci
 Name:		sysklogd
 Version:	1.4.1
-Release:	13.3
+Release:	14
 License:	GPL
 Group:		Daemons
 Source0:	http://www.ibiblio.org/pub/Linux/system/daemons/%{name}-%{version}.tar.gz
@@ -37,7 +36,7 @@ Patch10:	%{name}-fmt-string.patch
 Patch11:	%{name}-2.4headers.patch
 Patch12:	%{name}-SO_BSDCOMPAT.patch
 URL:		http://www.infodrom.org/projects/sysklogd/
-BuildRequires:	fork-on-start-is-broken
+#BuildRequires:	fork-on-start-is-broken
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_exec_prefix	/
