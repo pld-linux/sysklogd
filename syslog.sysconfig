@@ -17,3 +17,6 @@ MARK_TIMESTAMP=0
 
 # Use additional sockets, i. e. socket from chrooted bind
 ADDITIONAL_SOCK=""
+
+# run syslog as this user.
+#RUNAS=syslog

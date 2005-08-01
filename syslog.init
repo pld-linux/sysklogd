@@ -42,7 +42,10 @@ if [ -n "$DOMAINLIST" ]; then
 fi
 if [ -n "$ADDITIONAL_SOCK" ]; then
 	OPTIONS="$OPTIONS -a $ADDITIONAL_SOCK"
-fi	
+fi
+if [ -n "$RUNAS" ]; then
+	OPTIONS="$OPTIONS -u $RUNAS"
+fi
 
 RETVAL=0
 # See how we were called.

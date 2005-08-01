@@ -23,6 +23,10 @@ if [ -n "$CONSOLELOG_LEVEL" ]; then
 	OPTIONS="$OPTIONS -c $CONSOLELOG_LEVEL"
 fi
 
+if [ -n "$RUNAS" ]; then
+	OPTIONS="$OPTIONS -u $RUNAS"
+fi
+
 RETVAL=0
 # See how we were called.
 case "$1" in
@@ -41,6 +45,7 @@ case "$1" in
 	if [ -f /var/lock/subsys/klogd ]; then
 		msg_stopping "Kernel logger"
 		killproc klogd
+		/sbin/klogd -r
 		rm -f /var/lock/subsys/klogd >/dev/null 2>&1
 	else
 		msg_not_running "Kernel logger"
