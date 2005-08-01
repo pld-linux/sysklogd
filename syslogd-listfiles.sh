@@ -7,10 +7,12 @@ OPT_NEWS=0
 
 usage ()
 {
-	cat > /dev/stderr <<EOF
-PLD GNU/Linux syslogd-listfiles =VER=.  Copyright (C) 2000 S.Zagrodzki.
-This is free software; see the GNU General Public Licence
-version 2 or later for copying conditions.  There is NO warranty.
+	local VER=$(echo '$Revision$' | awk '{print $2}')
+	cat 2>&1 <<EOF
+PLD Linux syslogd-listfiles $VER.  Copyright (C) 2000 S.Zagrodzki,
+Copyright (C) 2005 Elan Ruusamäe.  This is free software; see the GNU General
+Public Licence version 2 or later for copying conditions.  There is NO
+warranty.
 
 Usage: syslogd-listfiles <options>
 Options: -f file        specifies another syslog.conf file
@@ -19,6 +21,10 @@ Options: -f file        specifies another syslog.conf file
          --news         include news logfiles, too
          -w | --weekly  use weekly pattern instead of daily
 EOF
+# TODO from original .pl file:
+#	--ignore-size  don't rotate files which got too large
+#	--large nnn	define what is large in bytes (default: 10MB)
+#	-s pattern	skip files matching pattern
 }
 
 while [ -n "$1" ]; do
@@ -51,51 +57,43 @@ while [ -n "$1" ]; do
 	esac
 done
 
-while read LINIA; do
-	if echo "$LINIA" | grep -qv "^#" && [ -n "$LINIA" ]; then
-		LINIA="`echo "$LINIA" | sed 's/^[[:space:]]*//'`"
-		if [ "$LINIA" = "${LINIA%\\}" ]; then
-			LINIA="`echo "$LINIA" | sed \
-				-e "s/[[:space:]]\+/	/g" \
-				-e 's/	-/	/g' \
-			`"
-			if 
-				echo "$LINIA" | grep -qv "	/dev" &&\
-				echo "$LINIA" | grep -qv "	\*"
-			then
-				PAT="`echo "$LINIA" | cut -f 1`"
-				FILE="`echo "$LINIA" | cut -f 2`"
-				OUTPUT=0
-				if
-					echo "$PAT" |\
-					grep -qv 'news\.\(crit|err|notice\)' ||\
-					[ "$OPT_NEWS" = "1" ]
-				then
-					if [ "$OPT_ALL" = "1" ]; then
-						OUTPUT=1
-					elif [ "$OPT_AUTH" = "1" ]; then
-						echo "$PAT" |\
-						grep 'auth[^\.]*\.' |\
-						grep -qv 'auth[^\.]*\.none' &&\
-						OUTPUT=1
-					else
-						echo "$PAT" | grep -q '\*\.\*'
-						I="$?"
-						if [ "$I" = "0" ] &&\
-							[ "$OPT_DAILY" = "1" ]
-						then
-							OUTPUT=1
-						elif [ "$I" = "1" ] &&\
-							[ "$OPT_DAILY" = "0" ]
-						then
-							OUTPUT=1
-						fi
-					fi
-				fi
-				if [ "$OUTPUT" = "1" ]; then
-					echo "$FILE"
-				fi
-			fi
-		fi
-	fi
-done < "$CONF"
+# some magic is appearing here, line continuations are parsed by shell so we
+# need not to take extra care on that.
+egrep -v '^(#|[ \t]*$)' "$CONF" | while read line; do
+	echo "$line"
+done | awk -vopt_news=$OPT_NEWS -vopt_all=$OPT_ALL -vopt_auth=$OPT_AUTH -vopt_daily=$OPT_DAILY '{
+	file = $NF;
+	sub("^-", "", file);
+
+	# skip /dev and not full paths (skips effectively remote logging and program pipes)
+	if (file ~ /^\/dev/ || file !~ /^\//) {
+		next;
+	}
+	pat = substr($0, 0, length($0) - length($NF));
+
+	# These files are handled by news.daily from INN, so we ignore them
+	if (!opt_news && (pat ~ /news\.(\*|crit|err|info|notice)/)) {
+		next;
+	}
+
+	output = 0;
+	if (opt_all) {
+		output = 1;
+	} else if (opt_auth) {
+		if (pat ~ /auth[^\.]*\./ && pat !~ /auth[^\.]*\.none/) {
+			output = 1;
+		}
+	} else {
+		everything = (pat ~ /\*\.\*/);
+		if ((everything && opt_daily)) {
+			output = 1
+		}
+		if ((!everything && !opt_daily)) {
+			output = 1
+		}
+	}
+
+	if (output) {
+		print file;
+	}
+}'
