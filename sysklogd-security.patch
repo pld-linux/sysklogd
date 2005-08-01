@@ -117,20 +117,6 @@ diff -Nur sysklogd-1.4.1.orig/klogd.c sysklogd-1.4.1/klogd.c
  		    case 'i':		/* Reload module symbols. */
  			SignalDaemon(SIGUSR1);
  			return(0);
-@@ -1161,6 +1193,13 @@
- 	if (symbol_lookup) {
- 		InitKsyms(symfile);
- 		InitMsyms();
-+	}
-+
-+	/* Drop privileges if a user name was specified on the command line */
-+	if (drop_privileges) {
-+		setgroups(0, NULL);
-+		setgid(server_gid);
-+		setuid(server_uid);
- 	}
- 
-         /* The main loop. */
 diff -Nur sysklogd-1.4.1.orig/sysklogd.8 sysklogd-1.4.1/sysklogd.8
 --- sysklogd-1.4.1.orig/sysklogd.8	Sun Mar 11 20:35:51 2001
 +++ sysklogd-1.4.1/sysklogd.8	Fri Mar 16 14:40:16 2001
@@ -252,3 +238,19 @@ diff -Nur sysklogd-1.4.1.orig/syslogd.c sysklogd-1.4.1/syslogd.c
  	exit(1);
  }
  
+--- ./klogd.c~	2005-08-01 18:53:54.000000000 +0300
++++ ./klogd.c	2005-08-01 19:04:26.000000000 +0300
+@@ -1204,6 +1204,13 @@
+ 		}
+ 	}
+ 
++	/* Drop privileges if a user name was specified on the command line */
++	if (drop_privileges) {
++		setgroups(0, NULL);
++		setgid(server_gid);
++		setuid(server_uid);
++	}
++
+         /* The main loop. */
+ 	while (1)
+ 	{
