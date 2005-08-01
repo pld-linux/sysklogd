@@ -1,6 +1,5 @@
 # TODO:
 # - trigger for upgrade from inetutils-syslogd
-# - run as syslog:syslog user
 Summary:	Linux system and kernel logger
 Summary(de):	Linux-System- und Kerner-Logger
 Summary(es):	Registrador de log del sistema linux
@@ -10,7 +9,7 @@ Summary(pt_BR):	Registrador de log do sistema linux
 Summary(tr):	Linux sistem ve çekirdek kayýt süreci
 Name:		sysklogd
 Version:	1.4.1
-Release:	14
+Release:	14.12
 License:	GPL
 Group:		Daemons
 Source0:	http://www.ibiblio.org/pub/Linux/system/daemons/%{name}-%{version}.tar.gz
@@ -31,17 +30,19 @@ Patch4:		%{name}-sparc.patch
 Patch5:		%{name}-install.patch
 Patch6:		%{name}-utmp-process.patch
 Patch7:		%{name}-openlog.patch
-Patch8:		%{name}-ksyms.patch
+Patch8:		%{name}-security.patch
 Patch9:		%{name}-nullterm.patch
 Patch10:	%{name}-fmt-string.patch
 Patch11:	%{name}-2.4headers.patch
 Patch12:	%{name}-SO_BSDCOMPAT.patch
+Patch13:	%{name}-ksyms.patch
 URL:		http://www.infodrom.org/projects/sysklogd/
 #BuildRequires:	fork-on-start-is-broken
+BuildRequires:	rpmbuild(macros) >= 1.202
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_exec_prefix	/
-%define 	_bindir		/usr/bin
+%define 	_bindir			/usr/sbin
 
 %description
 This is the Linux system and kernel logging program. It is run as a
@@ -92,13 +93,21 @@ Summary:	Linux system logger
 Summary(de):	Linux-System-Logger
 Summary(pl):	Program loguj±cy zdarzenia w systemie Linux
 Group:		Daemons
-PreReq:		rc-scripts >= 0.2.0
+Requires(post,preun):	rc-scripts >= 0.2.0
 Requires(post,preun):	/sbin/chkconfig
 Requires(post):	fileutils
+Requires(pre):  /bin/id
+Requires(pre):  /usr/bin/getgid
+Requires(pre):  /usr/sbin/useradd
+Requires(pre):  /usr/sbin/groupadd
+Requires(postun):	/usr/sbin/userdel
+Requires(postun):	/usr/sbin/groupdel
 Requires:	klogd
 Requires:	logrotate >= 3.2-3
 Requires:	psmisc >= 20.1
 Provides:	syslogdaemon
+Provides:	user(syslog)
+Provides:	group(syslog)
 Obsoletes:	sysklogd
 Obsoletes:	syslog-ng
 Obsoletes:	msyslog
@@ -122,8 +131,16 @@ Summary:	Linux kernel logger
 Summary(de):	Linux-Kerner-Logger
 Summary(pl):	Program loguj±cy zdarzenia w j±drze Linuksa
 Group:		Daemons
-PreReq:		rc-scripts >= 0.2.0
+Requires(post,preun):	rc-scripts >= 0.2.0
 Requires(post,preun):	/sbin/chkconfig
+Requires(pre):  /bin/id
+Requires(pre):  /usr/bin/getgid
+Requires(pre):  /usr/sbin/useradd
+Requires(pre):  /usr/sbin/groupadd
+Requires(postun):	/usr/sbin/userdel
+Requires(postun):	/usr/sbin/groupdel
+Provides:	user(syslog)
+Provides:	group(syslog)
 Obsoletes:	sysklogd
 
 %description -n klogd
@@ -149,6 +166,7 @@ do logowania komunikatów j±dra Linuksa.
 %patch10 -p1
 %patch11 -p1
 %patch12 -p1
+%patch13 -p1
 
 %build
 %{__make} \
@@ -183,12 +201,21 @@ done
 
 echo .so sysklogd.8 > $RPM_BUILD_ROOT%{_mandir}/man8/syslogd.8
 
+%pre -n syslog
+%groupadd -P syslog -g 18 syslog
+%useradd -P syslog -u 18 -g syslog -c "Syslog User" syslog
+
 %post -n syslog
-for n in /var/log/{alert,debug,kernel,maillog,messages,news.log,secure,syslog}
-do
-	[ -f $n ] && continue
-	> $n
-	chmod 640 $n
+for n in /var/log/{alert,debug,kernel,maillog,messages,news.log,secure,syslog}; do
+	if [ -f $n ]; then
+		chown syslog:syslog $n
+		continue
+	else
+		touch $n
+		chmod 000 $n
+		chown syslog:syslog $n
+		chmod 640 $n
+	fi
 done
 
 /sbin/chkconfig --add syslog
@@ -209,6 +236,16 @@ if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del syslog
 fi
 
+%postun -n syslog
+if [ "$1" = "0" ]; then
+	%userremove syslog
+	%groupremove syslog
+fi
+
+%pre -n klogd
+%groupadd -P syslog -g 18 syslog
+%useradd -P syslog -u 18 -g syslog -c "Syslog User" syslog
+
 %post -n klogd
 /sbin/chkconfig --add klogd
 if [ -f /var/lock/subsys/klogd ]; then
@@ -223,6 +260,12 @@ if [ "$1" = "0" ]; then
 		/etc/rc.d/init.d/klogd stop 1>&2
 	fi
 	/sbin/chkconfig --del klogd
+fi
+
+%postun -n klogd
+if [ "$1" = "0" ]; then
+	%userremove syslog
+	%groupremove syslog
 fi
 
 %triggerpostun -- inetutils-syslogd
