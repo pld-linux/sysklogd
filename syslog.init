@@ -21,6 +21,7 @@ HOSTLIST=""
 DOMAINLIST=""
 MARK_TIMESTAMP=""
 ADDITIONAL_SOCK=""
+CONFIG_FILE="/etc/syslog.conf"
 
 # Get service config
 [ -f /etc/sysconfig/syslog ] && . /etc/sysconfig/syslog
@@ -43,8 +44,10 @@ fi
 if [ -n "$ADDITIONAL_SOCK" ]; then
 	OPTIONS="$OPTIONS -a $ADDITIONAL_SOCK"
 fi
+FIXFILES=""
 if [ -n "$RUNAS" ]; then
 	OPTIONS="$OPTIONS -u $RUNAS"
+	FIXFILES=$(/usr/sbin/syslogd-listfiles -f "$CONFIG_FILE" -a)
 fi
 
 RETVAL=0
@@ -54,6 +57,9 @@ case "$1" in
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/syslog ]; then
 		msg_starting "System logger"
+		if [ "$FIXFILES" ]; then
+			chown ${RUNAS}: $FIXFILES
+		fi
 		daemon syslogd $OPTIONS
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/syslog
