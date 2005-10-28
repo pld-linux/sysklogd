@@ -42,7 +42,9 @@ if [ -n "$DOMAINLIST" ]; then
 	OPTIONS="$OPTIONS -s $DOMAINLIST"
 fi
 if [ -n "$ADDITIONAL_SOCK" ]; then
-	OPTIONS="$OPTIONS -a \"$ADDITIONAL_SOCK\""
+	for a in $ADDITIONAL_SOCK; do
+		OPTIONS="$OPTIONS -a $a"
+	done
 fi
 FIXFILES=""
 if [ -n "$RUNAS" ]; then
