@@ -15,7 +15,7 @@ DOMAINLIST=""
 # "-- MARK --"
 MARK_TIMESTAMP=0
 
-# Use additional sockets, i. e. socket from chrooted bind
+# Use additional sockets separated with space, i. e. socket from chrooted bind or from vserver
 ADDITIONAL_SOCK=""
 
 # run syslog as this user.
