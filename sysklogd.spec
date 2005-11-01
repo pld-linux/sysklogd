@@ -9,7 +9,7 @@ Summary(pt_BR):	Registrador de log do sistema linux
 Summary(tr):	Linux sistem ve çekirdek kayýt süreci
 Name:		sysklogd
 Version:	1.4.1
-Release:	17
+Release:	17.4
 License:	GPL
 Group:		Daemons
 Source0:	http://www.ibiblio.org/pub/Linux/system/daemons/%{name}-%{version}.tar.gz
@@ -284,13 +284,18 @@ fi
 cp -f /etc/sysconfig/syslog{,.rpmsave}
 sed -i -e '/^ADDITIONAL_SOCK=/s/-a //g' /etc/sysconfig/syslog
 
+%triggerpostun -- syslog < 1.4.1-17.4
+# reset config file permission, so people running with syslog uid can
+# survive syslog reload
+chgrp syslog /etc/syslog.conf
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files -n syslog
 %defattr(644,root,root,755)
 %doc ANNOUNCE NEWS README* CHANGES
-%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/*.conf
+%attr(640,root,syslog) %config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/*.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/syslog
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/logrotate.d/syslog
 %attr(754,root,root) /etc/rc.d/init.d/syslog
