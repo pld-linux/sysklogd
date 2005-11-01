@@ -244,8 +244,8 @@ if [ "$1" = "0" ]; then
 fi
 
 %pre -n klogd
-%groupadd -P syslog -g 18 syslog
-%useradd -P syslog -u 18 -g syslog -c "Syslog User" syslog
+%groupadd -P klogd -g 18 syslog
+%useradd -P klogd -u 18 -g syslog -c "Syslog User" syslog
 
 %post -n klogd
 /sbin/chkconfig --add klogd
