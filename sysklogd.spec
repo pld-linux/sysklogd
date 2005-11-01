@@ -9,7 +9,7 @@ Summary(pt_BR):	Registrador de log do sistema linux
 Summary(tr):	Linux sistem ve çekirdek kayýt süreci
 Name:		sysklogd
 Version:	1.4.1
-Release:	17.4
+Release:	17.18
 License:	GPL
 Group:		Daemons
 Source0:	http://www.ibiblio.org/pub/Linux/system/daemons/%{name}-%{version}.tar.gz
@@ -279,12 +279,11 @@ if [ -f /etc/syslog.conf.rpmsave ]; then
 	echo "Original file from package is available as /etc/syslog.conf.rpmnew"
 fi
 
-%triggerpostun -- syslog < 1.4.1-17
+%triggerpostun -n syslog -- syslog < 1.4.1-17.7
 # remove any -a option from ADDITIONAL_SOCK
 cp -f /etc/sysconfig/syslog{,.rpmsave}
 sed -i -e '/^ADDITIONAL_SOCK=/s/-a //g' /etc/sysconfig/syslog
 
-%triggerpostun -- syslog < 1.4.1-17.4
 # reset config file permission, so people running with syslog uid can
 # survive syslog reload
 chgrp syslog /etc/syslog.conf
