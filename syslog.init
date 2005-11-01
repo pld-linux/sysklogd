@@ -52,9 +52,11 @@ if [ -n "$RUNAS" ]; then
 fi
 
 chown_syslog_files() {
-	[ -z "$RUNAS" ] || return
+	[ -n "$RUNAS" ] || return
 
-	chown ${RUNAS}: $(/usr/sbin/syslogd-listfiles -f "$CONFIG_FILE" -a)
+	local files=$(/usr/sbin/syslogd-listfiles -f "$CONFIG_FILE" -a)
+	touch $files
+	chown ${RUNAS}: $files
 }
 
 RETVAL=0
