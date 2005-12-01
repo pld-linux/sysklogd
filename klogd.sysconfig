@@ -1,7 +1,0 @@
-# klog console loggin level. Look at /usr/include/linux/kernel.h for values.
-# [1-7]
-CONSOLELOG_LEVEL=1
-
-# run klogd as this user.
-# note it doesn't work (yet?) as non-root: http://glen.alkohol.ee/pld/klogd-syslog.txt.bz2
-#RUNAS=syslog
