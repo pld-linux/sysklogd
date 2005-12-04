@@ -70,8 +70,8 @@ sendmail, de sécurité et d'erreurs d'autres démons. I
 
 %description -l pl
 Pakiet ten zawiera programy, które s± uruchamiane jako demony i s³u¿±
-do logowania zdarzeñ w systemie i w j±drze Linuksa. Same logi mog±
-byæ sk³adowane w ró¿nych miejscach (zdalnie i lokalnie). Przewa¿nie do
+do logowania zdarzeñ w systemie i w j±drze Linuksa. Same logi mog± byæ
+sk³adowane w ró¿nych miejscach (zdalnie i lokalnie). Przewa¿nie do
 logów trafiaj± informacje o odbieranej i wysy³anej poczcie np. z
 sendmaila, zdarzenia dotycz±ce bezpieczeñstwa systemu, a tak¿e
 informacje o b³êdach z innych demonów.
@@ -93,15 +93,15 @@ Summary:	Linux system logger
 Summary(de):	Linux-System-Logger
 Summary(pl):	Program loguj±cy zdarzenia w systemie Linux
 Group:		Daemons
-Requires(post,preun):	rc-scripts >= 0.2.0
-Requires(post,preun):	/sbin/chkconfig
 Requires(post):	fileutils
+Requires(post,preun):	/sbin/chkconfig
+Requires(post,preun):	rc-scripts >= 0.2.0
+Requires(postun):	/usr/sbin/groupdel
+Requires(postun):	/usr/sbin/userdel
 Requires(pre):  /bin/id
 Requires(pre):  /usr/bin/getgid
-Requires(pre):  /usr/sbin/useradd
 Requires(pre):  /usr/sbin/groupadd
-Requires(postun):	/usr/sbin/userdel
-Requires(postun):	/usr/sbin/groupdel
+Requires(pre):  /usr/sbin/useradd
 Requires(triggerpostun):	sed >= 4.0
 Requires:	klogd
 Requires:	logrotate >= 3.2-3
@@ -132,14 +132,14 @@ Summary:	Linux kernel logger
 Summary(de):	Linux-Kerner-Logger
 Summary(pl):	Program loguj±cy zdarzenia w j±drze Linuksa
 Group:		Daemons
-Requires(post,preun):	rc-scripts >= 0.2.0
 Requires(post,preun):	/sbin/chkconfig
+Requires(post,preun):	rc-scripts >= 0.2.0
+Requires(postun):	/usr/sbin/groupdel
+Requires(postun):	/usr/sbin/userdel
 Requires(pre):  /bin/id
 Requires(pre):  /usr/bin/getgid
-Requires(pre):  /usr/sbin/useradd
 Requires(pre):  /usr/sbin/groupadd
-Requires(postun):	/usr/sbin/userdel
-Requires(postun):	/usr/sbin/groupdel
+Requires(pre):  /usr/sbin/useradd
 Provides:	user(syslog)
 Provides:	group(syslog)
 Obsoletes:	sysklogd
@@ -294,9 +294,9 @@ rm -rf $RPM_BUILD_ROOT
 %files -n syslog
 %defattr(644,root,root,755)
 %doc ANNOUNCE NEWS README* CHANGES
-%attr(640,root,syslog) %config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/*.conf
-%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/syslog
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/logrotate.d/syslog
+%attr(640,root,syslog) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/*.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/syslog
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/syslog
 %attr(754,root,root) /etc/rc.d/init.d/syslog
 %attr(640,root,root) %ghost /var/log/*
 %attr(755,root,root) %{_sbindir}/syslogd
@@ -307,7 +307,7 @@ rm -rf $RPM_BUILD_ROOT
 %files -n klogd
 %defattr(644,root,root,755)
 %attr(754,root,root) /etc/rc.d/init.d/klogd
-%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/klogd
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/klogd
 
 %attr(755,root,root) %{_sbindir}/klogd
 
