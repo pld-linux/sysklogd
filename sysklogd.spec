@@ -9,7 +9,7 @@ Summary(pt_BR):	Registrador de log do sistema linux
 Summary(tr):	Linux sistem ve çekirdek kayýt süreci
 Name:		sysklogd
 Version:	1.4.1
-Release:	18
+Release:	19
 License:	GPL
 Group:		Daemons
 Source0:	http://www.ibiblio.org/pub/Linux/system/daemons/%{name}-%{version}.tar.gz
@@ -98,10 +98,10 @@ Requires(post,preun):	/sbin/chkconfig
 Requires(post,preun):	rc-scripts >= 0.2.0
 Requires(postun):	/usr/sbin/groupdel
 Requires(postun):	/usr/sbin/userdel
-Requires(pre):  /bin/id
-Requires(pre):  /usr/bin/getgid
-Requires(pre):  /usr/sbin/groupadd
-Requires(pre):  /usr/sbin/useradd
+Requires(pre):	/bin/id
+Requires(pre):	/usr/bin/getgid
+Requires(pre):	/usr/sbin/groupadd
+Requires(pre):	/usr/sbin/useradd
 Requires(triggerpostun):	sed >= 4.0
 Requires:	klogd
 Requires:	logrotate >= 3.2-3
@@ -136,10 +136,10 @@ Requires(post,preun):	/sbin/chkconfig
 Requires(post,preun):	rc-scripts >= 0.2.0
 Requires(postun):	/usr/sbin/groupdel
 Requires(postun):	/usr/sbin/userdel
-Requires(pre):  /bin/id
-Requires(pre):  /usr/bin/getgid
-Requires(pre):  /usr/sbin/groupadd
-Requires(pre):  /usr/sbin/useradd
+Requires(pre):	/bin/id
+Requires(pre):	/usr/bin/getgid
+Requires(pre):	/usr/sbin/groupadd
+Requires(pre):	/usr/sbin/useradd
 Provides:	user(syslog)
 Provides:	group(syslog)
 Obsoletes:	sysklogd
@@ -205,6 +205,7 @@ echo .so sysklogd.8 > $RPM_BUILD_ROOT%{_mandir}/man8/syslogd.8
 %pre -n syslog
 %groupadd -P syslog -g 18 syslog
 %useradd -P syslog -u 18 -g syslog -c "Syslog User" syslog
+%addusertogroup syslog logs
 
 %post -n syslog
 for n in /var/log/{alert,debug,kernel,maillog,messages,news.log,secure,syslog}; do
