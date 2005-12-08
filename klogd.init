@@ -38,7 +38,7 @@ case "$1" in
 		msg_already_running "Kernel logger"
 	fi
 	;;
-  stop)	
+  stop)
 	if [ -f /var/lock/subsys/klogd ]; then
 		msg_stopping "Kernel logger"
 		killproc klogd
@@ -46,7 +46,7 @@ case "$1" in
 		rm -f /var/lock/subsys/klogd >/dev/null 2>&1
 	else
 		msg_not_running "Kernel logger"
-	fi	
+	fi
 	;;
   status)
 	status klogd
