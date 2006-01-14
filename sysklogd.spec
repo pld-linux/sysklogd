@@ -11,6 +11,7 @@ Release:	9
 License:	GPL
 Group:		Daemons
 Source0:	http://www.ibiblio.org/pub/Linux/system/daemons/%{name}-%{version}.tar.gz
+# Source0-md5:	d214aa40beabf7bdb0c9b3c64432c774
 Source1:	syslog.conf
 Source2:	syslog.init
 Source3:	syslog.logrotate
