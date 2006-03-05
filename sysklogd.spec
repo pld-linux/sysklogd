@@ -9,7 +9,7 @@ Summary(pt_BR):	Registrador de log do sistema linux
 Summary(tr):	Linux sistem ve çekirdek kayýt süreci
 Name:		sysklogd
 Version:	1.4.1
-Release:	19.1
+Release:	19.2
 License:	GPL
 Group:		Daemons
 Source0:	http://www.ibiblio.org/pub/Linux/system/daemons/%{name}-%{version}.tar.gz
@@ -106,12 +106,12 @@ Requires(triggerpostun):	sed >= 4.0
 Requires:	klogd
 Requires:	logrotate >= 3.2-3
 Requires:	psmisc >= 20.1
+Provides:	group(syslog)
 Provides:	syslogdaemon
 Provides:	user(syslog)
-Provides:	group(syslog)
+Obsoletes:	msyslog
 Obsoletes:	sysklogd
 Obsoletes:	syslog-ng
-Obsoletes:	msyslog
 
 %description -n syslog
 This is the Linux system logging program. It is run as a daemon
@@ -140,8 +140,8 @@ Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
-Provides:	user(syslog)
 Provides:	group(syslog)
+Provides:	user(syslog)
 Obsoletes:	sysklogd
 
 %description -n klogd
@@ -192,7 +192,7 @@ install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/syslog
 install %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/klogd
 install %{SOURCE6} $RPM_BUILD_ROOT/etc/sysconfig/klogd
 
-install %{SOURCE7} $RPM_BUILD_ROOT%{_bindir}/syslogd-listfiles
+install %{SOURCE7} $RPM_BUILD_ROOT%{_sbindir}/syslogd-listfiles
 install %{SOURCE8} $RPM_BUILD_ROOT%{_mandir}/man8
 
 for n in debug kernel maillog messages secure syslog user spooler lpr daemon
@@ -202,13 +202,16 @@ done
 
 echo .so sysklogd.8 > $RPM_BUILD_ROOT%{_mandir}/man8/syslogd.8
 
+# our strip can't strip otherwise
+chmod u+w $RPM_BUILD_ROOT%{_sbindir}/{klogd,syslogd}
+
 %pre -n syslog
 %groupadd -P syslog -g 18 syslog
 %useradd -P syslog -u 18 -g syslog -c "Syslog User" syslog
 %addusertogroup syslog logs
 
 %post -n syslog
-for n in /var/log/{cron,daemon,debug,kernel,lpr,maillog,messages,secure,spooler,syslog,user}
+for n in /var/log/{cron,daemon,debug,kernel,lpr,maillog,messages,secure,spooler,syslog,user}; do
 	if [ -f $n ]; then
 		chown syslog:syslog $n
 		continue
@@ -301,7 +304,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(754,root,root) /etc/rc.d/init.d/syslog
 %attr(640,root,root) %ghost /var/log/*
 %attr(755,root,root) %{_sbindir}/syslogd
-%attr(755,root,root) %{_bindir}/*
+%attr(755,root,root) %{_sbindir}/syslogd-listfiles
 %{_mandir}/man5/*
 %{_mandir}/man8/sys*
 
