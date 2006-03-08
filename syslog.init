@@ -51,7 +51,7 @@ fi
 chown_syslog_files() {
 	[ -n "$RUNAS" ] || return
 
-	local files=$(/usr/sbin/syslogd-listfiles -f "$CONFIG_FILE" -a)
+	local files=$(/sbin/syslogd-listfiles -f "$CONFIG_FILE" -a)
 	touch $files
 	chown ${RUNAS}: $files
 }
