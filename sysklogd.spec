@@ -37,8 +37,7 @@ Patch11:	%{name}-2.4headers.patch
 Patch12:	%{name}-SO_BSDCOMPAT.patch
 Patch13:	%{name}-ksyms.patch
 URL:		http://www.infodrom.org/projects/sysklogd/
-#BuildRequires:	fork-on-start-is-broken
-BuildRequires:	rpmbuild(macros) >= 1.202
+BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_exec_prefix	/
@@ -224,20 +223,12 @@ for n in /var/log/{cron,daemon,debug,kernel,lpr,maillog,messages,secure,spooler,
 done
 
 /sbin/chkconfig --add syslog
-if [ -f /var/lock/subsys/syslog ]; then
-	/etc/rc.d/init.d/syslog restart 1>&2
-else
-	echo "Run \"/etc/rc.d/init.d/syslog start\" to start syslog daemon." 1>&2
-fi
-if [ -f /var/lock/subsys/klogd ]; then
-	/etc/rc.d/init.d/klogd restart 1>&2
-fi
+%service syslog restart "syslog daemon"
+%service -q klogd restart
 
 %preun -n syslog
 if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/syslog ]; then
-		/etc/rc.d/init.d/syslog stop 1>&2
-	fi
+	%service syslog stop
 	/sbin/chkconfig --del syslog
 fi
 
@@ -250,20 +241,15 @@ fi
 %pre -n klogd
 %groupadd -P klogd -g 18 syslog
 %useradd -P klogd -u 18 -g syslog -c "Syslog User" syslog
+%addusertogroup syslog logs
 
 %post -n klogd
 /sbin/chkconfig --add klogd
-if [ -f /var/lock/subsys/klogd ]; then
-	/etc/rc.d/init.d/klogd restart 1>&2
-else
-	echo "Run \"/etc/rc.d/init.d/klogd start\" to start kernel logger daemon." 1>&2
-fi
+%service klogd restart "kernel logger daemon"
 
 %preun -n klogd
 if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/klogd ]; then
-		/etc/rc.d/init.d/klogd stop 1>&2
-	fi
+	%service klogd stop
 	/sbin/chkconfig --del klogd
 fi
 
