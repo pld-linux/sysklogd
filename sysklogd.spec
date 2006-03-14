@@ -9,7 +9,7 @@ Summary(pt_BR):	Registrador de log do sistema linux
 Summary(tr):	Linux sistem ve çekirdek kayýt süreci
 Name:		sysklogd
 Version:	1.4.1
-Release:	19.2
+Release:	20
 License:	GPL
 Group:		Daemons
 Source0:	http://www.ibiblio.org/pub/Linux/system/daemons/%{name}-%{version}.tar.gz
@@ -191,7 +191,7 @@ install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/syslog
 install %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/klogd
 install %{SOURCE6} $RPM_BUILD_ROOT/etc/sysconfig/klogd
 
-install %{SOURCE7} $RPM_BUILD_ROOT%{_sbindir}/syslogd-listfiles
+install %{SOURCE7} $RPM_BUILD_ROOT%{_bindir}/syslogd-listfiles
 install %{SOURCE8} $RPM_BUILD_ROOT%{_mandir}/man8
 
 for n in debug kernel maillog messages secure syslog user spooler lpr daemon
@@ -290,7 +290,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(754,root,root) /etc/rc.d/init.d/syslog
 %attr(640,root,root) %ghost /var/log/*
 %attr(755,root,root) %{_sbindir}/syslogd
-%attr(755,root,root) %{_sbindir}/syslogd-listfiles
+%attr(755,root,root) %{_bindir}/syslogd-listfiles
 %{_mandir}/man5/*
 %{_mandir}/man8/sys*
 
