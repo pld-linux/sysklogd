@@ -51,7 +51,7 @@ fi
 chown_syslog_files() {
 	[ -n "$RUNAS" ] || return
 
-	local files=$(/sbin/syslogd-listfiles -f "$CONFIG_FILE" -a)
+	local files=$(/usr/sbin/syslogd-listfiles -f "$CONFIG_FILE" -a)
 	touch $files
 	chown ${RUNAS}: $files
 }
@@ -63,7 +63,6 @@ case "$1" in
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/syslog ]; then
 		msg_starting "System logger"
-		chown_syslog_files
 		daemon syslogd $OPTIONS
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/syslog
@@ -95,13 +94,21 @@ case "$1" in
 		exit 7
 	fi
 	;;
+  flush-logs)
+	if [ -f /var/lock/subsys/syslog ]; then
+		msg_reloading "System logger"
+		chown_syslog_files
+		killproc syslogd -HUP
+		RETVAL=$?
+	fi
+	;;
   restart)
 	$0 stop
 	$0 start
 	exit $?
 	;;
   *)
-	msg_usage "$0 {start|stop|restart|reload|force-reload|status}"
+	msg_usage "$0 {start|stop|restart|reload|force-reload|flush-logs|status}"
 	exit 3
 esac
 
