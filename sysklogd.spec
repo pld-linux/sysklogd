@@ -170,6 +170,7 @@ do logowania komunikatów j±dra Linuksa.
 
 %build
 %{__make} \
+	CC="%{__cc}" \
 	OPTIMIZE="%{rpmcflags} -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE" \
 	LDFLAGS="%{rpmldflags}"
 
