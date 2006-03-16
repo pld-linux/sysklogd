@@ -9,7 +9,7 @@ Summary(pt_BR):	Registrador de log do sistema linux
 Summary(tr):	Linux sistem ve çekirdek kayýt süreci
 Name:		sysklogd
 Version:	1.4.1
-Release:	19
+Release:	20
 License:	GPL
 Group:		Daemons
 Source0:	http://www.ibiblio.org/pub/Linux/system/daemons/%{name}-%{version}.tar.gz
@@ -37,8 +37,7 @@ Patch11:	%{name}-2.4headers.patch
 Patch12:	%{name}-SO_BSDCOMPAT.patch
 Patch13:	%{name}-ksyms.patch
 URL:		http://www.infodrom.org/projects/sysklogd/
-#BuildRequires:	fork-on-start-is-broken
-BuildRequires:	rpmbuild(macros) >= 1.202
+BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_exec_prefix	/
@@ -106,12 +105,12 @@ Requires(triggerpostun):	sed >= 4.0
 Requires:	klogd
 Requires:	logrotate >= 3.2-3
 Requires:	psmisc >= 20.1
+Provides:	group(syslog)
 Provides:	syslogdaemon
 Provides:	user(syslog)
-Provides:	group(syslog)
+Obsoletes:	msyslog
 Obsoletes:	sysklogd
 Obsoletes:	syslog-ng
-Obsoletes:	msyslog
 
 %description -n syslog
 This is the Linux system logging program. It is run as a daemon
@@ -140,8 +139,8 @@ Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
-Provides:	user(syslog)
 Provides:	group(syslog)
+Provides:	user(syslog)
 Obsoletes:	sysklogd
 
 %description -n klogd
@@ -171,6 +170,7 @@ do logowania komunikatów j±dra Linuksa.
 
 %build
 %{__make} \
+	CC="%{__cc}" \
 	OPTIMIZE="%{rpmcflags} -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE" \
 	LDFLAGS="%{rpmldflags}"
 
@@ -202,6 +202,9 @@ done
 
 echo .so sysklogd.8 > $RPM_BUILD_ROOT%{_mandir}/man8/syslogd.8
 
+# our strip can't strip otherwise
+chmod u+w $RPM_BUILD_ROOT%{_sbindir}/{klogd,syslogd}
+
 %pre -n syslog
 %groupadd -P syslog -g 18 syslog
 %useradd -P syslog -u 18 -g syslog -c "Syslog User" syslog
@@ -221,20 +224,12 @@ for n in /var/log/{alert,debug,kernel,maillog,messages,news.log,secure,syslog}; 
 done
 
 /sbin/chkconfig --add syslog
-if [ -f /var/lock/subsys/syslog ]; then
-	/etc/rc.d/init.d/syslog restart 1>&2
-else
-	echo "Run \"/etc/rc.d/init.d/syslog start\" to start syslog daemon." 1>&2
-fi
-if [ -f /var/lock/subsys/klogd ]; then
-	/etc/rc.d/init.d/klogd restart 1>&2
-fi
+%service syslog restart "syslog daemon"
+%service -q klogd restart
 
 %preun -n syslog
 if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/syslog ]; then
-		/etc/rc.d/init.d/syslog stop 1>&2
-	fi
+	%service syslog stop
 	/sbin/chkconfig --del syslog
 fi
 
@@ -247,20 +242,15 @@ fi
 %pre -n klogd
 %groupadd -P klogd -g 18 syslog
 %useradd -P klogd -u 18 -g syslog -c "Syslog User" syslog
+%addusertogroup syslog logs
 
 %post -n klogd
 /sbin/chkconfig --add klogd
-if [ -f /var/lock/subsys/klogd ]; then
-	/etc/rc.d/init.d/klogd restart 1>&2
-else
-	echo "Run \"/etc/rc.d/init.d/klogd start\" to start kernel logger daemon." 1>&2
-fi
+%service klogd restart "kernel logger daemon"
 
 %preun -n klogd
 if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/klogd ]; then
-		/etc/rc.d/init.d/klogd stop 1>&2
-	fi
+	%service klogd stop
 	/sbin/chkconfig --del klogd
 fi
 
@@ -301,7 +291,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(754,root,root) /etc/rc.d/init.d/syslog
 %attr(640,root,root) %ghost /var/log/*
 %attr(755,root,root) %{_sbindir}/syslogd
-%attr(755,root,root) %{_bindir}/*
+%attr(755,root,root) %{_bindir}/syslogd-listfiles
 %{_mandir}/man5/*
 %{_mandir}/man8/sys*
 
