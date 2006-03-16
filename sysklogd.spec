@@ -170,6 +170,7 @@ do logowania komunikatów j±dra Linuksa.
 
 %build
 %{__make} \
+	CC="%{__cc}" \
 	OPTIMIZE="%{rpmcflags} -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE" \
 	LDFLAGS="%{rpmldflags}"
 
@@ -194,7 +195,7 @@ install %{SOURCE6} $RPM_BUILD_ROOT/etc/sysconfig/klogd
 install %{SOURCE7} $RPM_BUILD_ROOT%{_bindir}/syslogd-listfiles
 install %{SOURCE8} $RPM_BUILD_ROOT%{_mandir}/man8
 
-for n in debug kernel maillog messages secure syslog user spooler lpr daemon
+for n in alert debug kernel maillog messages news.log secure syslog
 do
 	> $RPM_BUILD_ROOT/var/log/$n
 done
@@ -210,7 +211,7 @@ chmod u+w $RPM_BUILD_ROOT%{_sbindir}/{klogd,syslogd}
 %addusertogroup syslog logs
 
 %post -n syslog
-for n in /var/log/{cron,daemon,debug,kernel,lpr,maillog,messages,secure,spooler,syslog,user}; do
+for n in /var/log/{alert,debug,kernel,maillog,messages,news.log,secure,syslog}; do
 	if [ -f $n ]; then
 		chown syslog:syslog $n
 		continue
