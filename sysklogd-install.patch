@@ -1,6 +1,5 @@
-diff -ru sysklogd-1.3-31.old/Makefile sysklogd-1.3-31/Makefile
---- sysklogd-1.3-31.old/Makefile	Thu Apr 29 03:33:13 1999
-+++ sysklogd-1.3-31/Makefile	Thu Apr 29 03:35:48 1999
+--- sysklogd-1.3-31/Makefile	Thu Apr 29 03:35:48 1999
++++ sysklogd-1.4.1/Makefile	2006-03-27 21:14:09.000000000 +0300
 @@ -9,8 +9,8 @@
  
  # Look where your install program is.
@@ -12,8 +11,11 @@ diff -ru sysklogd-1.3-31.old/Makefile sysklogd-1.3-31/Makefile
  
  # There is one report that under an all ELF system there may be a need to
  # explicilty link with libresolv.a.  If linking syslogd fails you may wish
-@@ -117,7 +117,7 @@
- 	${INSTALL} -m 500 -s klogd ${BINDIR}/klogd
+@@ -116,8 +116,8 @@
+-	${INSTALL} -m 500 -s syslogd ${BINDIR}/syslogd
+-	${INSTALL} -m 500 -s klogd ${BINDIR}/klogd
++	${INSTALL} -m 500 syslogd ${BINDIR}/syslogd
++	${INSTALL} -m 500 klogd ${BINDIR}/klogd
  
  install_man:
 -	${INSTALL} -o ${MAN_OWNER} -g ${MAN_OWNER} -m 644 sysklogd.8 ${MANDIR}/man8/sysklogd.8
