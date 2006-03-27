@@ -9,7 +9,7 @@ Summary(pt_BR):	Registrador de log do sistema linux
 Summary(tr):	Linux sistem ve çekirdek kayýt süreci
 Name:		sysklogd
 Version:	1.4.1
-Release:	20
+Release:	21
 License:	GPL
 Group:		Daemons
 Source0:	http://www.ibiblio.org/pub/Linux/system/daemons/%{name}-%{version}.tar.gz
@@ -36,6 +36,7 @@ Patch10:	%{name}-fmt-string.patch
 Patch11:	%{name}-2.4headers.patch
 Patch12:	%{name}-SO_BSDCOMPAT.patch
 Patch13:	%{name}-ksyms.patch
+Patch14:	%{name}-sighandler.patch
 URL:		http://www.infodrom.org/projects/sysklogd/
 BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -167,6 +168,7 @@ do logowania komunikatów j±dra Linuksa.
 %patch11 -p1
 %patch12 -p1
 %patch13 -p1
+%patch14 -p1
 
 %build
 %{__make} \
