@@ -9,8 +9,8 @@ Summary(pt_BR):	Registrador de log do sistema linux
 Summary(tr):	Linux sistem ve çekirdek kayýt süreci
 Name:		sysklogd
 Version:	1.4.1
-Release:	21
-License:	GPL
+Release:	21.19
+License:	BSD/GPL
 Group:		Daemons
 Source0:	http://www.ibiblio.org/pub/Linux/system/daemons/%{name}-%{version}.tar.gz
 # Source0-md5:	d214aa40beabf7bdb0c9b3c64432c774
@@ -22,21 +22,20 @@ Source5:	klogd.init
 Source6:	klogd.sysconfig
 Source7:	syslogd-listfiles.sh
 Source8:	syslogd-listfiles.8
+Patch15:	%{name}-cvs.patch
+Patch16:	%{name}-bind.patch
+Patch17:	%{name}-querymod.patch
 Patch0:		%{name}-alpha.patch
 Patch1:		%{name}-alphafoo.patch
 Patch2:		%{name}-opt.patch
 Patch3:		%{name}-glibc.patch
 Patch4:		%{name}-sparc.patch
 Patch5:		%{name}-install.patch
-Patch6:		%{name}-utmp-process.patch
 Patch7:		%{name}-openlog.patch
 Patch8:		%{name}-security.patch
-Patch9:		%{name}-nullterm.patch
 Patch10:	%{name}-fmt-string.patch
-Patch11:	%{name}-2.4headers.patch
 Patch12:	%{name}-SO_BSDCOMPAT.patch
 Patch13:	%{name}-ksyms.patch
-Patch14:	%{name}-sighandler.patch
 URL:		http://www.infodrom.org/projects/sysklogd/
 BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -92,6 +91,7 @@ süreçlerinin hatalarýyla ilgili mesajlardýr.
 Summary:	Linux system logger
 Summary(de):	Linux-System-Logger
 Summary(pl):	Program loguj±cy zdarzenia w systemie Linux
+License:	BSD
 Group:		Daemons
 Requires(post):	fileutils
 Requires(post,preun):	/sbin/chkconfig
@@ -131,6 +131,7 @@ innych demonów.
 Summary:	Linux kernel logger
 Summary(de):	Linux-Kerner-Logger
 Summary(pl):	Program loguj±cy zdarzenia w j±drze Linuksa
+License:	GPL
 Group:		Daemons
 Requires(post,preun):	/sbin/chkconfig
 Requires(post,preun):	rc-scripts >= 0.2.0
@@ -154,26 +155,25 @@ do logowania komunikatów j±dra Linuksa.
 
 %prep
 %setup -q
+%patch15 -p1
+%patch16 -p1
+%patch17 -p1
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-%patch6 -p1
 %patch7 -p1
 %patch8 -p1
-%patch9 -p1
 %patch10 -p1
-%patch11 -p1
 %patch12 -p1
 %patch13 -p1
-%patch14 -p1
 
 %build
 %{__make} \
 	CC="%{__cc}" \
-	OPTIMIZE="%{rpmcflags} -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE" \
+	OPTIMIZE="%{rpmcflags}" \
 	LDFLAGS="%{rpmldflags}"
 
 %install
