@@ -22,18 +22,18 @@ Source5:	klogd.init
 Source6:	klogd.sysconfig
 Source7:	syslogd-listfiles.sh
 Source8:	syslogd-listfiles.8
-Patch15:	%{name}-cvs.patch
-Patch16:	%{name}-bind.patch
-Patch17:	%{name}-querymod.patch
-Patch0:		%{name}-alpha.patch
-Patch1:		%{name}-alphafoo.patch
-Patch2:		%{name}-opt.patch
-Patch3:		%{name}-glibc.patch
-Patch4:		%{name}-sparc.patch
-Patch5:		%{name}-install.patch
-Patch7:		%{name}-openlog.patch
-Patch8:		%{name}-security.patch
-Patch10:	%{name}-fmt-string.patch
+Patch0:		%{name}-cvs.patch
+Patch1:		%{name}-bind.patch
+Patch2:		%{name}-querymod.patch
+Patch3:		%{name}-alpha.patch
+Patch4:		%{name}-alphafoo.patch
+Patch5:		%{name}-opt.patch
+Patch6:		%{name}-glibc.patch
+Patch7:		%{name}-sparc.patch
+Patch8:		%{name}-install.patch
+Patch9:		%{name}-openlog.patch
+Patch10:	%{name}-security.patch
+Patch11:	%{name}-fmt-string.patch
 Patch12:	%{name}-SO_BSDCOMPAT.patch
 Patch13:	%{name}-ksyms.patch
 URL:		http://www.infodrom.org/projects/sysklogd/
@@ -155,18 +155,18 @@ do logowania komunikatów j±dra Linuksa.
 
 %prep
 %setup -q
-%patch15 -p1
-%patch16 -p1
-%patch17 -p1
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
 %patch7 -p1
 %patch8 -p1
+%patch9 -p1
 %patch10 -p1
+%patch11 -p1
 %patch12 -p1
 %patch13 -p1
 
@@ -301,7 +301,5 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(754,root,root) /etc/rc.d/init.d/klogd
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/klogd
-
 %attr(755,root,root) %{_sbindir}/klogd
-
 %{_mandir}/man8/klog*
