@@ -1,0 +1,2 @@
+- use cvs patch (drop patches already in cvs)
+- oh and according to debian package syslogd is under Berkeley copyright, klogd is under GPL
