@@ -41,7 +41,8 @@ BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_exec_prefix	/
-%define 	_bindir			/usr/sbin
+%define 	_bindir		/usr/sbin
+%define 	_sbindir	/sbin
 
 %description
 This is the Linux system and kernel logging program. It is run as a
