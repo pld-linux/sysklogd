@@ -90,7 +90,7 @@ case "$1" in
 		killproc syslogd -HUP
 		RETVAL=$?
 	else
-		msg_not_running "System logger" >&2
+		msg_not_running "System logger"
 		exit 7
 	fi
 	;;

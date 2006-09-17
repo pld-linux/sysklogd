@@ -63,7 +63,7 @@ case "$1" in
 		killproc klogd -USR2
 		RETVAL=$?
 	else
-		msg_not_running "Kernel logger" >&2
+		msg_not_running "Kernel logger"
 		exit 7
 	fi
 	;;
