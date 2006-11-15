@@ -1,0 +1,31 @@
+--- sysklogd-1.4.1/Makefile~	2006-03-28 00:50:17.000000000 +0300
++++ sysklogd-1.4.1/Makefile	2006-03-28 00:51:59.000000000 +0300
+@@ -11,8 +11,8 @@
+ INSTALL = /usr/bin/install
+ 
+ # Destination paths, set prefix=/opt if required
+-BINDIR = $(prefix)/usr/sbin
+-MANDIR = $(prefix)/usr/share/man
++BINDIR = $(DESTDIR)/usr/sbin
++MANDIR = $(DESTDIR)/usr/share/man
+ 
+ # There is one report that under an all ELF system there may be a need to
+ # explicilty link with libresolv.a.  If linking syslogd fails you may wish
+@@ -116,11 +116,11 @@
+ 	rm -f syslogd klogd ksym syslog_tst oops_test TAGS tsyslogd tklogd
+ 
+ install_exec: syslogd klogd
+-	${INSTALL} -m 500 -s syslogd ${BINDIR}/syslogd
+-	${INSTALL} -m 500 -s klogd ${BINDIR}/klogd
++	${INSTALL} -m 755 syslogd ${BINDIR}/syslogd
++	${INSTALL} -m 755 klogd ${BINDIR}/klogd
+ 
+ install_man:
+-	${INSTALL} -o ${MAN_USER} -g ${MAN_GROUP} -m ${MAN_PERMS} sysklogd.8 ${MANDIR}/man8/sysklogd.8
+-	${INSTALL} -o ${MAN_USER} -g ${MAN_GROUP} -m ${MAN_PERMS} syslogd.8 ${MANDIR}/man8/syslogd.8
+-	${INSTALL} -o ${MAN_USER} -g ${MAN_GROUP} -m ${MAN_PERMS} syslog.conf.5 ${MANDIR}/man5/syslog.conf.5
+-	${INSTALL} -o ${MAN_USER} -g ${MAN_GROUP} -m ${MAN_PERMS} klogd.8 ${MANDIR}/man8/klogd.8
++	${INSTALL} -m 644 sysklogd.8 ${MANDIR}/man8/sysklogd.8
++	${INSTALL} -m 644 syslogd.8 ${MANDIR}/man8/syslogd.8
++	${INSTALL} -m 644 syslog.conf.5 ${MANDIR}/man5/syslog.conf.5
++	${INSTALL} -m 644 klogd.8 ${MANDIR}/man8/klogd.8
