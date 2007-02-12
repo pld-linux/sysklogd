@@ -1,12 +1,12 @@
 # TODO:
 # - trigger for upgrade from inetutils-syslogd
 Summary:	Linux system and kernel logger
-Summary(de.UTF-8):   Linux-System- und Kerner-Logger
-Summary(es.UTF-8):   Registrador de log del sistema linux
-Summary(fr.UTF-8):   Le système Linux et le logger du noyau
-Summary(pl.UTF-8):   Programy logujące zdarzenia w systemie i jądrze Linuksa
-Summary(pt_BR.UTF-8):   Registrador de log do sistema linux
-Summary(tr.UTF-8):   Linux sistem ve çekirdek kayıt süreci
+Summary(de.UTF-8):	Linux-System- und Kerner-Logger
+Summary(es.UTF-8):	Registrador de log del sistema linux
+Summary(fr.UTF-8):	Le système Linux et le logger du noyau
+Summary(pl.UTF-8):	Programy logujące zdarzenia w systemie i jądrze Linuksa
+Summary(pt_BR.UTF-8):	Registrador de log do sistema linux
+Summary(tr.UTF-8):	Linux sistem ve çekirdek kayıt süreci
 Name:		sysklogd
 Version:	1.4.1
 Release:	21.20
@@ -90,8 +90,8 @@ süreçlerinin hatalarıyla ilgili mesajlardır.
 
 %package -n syslog
 Summary:	Linux system logger
-Summary(de.UTF-8):   Linux-System-Logger
-Summary(pl.UTF-8):   Program logujący zdarzenia w systemie Linux
+Summary(de.UTF-8):	Linux-System-Logger
+Summary(pl.UTF-8):	Program logujący zdarzenia w systemie Linux
 License:	BSD
 Group:		Daemons
 Requires(post):	fileutils
@@ -134,8 +134,8 @@ innych demonów.
 
 %package -n klogd
 Summary:	Linux kernel logger
-Summary(de.UTF-8):   Linux-Kerner-Logger
-Summary(pl.UTF-8):   Program logujący zdarzenia w jądrze Linuksa
+Summary(de.UTF-8):	Linux-Kerner-Logger
+Summary(pl.UTF-8):	Program logujący zdarzenia w jądrze Linuksa
 License:	GPL
 Group:		Daemons
 Requires(post,preun):	/sbin/chkconfig
