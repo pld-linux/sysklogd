@@ -8,12 +8,12 @@ Summary(pl.UTF-8):	Programy logujące zdarzenia w systemie i jądrze Linuksa
 Summary(pt_BR.UTF-8):	Registrador de log do sistema linux
 Summary(tr.UTF-8):	Linux sistem ve çekirdek kayıt süreci
 Name:		sysklogd
-Version:	1.4.1
-Release:	21.20
+Version:	1.5
+Release:	0.1
 License:	BSD/GPL
 Group:		Daemons
-Source0:	http://www.ibiblio.org/pub/Linux/system/daemons/%{name}-%{version}.tar.gz
-# Source0-md5:	d214aa40beabf7bdb0c9b3c64432c774
+Source0:	http://www.infodrom.org/projects/sysklogd/download/%{name}-%{version}.tar.gz
+# Source0-md5:	e053094e8103165f98ddafe828f6ae4b
 Source1:	syslog.conf
 Source2:	syslog.init
 Source3:	syslog.logrotate
@@ -22,20 +22,15 @@ Source5:	klogd.init
 Source6:	klogd.sysconfig
 Source7:	syslogd-listfiles.sh
 Source8:	syslogd-listfiles.8
-Patch0:		%{name}-cvs.patch
-Patch1:		%{name}-bind.patch
-Patch2:		%{name}-querymod.patch
-Patch3:		%{name}-alpha.patch
-Patch4:		%{name}-alphafoo.patch
-Patch5:		%{name}-opt.patch
-Patch6:		%{name}-glibc.patch
-Patch7:		%{name}-sparc.patch
-Patch8:		%{name}-install.patch
-Patch9:		%{name}-openlog.patch
-Patch10:	%{name}-security.patch
-Patch11:	%{name}-fmt-string.patch
-Patch12:	%{name}-SO_BSDCOMPAT.patch
-Patch13:	%{name}-ksyms.patch
+Patch0:		%{name}-bind.patch
+Patch1:		%{name}-alpha.patch
+Patch2:		%{name}-alphafoo.patch
+Patch3:		%{name}-opt.patch
+Patch4:		%{name}-sparc.patch
+Patch5:		%{name}-install.patch
+Patch6:		%{name}-openlog.patch
+Patch7:		%{name}-security.patch
+Patch8:		%{name}-ksyms.patch
 URL:		http://www.infodrom.org/projects/sysklogd/
 BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -171,11 +166,6 @@ do logowania komunikatów jądra Linuksa.
 %patch6 -p1
 %patch7 -p1
 %patch8 -p1
-%patch9 -p1
-%patch10 -p1
-%patch11 -p1
-%patch12 -p1
-%patch13 -p1
 
 %build
 %{__make} \
