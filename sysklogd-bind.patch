@@ -1,15 +1,5 @@
-diff -ur sysklogd-1.4.1.orig/sysklogd.8 sysklogd-1.4.1/sysklogd.8
---- sysklogd-1.4.1.orig/sysklogd.8	Sun Mar 11 22:35:51 2001
-+++ sysklogd-1.4.1/sysklogd.8	Mon Oct  8 07:20:31 2001
-@@ -2,7 +2,7 @@
- .\" May be distributed under the GNU General Public License
- .\" Sun Aug 30 11:35:55 MET: Martin Schulze: Updates
- .\"
--.TH SYSKLOGD 8 "12 October 1998" "Version 1.3" "Linux System Administration"
-+.TH SYSKLOGD 8 "8 October, 2001" "Version 1.4.1+CAEN/OW" "Linux System Administration"
- .SH NAME
- sysklogd \- Linux system logging utilities.
- .SH SYNOPSIS
+--- sysklogd-1.5/sysklogd.8.orig	2007-05-27 14:16:17.000000000 +0200
++++ sysklogd-1.5/sysklogd.8	2007-09-03 23:39:50.712669654 +0200
 @@ -15,6 +15,9 @@
  .I config file
  ]
@@ -21,19 +11,19 @@ diff -ur sysklogd-1.4.1.orig/sysklogd.8 sysklogd-1.4.1/sysklogd.8
  .I hostlist
  ]
 @@ -103,6 +106,13 @@
- Specifying this switch on the command line will cause the log daemon to
- forward any remote messages it receives to forwarding hosts which have been
- defined.
-+.TP
+ This can cause syslog loops that fill up hard disks quite fast and
+ thus needs to be used with caution.
+ .TP
 +.BI "\-i " "IP address"
 +If
 +.B syslogd
 +is configured to accept log input from a UDP port, specify an IP address
 +to bind to, rather than the default of INADDR_ANY.  The address must be in
 +dotted quad notation, DNS host names are not allowed.
- .TP
++.TP
  .BI "\-l " "hostlist"
  Specify a hostname that should be logged only with its simple hostname
+ and not the fqdn.  Multiple hosts may be specified using the colon
 diff -ur sysklogd-1.4.1.orig/syslogd.c sysklogd-1.4.1/syslogd.c
 --- sysklogd-1.4.1.orig/syslogd.c	Sun Mar 11 22:40:10 2001
 +++ sysklogd-1.4.1/syslogd.c	Mon Oct  8 07:24:41 2001

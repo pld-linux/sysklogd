@@ -1,14 +1,11 @@
---- sysklogd-1.4.1/Makefile~	2006-03-30 02:22:54.000000000 +0300
-+++ sysklogd-1.4.1/Makefile	2006-09-13 09:01:19.304731894 +0300
-@@ -3,9 +3,9 @@
+--- sysklogd-1.5/Makefile.orig	2007-05-30 17:28:48.000000000 +0200
++++ sysklogd-1.5/Makefile	2007-09-03 23:46:08.526200021 +0200
+@@ -20,7 +20,7 @@
  CC= gcc
- #CFLAGS= -g -DSYSV -Wall
+ #SKFLAGS= -g -DSYSV -Wall
  #LDFLAGS= -g
--CFLAGS= $(RPM_OPT_FLAGS) -O3 -DSYSV -fomit-frame-pointer -Wall -fno-strength-reduce
-+CFLAGS= $(OPTIMIZE) -DSYSV -Wall -fomit-frame-pointer -fno-strength-reduce $(shell getconf LFS_CFLAGS)
+-SKFLAGS= $(RPM_OPT_FLAGS) -O3 -DSYSV -fomit-frame-pointer -Wall -fno-strength-reduce
++SKFLAGS= $(OPTIMIZE) -DSYSV -Wall $(shell getconf LFS_CFLAGS)
  # -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE
--# -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE
-+# -D_FILE_OFFSET_BITS=64
- # $(shell getconf LFS_CFLAGS)
- LDFLAGS= -s
- 
+ # -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE
+ # $(shell getconf LFS_SKFLAGS)

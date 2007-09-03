@@ -7,15 +7,7 @@ information here).
 diff -Nur sysklogd-1.4.1.orig/klogd.8 sysklogd-1.4.1/klogd.8
 --- sysklogd-1.4.1.orig/klogd.8	Sun Mar 11 20:35:51 2001
 +++ sysklogd-1.4.1/klogd.8	Fri Mar 16 14:11:38 2001
-@@ -3,6 +3,7 @@
- .\" Sun Jul 30 01:35:55 MET: Martin Schulze: Updates
- .\" Sun Nov 19 23:22:21 MET: Martin Schulze: Updates
- .\" Mon Aug 19 09:42:08 CDT 1996: Dr. G.W. Wettstein: Updates
-+.\" Thu Feb 17 2000: Chris Wing: Unprivileged klogd feature
- .\" Fri Mar 11 17:11:46 CET 2005: Martin Schulze: sysctl updates
- .\"
- .TH KLOGD 8 "11 March 2005" "Version 1.4" "Linux System Administration"
-@@ -17,7 +18,11 @@
+@@ -17,7 +17,11 @@
  .RB [ " \-f "
  .I fname
  ]
@@ -27,7 +19,7 @@ diff -Nur sysklogd-1.4.1.orig/klogd.8 sysklogd-1.4.1/klogd.8
  .RB [ " \-n " ]
  .RB [ " \-o " ]
  .RB [ " \-p " ]
-@@ -46,11 +51,24 @@
+@@ -46,11 +50,24 @@
  .BI "\-f " file
  Log messages to the specified filename rather than to the syslog facility.
  .TP
