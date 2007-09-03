@@ -10,7 +10,7 @@ Summary(tr.UTF-8):	Linux sistem ve çekirdek kayıt süreci
 Name:		sysklogd
 Version:	1.5
 Release:	0.1
-License:	BSD/GPL
+License:	GPL v2+
 Group:		Daemons
 Source0:	http://www.infodrom.org/projects/sysklogd/download/%{name}-%{version}.tar.gz
 # Source0-md5:	e053094e8103165f98ddafe828f6ae4b
@@ -131,7 +131,6 @@ innych demonów.
 Summary:	Linux kernel logger
 Summary(de.UTF-8):	Linux-Kerner-Logger
 Summary(pl.UTF-8):	Program logujący zdarzenia w jądrze Linuksa
-License:	GPL
 Group:		Daemons
 Requires(post,preun):	/sbin/chkconfig
 Requires(post,preun):	rc-scripts >= 0.2.0
