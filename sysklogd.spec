@@ -9,7 +9,7 @@ Summary(pt_BR.UTF-8):	Registrador de log do sistema linux
 Summary(tr.UTF-8):	Linux sistem ve çekirdek kayıt süreci
 Name:		sysklogd
 Version:	1.5
-Release:	0.1
+Release:	0.2
 License:	GPL v2+
 Group:		Daemons
 Source0:	http://www.infodrom.org/projects/sysklogd/download/%{name}-%{version}.tar.gz
@@ -209,16 +209,11 @@ chmod u+w $RPM_BUILD_ROOT%{_sbindir}/{klogd,syslogd}
 %addusertogroup syslog logs
 
 %post -n syslog
-for n in /var/log/{cron,daemon,debug,kernel,lpr,maillog,messages,secure,spooler,syslog,user}; do
-	if [ -f $n ]; then
-		chown syslog:syslog $n
-		continue
-	else
-		touch $n
-		chmod 000 $n
-		chown syslog:syslog $n
-		chmod 640 $n
-	fi
+[ ! -d /var/log/news ] && mkdir /var/log/news
+for n in /var/log/{cron,daemon,debug,kernel,lpr,maillog,messages,secure,spooler,syslog,user,news/news.crit,news/news.err,news/news.notice}; do
+	[ ! -f $n ] && touch $n
+	chmod 640 $n
+	chown syslog:syslog $n
 done
 
 /sbin/chkconfig --add syslog
