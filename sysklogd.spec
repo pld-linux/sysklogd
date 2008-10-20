@@ -9,7 +9,7 @@ Summary(pt_BR.UTF-8):	Registrador de log do sistema linux
 Summary(tr.UTF-8):	Linux sistem ve çekirdek kayıt süreci
 Name:		sysklogd
 Version:	1.5
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Daemons
 Source0:	http://www.infodrom.org/projects/sysklogd/download/%{name}-%{version}.tar.gz
@@ -176,7 +176,7 @@ do logowania komunikatów jądra Linuksa.
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{sysconfig,rc.d/init.d,logrotate.d} \
 	$RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man{5,8},%{_bindir}} \
-	$RPM_BUILD_ROOT/{dev,var/log}
+	$RPM_BUILD_ROOT/{dev,var/log{,/news}}
 
 %{__make} install \
 	BINDIR=$RPM_BUILD_ROOT%{_sbindir} \
@@ -209,8 +209,7 @@ chmod u+w $RPM_BUILD_ROOT%{_sbindir}/{klogd,syslogd}
 %addusertogroup syslog logs
 
 %post -n syslog
-[ ! -d /var/log/news ] && mkdir /var/log/news
-for n in /var/log/{cron,daemon,debug,kernel,lpr,maillog,messages,secure,spooler,syslog,user,news/news.crit,news/news.err,news/news.notice}; do
+for n in /var/log/{cron,daemon,debug,kernel,lpr,maillog,messages,secure,spooler,syslog,user}; do
 	[ ! -f $n ] && touch $n
 	chmod 640 $n
 	chown syslog:syslog $n
@@ -282,7 +281,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/syslog
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/syslog
 %attr(754,root,root) /etc/rc.d/init.d/syslog
-%attr(640,root,root) %ghost /var/log/*
+%attr(640,root,root) %ghost /var/log/[cdklmsu]*
+%dir %attr(770,root,news) /var/log/news
 %attr(755,root,root) %{_sbindir}/syslogd
 %attr(755,root,root) %{_bindir}/syslogd-listfiles
 %{_mandir}/man5/*
