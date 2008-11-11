@@ -1,12 +1,12 @@
 # TODO:
 # - trigger for upgrade from inetutils-syslogd
 Summary:	Linux system and kernel logger
-Summary(de):	Linux-System- und Kerner-Logger
-Summary(es):	Registrador de log del sistema linux
-Summary(fr):	Le système Linux et le logger du noyau
-Summary(pl):	Programy loguj±ce zdarzenia w systemie i j±drze Linuksa
-Summary(pt_BR):	Registrador de log do sistema linux
-Summary(tr):	Linux sistem ve çekirdek kayıt süreci
+Summary(de.UTF-8):	Linux-System- und Kerner-Logger
+Summary(es.UTF-8):	Registrador de log del sistema linux
+Summary(fr.UTF-8):	Le systÃ¨me Linux et le logger du noyau
+Summary(pl.UTF-8):	Programy logujÄ…ce zdarzenia w systemie i jÄ…drze Linuksa
+Summary(pt_BR.UTF-8):	Registrador de log do sistema linux
+Summary(tr.UTF-8):	Linux sistem ve Ã§ekirdek kayÄ±t sÃ¼reci
 Name:		sysklogd
 Version:	1.4.1
 Release:	25
@@ -50,48 +50,48 @@ daemon (background process) to log messages to different places. These
 are usually things like sendmail logs, security logs, and errors from
 other daemons.
 
-%description -l de
+%description -l de.UTF-8
 Dies ist das Linux-System- und Kernel-Protokollierprogramm. Es wird
-als Dämon (Hintergrundprozeß) ausgeführt und protokolliert
+als DÃ¤mon (HintergrundprozeÃŸ) ausgefÃ¼hrt und protokolliert
 verschiedene Meldungen. Es protokolliert z.B. sendmail- und
-Sicherheits-Protokolle und Fehler von anderen Dämonen.
+Sicherheits-Protokolle und Fehler von anderen DÃ¤monen.
 
-%description -l es
+%description -l es.UTF-8
 Este es el programa de log para el kernel y el sistema Linux. Se
 ejecuta como un daemon (proceso en background) para registrar mensajes
 en diferentes lugares. Estos son generalmente registros del sendmail,
 seguridad, y mensajes de otros daemons.
 
-%description -l fr
-Programme de trace du sytème Linux et du noyau. Il est lancé en démon
-(processus en arrière plan) pour stocker les messages à différents
-endroits. Ce sont généralement des choses comme les traces de
-sendmail, de sécurité et d'erreurs d'autres démons. I
+%description -l fr.UTF-8
+Programme de trace du sytÃ¨me Linux et du noyau. Il est lancÃ© en dÃ©mon
+(processus en arriÃ¨re plan) pour stocker les messages Ã  diffÃ©rents
+endroits. Ce sont gÃ©nÃ©ralement des choses comme les traces de
+sendmail, de sÃ©curitÃ© et d'erreurs d'autres dÃ©mons. I
 
-%description -l pl
-Pakiet ten zawiera programy, które s± uruchamiane jako demony i s³u¿±
-do logowania zdarzeñ w systemie i w j±drze Linuksa. Same logi mog± byæ
-sk³adowane w ró¿nych miejscach (zdalnie i lokalnie). Przewa¿nie do
-logów trafiaj± informacje o odbieranej i wysy³anej poczcie np. z
-sendmaila, zdarzenia dotycz±ce bezpieczeñstwa systemu, a tak¿e
-informacje o b³êdach z innych demonów.
+%description -l pl.UTF-8
+Pakiet ten zawiera programy, ktÃ³re sÄ… uruchamiane jako demony i sÅ‚uÅ¼Ä…
+do logowania zdarzeÅ„ w systemie i w jÄ…drze Linuksa. Same logi mogÄ… byÄ‡
+skÅ‚adowane w rÃ³Å¼nych miejscach (zdalnie i lokalnie). PrzewaÅ¼nie do
+logÃ³w trafiajÄ… informacje o odbieranej i wysyÅ‚anej poczcie np. z
+sendmaila, zdarzenia dotyczÄ…ce bezpieczeÅ„stwa systemu, a takÅ¼e
+informacje o bÅ‚Ä™dach z innych demonÃ³w.
 
-%description -l pt_BR
-Este é o programa de log para o kernel e o sistema Linux. Ele roda
+%description -l pt_BR.UTF-8
+Este Ã© o programa de log para o kernel e o sistema Linux. Ele roda
 como um daemon (processo em background) para registrar mensagens em
-diferentes lugares. Estes são geralmente registros do sendmail,
-segurança, e mensagens de outros daemons.
+diferentes lugares. Estes sÃ£o geralmente registros do sendmail,
+seguranÃ§a, e mensagens de outros daemons.
 
-%description -l tr
-Bu paket, Linux sistemi ve çekirdeği için kayıt tutan programı içerir.
-Değişik yerlerde mesajların kayıtlarını tutmak içın arkaplanda
-koşturulur. Bu mesajlar, sendmail, güvenlik ve diğer sunucu
-süreçlerinin hatalarıyla ilgili mesajlardır.
+%description -l tr.UTF-8
+Bu paket, Linux sistemi ve Ã§ekirdeÄŸi iÃ§in kayÄ±t tutan programÄ± iÃ§erir.
+DeÄŸiÅŸik yerlerde mesajlarÄ±n kayÄ±tlarÄ±nÄ± tutmak iÃ§Ä±n arkaplanda
+koÅŸturulur. Bu mesajlar, sendmail, gÃ¼venlik ve diÄŸer sunucu
+sÃ¼reÃ§lerinin hatalarÄ±yla ilgili mesajlardÄ±r.
 
 %package -n syslog
 Summary:	Linux system logger
-Summary(de):	Linux-System-Logger
-Summary(pl):	Program loguj±cy zdarzenia w systemie Linux
+Summary(de.UTF-8):	Linux-System-Logger
+Summary(pl.UTF-8):	Program logujÄ…cy zdarzenia w systemie Linux
 License:	BSD
 Group:		Daemons
 Requires(post):	fileutils
@@ -124,18 +124,18 @@ This is the Linux system logging program. It is run as a daemon
 usually things like sendmail logs, security logs, and errors from
 other daemons.
 
-%description -n syslog -l pl
-Pakiet ten zawiera program, który jest uruchamiany jako demon i s³u¿y
-do logowania zdarzeñ w systemie Linux. Same logi mog± byæ sk³adowane w
-ró¿nych miejscach (zdalnie i lokalnie). Przewa¿nie do logów trafiaj±
-informacje o odbieranej i wysy³anej poczcie np. z sendmaila, zdarzenia
-dotycz±ce bezpieczeñstwa systemu, a tak¿e informacje o b³êdach z
-innych demonów.
+%description -n syslog -l pl.UTF-8
+Pakiet ten zawiera program, ktÃ³ry jest uruchamiany jako demon i sÅ‚uÅ¼y
+do logowania zdarzeÅ„ w systemie Linux. Same logi mogÄ… byÄ‡ skÅ‚adowane w
+rÃ³Å¼nych miejscach (zdalnie i lokalnie). PrzewaÅ¼nie do logÃ³w trafiajÄ…
+informacje o odbieranej i wysyÅ‚anej poczcie np. z sendmaila, zdarzenia
+dotyczÄ…ce bezpieczeÅ„stwa systemu, a takÅ¼e informacje o bÅ‚Ä™dach z
+innych demonÃ³w.
 
 %package -n klogd
 Summary:	Linux kernel logger
-Summary(de):	Linux-Kerner-Logger
-Summary(pl):	Program loguj±cy zdarzenia w j±drze Linuksa
+Summary(de.UTF-8):	Linux-Kerner-Logger
+Summary(pl.UTF-8):	Program logujÄ…cy zdarzenia w jÄ…drze Linuksa
 License:	GPL
 Group:		Daemons
 Requires(post,preun):	/sbin/chkconfig
@@ -156,9 +156,9 @@ Obsoletes:	sysklogd
 This is the Linux kernel logging program. It is run as a daemon
 (background process) to log messages from kernel.
 
-%description -n klogd -l pl
-Pakiet ten zawiera program, który jest uruchamiany jako demon i s³u¿y
-do logowania komunikatów j±dra Linuksa.
+%description -n klogd -l pl.UTF-8
+Pakiet ten zawiera program, ktÃ³ry jest uruchamiany jako demon i sÅ‚uÅ¼y
+do logowania komunikatÃ³w jÄ…dra Linuksa.
 
 %prep
 %setup -q
