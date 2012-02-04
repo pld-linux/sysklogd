@@ -9,7 +9,7 @@ Summary(pt_BR.UTF-8):	Registrador de log do sistema linux
 Summary(tr.UTF-8):	Linux sistem ve çekirdek kayıt süreci
 Name:		sysklogd
 Version:	1.5
-Release:	2
+Release:	3
 License:	GPL v2+
 Group:		Daemons
 Source0:	http://www.infodrom.org/projects/sysklogd/download/%{name}-%{version}.tar.gz
@@ -22,6 +22,8 @@ Source5:	klogd.init
 Source6:	klogd.sysconfig
 Source7:	syslogd-listfiles.sh
 Source8:	syslogd-listfiles.8
+Source9:	syslog.service
+Source10:	klogd.service
 Patch0:		%{name}-bind.patch
 Patch1:		%{name}-alpha.patch
 Patch2:		%{name}-alphafoo.patch
@@ -106,6 +108,7 @@ Requires(triggerpostun):	sed >= 4.0
 # Requires:	klogd
 Requires:	logrotate >= 3.2-3
 Requires:	psmisc >= 20.1
+Suggests:	klogd
 Provides:	group(syslog)
 Provides:	syslogdaemon
 Provides:	user(syslog)
@@ -127,6 +130,16 @@ informacje o odbieranej i wysyłanej poczcie np. z sendmaila, zdarzenia
 dotyczące bezpieczeństwa systemu, a także informacje o błędach z
 innych demonów.
 
+%package -n syslog-systemd
+Summary:        systemd units for syslog
+Group:          Daemons
+Requires:       syslog = %{version}-%{release}
+Requires:       systemd-units >= 37-0.10
+Provides:       service(syslog)
+
+%description -n syslog-systemd
+systemd units for syslog.
+
 %package -n klogd
 Summary:	Linux kernel logger
 Summary(de.UTF-8):	Linux-Kerner-Logger
@@ -142,6 +155,7 @@ Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
 Requires(pre):	/usr/sbin/usermod
+Suggests:	syslog
 Provides:	group(syslog)
 Provides:	user(syslog)
 Obsoletes:	sysklogd
@@ -153,6 +167,16 @@ This is the Linux kernel logging program. It is run as a daemon
 %description -n klogd -l pl.UTF-8
 Pakiet ten zawiera program, który jest uruchamiany jako demon i służy
 do logowania komunikatów jądra Linuksa.
+
+%package -n klogd-systemd
+Summary:        systemd units for klogd
+Group:          Daemons
+Requires:       klogd = %{version}-%{release}
+Requires:       systemd-units >= 37-0.10
+Provides:       service(klogd)
+
+%description -n klogd-systemd
+systemd units for klogdg.
 
 %prep
 %setup -q
@@ -176,7 +200,7 @@ do logowania komunikatów jądra Linuksa.
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{sysconfig,rc.d/init.d,logrotate.d} \
 	$RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man{5,8},%{_bindir}} \
-	$RPM_BUILD_ROOT/{dev,var/log/news}
+	$RPM_BUILD_ROOT{/dev,/var/log/news,%{systemdunitdir}}
 
 %{__make} install \
 	BINDIR=$RPM_BUILD_ROOT%{_sbindir} \
@@ -192,6 +216,8 @@ install %{SOURCE6} $RPM_BUILD_ROOT/etc/sysconfig/klogd
 
 install %{SOURCE7} $RPM_BUILD_ROOT%{_bindir}/syslogd-listfiles
 install %{SOURCE8} $RPM_BUILD_ROOT%{_mandir}/man8
+install %{SOURCE9} $RPM_BUILD_ROOT%{systemdunitdir}
+install %{SOURCE10} $RPM_BUILD_ROOT%{systemdunitdir}
 
 for n in debug kernel maillog messages secure syslog user spooler lpr daemon
 do
@@ -230,6 +256,24 @@ if [ "$1" = "0" ]; then
 	%userremove syslog
 	%groupremove syslog
 fi
+
+%post -n syslog-systemd
+%systemd_post syslog.service
+
+%preun -n syslog-systemd
+%systemd_preun syslog.service
+
+%postun -n syslog-systemd
+%systemd_reload
+
+%post -n klogd-systemd
+%systemd_post klogd.service
+
+%preun -n klogd-systemd
+%systemd_preun klogd.service
+
+%postun -n klogd-systemd
+%systemd_reload
 
 %pre -n klogd
 %groupadd -P klogd -g 18 syslog
@@ -288,9 +332,17 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man5/*
 %{_mandir}/man8/sys*
 
+%files -n syslog-systemd
+%defattr(644,root,root,755)
+%{systemdunitdir}/syslog.service
+
 %files -n klogd
 %defattr(644,root,root,755)
 %attr(754,root,root) /etc/rc.d/init.d/klogd
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/klogd
 %attr(755,root,root) %{_sbindir}/klogd
 %{_mandir}/man8/klog*
+
+%files -n klogd-systemd
+%defattr(644,root,root,755)
+%{systemdunitdir}/klogd.service

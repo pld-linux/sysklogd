@@ -1,0 +1,11 @@
+[Unit]                                                                                                                                                                           
+Description=System Kernel Logging Service
+After=syslog.service
+
+[Service]
+EnvironmentFile=/etc/sysconfig/klogd
+ExecStart=/sbin/service klogd start
+ExecStop=/sbin/service klogd stop
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,10 @@
+[Unit]                                                                                                                                                                           
+Description=System Logging Service
+
+[Service]
+EnvironmentFile=/etc/sysconfig/syslog
+ExecStart=/sbin/service syslog start
+ExecStop=/sbin/service syslog stop
+
+[Install]
+WantedBy=multi-user.target
