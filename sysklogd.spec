@@ -9,7 +9,7 @@ Summary(pt_BR.UTF-8):	Registrador de log do sistema linux
 Summary(tr.UTF-8):	Linux sistem ve çekirdek kayıt süreci
 Name:		sysklogd
 Version:	1.5
-Release:	4
+Release:	5
 License:	GPL v2+
 Group:		Daemons
 Source0:	http://www.infodrom.org/projects/sysklogd/download/%{name}-%{version}.tar.gz
@@ -117,6 +117,7 @@ Provides:	user(syslog)
 Obsoletes:	msyslog
 Obsoletes:	sysklogd
 Obsoletes:	syslog-ng
+Obsoletes:	syslog-systemd
 
 %description -n syslog
 This is the Linux system logging program. It is run as a daemon
@@ -153,6 +154,7 @@ Provides:	group(syslog)
 Provides:	user(syslog)
 Provides:       service(klogd)
 Obsoletes:	sysklogd
+Obsoletes:	klogd-systemd
 
 %description -n klogd
 This is the Linux kernel logging program. It is run as a daemon
