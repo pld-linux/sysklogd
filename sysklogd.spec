@@ -9,7 +9,7 @@ Summary(pt_BR.UTF-8):	Registrador de log do sistema linux
 Summary(tr.UTF-8):	Linux sistem ve çekirdek kayıt süreci
 Name:		sysklogd
 Version:	1.5
-Release:	3
+Release:	4
 License:	GPL v2+
 Group:		Daemons
 Source0:	http://www.infodrom.org/projects/sysklogd/download/%{name}-%{version}.tar.gz
@@ -108,8 +108,10 @@ Requires(triggerpostun):	sed >= 4.0
 # Requires:	klogd
 Requires:	logrotate >= 3.2-3
 Requires:	psmisc >= 20.1
+Requires:       systemd-units >= 37-0.10
 Suggests:	klogd
 Provides:	group(syslog)
+Provides:       service(syslog)
 Provides:	syslogdaemon
 Provides:	user(syslog)
 Obsoletes:	msyslog
@@ -130,16 +132,6 @@ informacje o odbieranej i wysyłanej poczcie np. z sendmaila, zdarzenia
 dotyczące bezpieczeństwa systemu, a także informacje o błędach z
 innych demonów.
 
-%package -n syslog-systemd
-Summary:        systemd units for syslog
-Group:          Daemons
-Requires:       syslog = %{version}-%{release}
-Requires:       systemd-units >= 37-0.10
-Provides:       service(syslog)
-
-%description -n syslog-systemd
-systemd units for syslog.
-
 %package -n klogd
 Summary:	Linux kernel logger
 Summary(de.UTF-8):	Linux-Kerner-Logger
@@ -155,9 +147,11 @@ Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
 Requires(pre):	/usr/sbin/usermod
+Requires:       systemd-units >= 37-0.10
 Suggests:	syslog
 Provides:	group(syslog)
 Provides:	user(syslog)
+Provides:       service(klogd)
 Obsoletes:	sysklogd
 
 %description -n klogd
@@ -167,16 +161,6 @@ This is the Linux kernel logging program. It is run as a daemon
 %description -n klogd -l pl.UTF-8
 Pakiet ten zawiera program, który jest uruchamiany jako demon i służy
 do logowania komunikatów jądra Linuksa.
-
-%package -n klogd-systemd
-Summary:        systemd units for klogd
-Group:          Daemons
-Requires:       klogd = %{version}-%{release}
-Requires:       systemd-units >= 37-0.10
-Provides:       service(klogd)
-
-%description -n klogd-systemd
-systemd units for klogdg.
 
 %prep
 %setup -q
@@ -245,34 +229,20 @@ done
 %service syslog restart "syslog daemon"
 %service -q klogd restart
 
+%systemd_post syslog.service
+
 %preun -n syslog
 if [ "$1" = "0" ]; then
 	%service syslog stop
 	/sbin/chkconfig --del syslog
 fi
+%systemd_preun syslog.service
 
 %postun -n syslog
 if [ "$1" = "0" ]; then
 	%userremove syslog
 	%groupremove syslog
 fi
-
-%post -n syslog-systemd
-%systemd_post syslog.service
-
-%preun -n syslog-systemd
-%systemd_preun syslog.service
-
-%postun -n syslog-systemd
-%systemd_reload
-
-%post -n klogd-systemd
-%systemd_post klogd.service
-
-%preun -n klogd-systemd
-%systemd_preun klogd.service
-
-%postun -n klogd-systemd
 %systemd_reload
 
 %pre -n klogd
@@ -283,18 +253,21 @@ fi
 %post -n klogd
 /sbin/chkconfig --add klogd
 %service klogd restart "kernel logger daemon"
+%systemd_post klogd.service
 
 %preun -n klogd
 if [ "$1" = "0" ]; then
 	%service klogd stop
 	/sbin/chkconfig --del klogd
 fi
+%systemd_preun klogd.service
 
 %postun -n klogd
 if [ "$1" = "0" ]; then
 	%userremove syslog
 	%groupremove syslog
 fi
+%systemd_reload
 
 %triggerpostun -- inetutils-syslogd
 /sbin/chkconfig --del syslog
@@ -306,7 +279,7 @@ if [ -f /etc/syslog.conf.rpmsave ]; then
 	echo "Original file from package is available as /etc/syslog.conf.rpmnew"
 fi
 
-%triggerpostun -n syslog -- syslog < 1.4.1-17.7
+%triggerpostun -n syslog -- syslog < 1.5-4
 # remove any -a option from ADDITIONAL_SOCK
 cp -f /etc/sysconfig/syslog{,.rpmsave}
 sed -i -e '/^ADDITIONAL_SOCK=/s/-a //g' /etc/sysconfig/syslog
@@ -314,6 +287,11 @@ sed -i -e '/^ADDITIONAL_SOCK=/s/-a //g' /etc/sysconfig/syslog
 # reset config file permission, so people running with syslog uid can
 # survive syslog reload
 chgrp syslog /etc/syslog.conf
+
+%systemd_trigger syslog.service
+
+%triggerpostun -n klogd -- klogd < 1.5-4
+%systemd_trigger klogd.service
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -331,9 +309,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/syslogd-listfiles
 %{_mandir}/man5/*
 %{_mandir}/man8/sys*
-
-%files -n syslog-systemd
-%defattr(644,root,root,755)
 %{systemdunitdir}/syslog.service
 
 %files -n klogd
@@ -342,7 +317,4 @@ rm -rf $RPM_BUILD_ROOT
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/klogd
 %attr(755,root,root) %{_sbindir}/klogd
 %{_mandir}/man8/klog*
-
-%files -n klogd-systemd
-%defattr(644,root,root,755)
 %{systemdunitdir}/klogd.service
