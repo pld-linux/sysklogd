@@ -5,6 +5,7 @@ Description=System Logging Service
 EnvironmentFile=/etc/sysconfig/syslog
 ExecStart=/sbin/service syslog start
 ExecStop=/sbin/service syslog stop
+Type=forking
 
 [Install]
 WantedBy=multi-user.target
