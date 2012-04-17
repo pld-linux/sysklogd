@@ -9,7 +9,7 @@ Summary(pt_BR.UTF-8):	Registrador de log do sistema linux
 Summary(tr.UTF-8):	Linux sistem ve çekirdek kayıt süreci
 Name:		sysklogd
 Version:	1.5
-Release:	6
+Release:	7
 License:	GPL v2+
 Group:		Daemons
 Source0:	http://www.infodrom.org/projects/sysklogd/download/%{name}-%{version}.tar.gz
@@ -102,13 +102,14 @@ Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
 Requires(pre):	/usr/sbin/usermod
+Requires(post,preun,postun):	systemd-units >= 38
 Requires(triggerpostun):	sed >= 4.0
 # for vservers we don't need klogd and syslog works without klogd
 # (just it doesn't log kernel buffer into syslog)
 # Requires:	klogd
 Requires:	logrotate >= 3.2-3
 Requires:	psmisc >= 20.1
-Requires:       systemd-units >= 37-0.10
+Requires:       systemd-units >= 38
 Suggests:	klogd
 Provides:	group(syslog)
 Provides:       service(syslog)
@@ -148,7 +149,8 @@ Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
 Requires(pre):	/usr/sbin/usermod
-Requires:       systemd-units >= 37-0.10
+Requires(post,preun,postun):	systemd-units >= 38
+Requires:       systemd-units >= 38
 Suggests:	syslog
 Provides:	group(syslog)
 Provides:	user(syslog)
