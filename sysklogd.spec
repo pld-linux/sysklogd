@@ -8,12 +8,12 @@ Summary(pl.UTF-8):	Programy logujące zdarzenia w systemie i jądrze Linuksa
 Summary(pt_BR.UTF-8):	Registrador de log do sistema linux
 Summary(tr.UTF-8):	Linux sistem ve çekirdek kayıt süreci
 Name:		sysklogd
-Version:	1.5
-Release:	7
+Version:	1.5.1
+Release:	1
 License:	GPL v2+
 Group:		Daemons
 Source0:	http://www.infodrom.org/projects/sysklogd/download/%{name}-%{version}.tar.gz
-# Source0-md5:	e053094e8103165f98ddafe828f6ae4b
+# Source0-md5:	c70599ab0d037fde724f7210c2c8d7f8
 Source1:	syslog.conf
 Source2:	syslog.init
 Source3:	syslog.logrotate
