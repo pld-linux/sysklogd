@@ -9,7 +9,7 @@ Summary(pt_BR.UTF-8):	Registrador de log do sistema linux
 Summary(tr.UTF-8):	Linux sistem ve çekirdek kayıt süreci
 Name:		sysklogd
 Version:	1.5.1
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Daemons
 Source0:	http://www.infodrom.org/projects/sysklogd/download/%{name}-%{version}.tar.gz
@@ -119,6 +119,8 @@ Obsoletes:	msyslog
 Obsoletes:	sysklogd
 Obsoletes:	syslog-ng
 Obsoletes:	syslog-systemd
+Conflicts:	cronie < 1.5.0-3
+Conflicts:	fcron < 3.1.2-5
 
 %description -n syslog
 This is the Linux system logging program. It is run as a daemon
@@ -207,7 +209,7 @@ install %{SOURCE8} $RPM_BUILD_ROOT%{_mandir}/man8
 install %{SOURCE9} $RPM_BUILD_ROOT%{systemdunitdir}
 install %{SOURCE10} $RPM_BUILD_ROOT%{systemdunitdir}
 
-for n in debug kernel maillog messages secure syslog user spooler lpr daemon
+for n in cron debug kernel maillog messages secure syslog user spooler lpr daemon
 do
 	> $RPM_BUILD_ROOT/var/log/$n
 done
@@ -226,7 +228,7 @@ chmod u+w $RPM_BUILD_ROOT%{_sbindir}/{klogd,syslogd}
 for n in /var/log/{cron,daemon,debug,kernel,lpr,maillog,messages,secure,spooler,syslog,user}; do
 	[ ! -f $n ] && touch $n
 	chmod 640 $n
-	chown syslog:syslog $n
+	chown syslog:logs $n
 done
 
 /sbin/chkconfig --add syslog
@@ -307,7 +309,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/syslog
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/syslog
 %attr(754,root,root) /etc/rc.d/init.d/syslog
-%attr(640,root,root) %ghost /var/log/[cdklmsu]*
+%attr(640,syslog,logs) %ghost /var/log/[cdklmsu]*
 %dir %attr(770,root,news) /var/log/news
 %attr(755,root,root) %{_sbindir}/syslogd
 %attr(755,root,root) %{_bindir}/syslogd-listfiles
