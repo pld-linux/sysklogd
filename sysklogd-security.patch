@@ -48,7 +48,7 @@ diff -Nur sysklogd-1.4.1.orig/klogd.c sysklogd-1.4.1/klogd.c
 --- sysklogd-1.4.1.orig/klogd.c	Sun Mar 11 20:40:10 2001
 +++ sysklogd-1.4.1/klogd.c	Fri Mar 16 14:38:52 2001
 @@ -275,6 +275,10 @@
- #define ksyslog klogctl
+ #define _PATH_KLOG  "/proc/kmsg"
  #endif
  
 +/* Support for running as an unprivileged user */
@@ -122,7 +122,7 @@ diff -Nur sysklogd-1.4.1.orig/klogd.c sysklogd-1.4.1/klogd.c
 +		setuid(server_uid);
  	}
  
-         /* The main loop. */
+ #ifndef TESTING
 diff -Nur sysklogd-1.4.1.orig/sysklogd.8 sysklogd-1.4.1/sysklogd.8
 --- sysklogd-1.4.1.orig/sysklogd.8	Sun Mar 11 20:35:51 2001
 +++ sysklogd-1.4.1/sysklogd.8	Fri Mar 16 14:40:16 2001
@@ -134,8 +134,8 @@ diff -Nur sysklogd-1.4.1.orig/sysklogd.8 sysklogd-1.4.1/sysklogd.8
 +.IB username
 +]
  .RB [ " \-v " ]
- .LP
  .SH DESCRIPTION
+ .B Sysklogd
 @@ -149,6 +152,22 @@
  is specified and the host logging resolves to satu.infodrom.north.de
  no domain would be cut, you will have to specify two domains like:
@@ -179,7 +179,7 @@ diff -Nur sysklogd-1.4.1.orig/syslogd.c sysklogd-1.4.1/syslogd.c
  				   intermediate host. */
 +char	*server_user = NULL;	/* user name to run server as, instead of root */
  
- extern	int errno;
+ char	*bind_addr = NULL;	/* bind UDP port to this interface only */
  
 @@ -869,7 +869,7 @@
  		funix[i]  = -1;

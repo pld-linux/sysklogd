@@ -7,7 +7,7 @@
 +#include <ctype.h>
  #include "klogd.h"
  #include "ksyms.h"
- 
+ #include "module.h"
 @@ -668,6 +669,84 @@ extern char * ExpandKadds(line, el)
  	if ( (num_syms == 0) ||
  	     (kp = strstr(line, "[<")) == (char *) 0 )

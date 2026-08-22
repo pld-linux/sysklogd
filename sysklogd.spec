@@ -38,8 +38,8 @@ BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_exec_prefix	/
-%define 	_bindir		/usr/sbin
-%define 	_sbindir	/sbin
+%define		_bindir		/usr/sbin
+%define		_sbindir	/sbin
 
 %description
 This is the Linux system and kernel logging program. It is run as a
@@ -103,7 +103,7 @@ Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
 Requires(pre):	/usr/sbin/usermod
 Requires(post,preun,postun):	systemd-units >= 38
-Requires(triggerpostun):	sed >= 4.0
+Requires(postun):	sed >= 4.0
 # for vservers we don't need klogd and syslog works without klogd
 # (just it doesn't log kernel buffer into syslog)
 # Requires:	klogd

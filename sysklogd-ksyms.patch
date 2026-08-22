@@ -38,5 +38,4 @@ diff -urN sysklogd-1.3-31/klogd.c sysklogd-1.3-31.new/klogd.c
 +		}
  	}
  
-         /* The main loop. */
-
+ 	/* Drop privileges if a user name was specified on the command line */
